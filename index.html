@@ -9,7 +9,6 @@
   <meta name="p:domain_verify" content="5e67272b9374687db3751022c1c7559c"/>
 
   <style>
-    /* Prosty, pewny CSS bez zmiennych i bajerów */
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -21,7 +20,7 @@
     }
     header {
       background: #000;
-      color: #fff;           /* twardy kolor */
+      color: #fff;
       padding: 20px;
       font-size: 2em;
       font-weight: bold;
@@ -30,7 +29,7 @@
     h2 {
       margin: 28px auto 12px;
       font-size: 1.8em;
-      color: #e50914;        /* twardy kolor */
+      color: #e50914;
       padding: 0 16px;
       max-width: 1200px;
     }
@@ -41,10 +40,9 @@
       max-width: 900px;
     }
 
-    /* Player */
     .player-wrap {
       max-width: 1200px;
-      margin: 10px auto 24px;
+      margin: 10px auto 8px;
       padding: 0 16px;
     }
     .ratio {
@@ -52,20 +50,35 @@
       width: 100%;
       max-width: 900px;
       margin: 12px auto 0;
-      /* fallback: 16:9 bez aspect-ratio */
-      padding-top: 56.25%;
+      padding-top: 56.25%; /* 16:9 */
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 20px rgba(255,255,255,0.14);
       background: #000;
     }
     .ratio iframe {
-      position: absolute;
-      top: 0; left: 0;
+      position: absolute; inset: 0;
       width: 100%; height: 100%;
-      border: 0;
-      display: block;
+      border: 0; display: block;
     }
+
+    /* Social – PRZYWRÓCONE i wyżej */
+    .buttons { margin: 18px 0 22px; }
+    .buttons a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 24px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05em;
+      border-radius: 10px;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .buttons a:hover { transform: translateY(-1px); }
+    .yt { background: #ff0000; }
+    .fb { background: #1877f2; }
+    .ig { background: #e1306c; }
+    .tt { background: #000000; }
 
     /* Siatka kafelków */
     #playlist {
@@ -73,7 +86,7 @@
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 18px;
       max-width: 1200px;
-      margin: 26px auto 40px;
+      margin: 18px auto 40px;
       padding: 0 16px;
     }
     .video-tile {
@@ -104,45 +117,16 @@
     .title { font-size: 0.98em; color: #fff; line-height: 1.3; margin: 0 0 4px; }
     .date  { font-size: 0.85em; color: #bbb; }
 
-    /* Loader / Fallback */
     .center { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
     .loader { margin: 16px auto 0; color: #bbb; font-size: 0.95em; }
     .fallback {
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 18px;
-      margin: 16px auto 0;
-      max-width: 900px;
-      color: #ddd;
+      background: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 12px; padding: 18px; margin: 16px auto 0; max-width: 900px; color: #ddd;
     }
     .fallback a.btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
-      border-radius: 10px;
-      background: #e50914;
-      color: #fff;
-      text-decoration: none;
+      display: inline-block; margin-top: 10px; padding: 10px 16px;
+      border-radius: 10px; background: #e50914; color: #fff; text-decoration: none;
     }
-
-    /* Social buttons (zostawiamy jak było) */
-    .buttons { margin: 26px 0 8px; }
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 24px;
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.05em;
-      border-radius: 10px;
-      transition: background 0.25s, transform 0.2s;
-    }
-    .buttons a:hover { transform: translateY(-1px); }
-    .yt { background: #ff0000; }
-    .fb { background: #1877f2; }
-    .ig { background: #e1306c; }
-    .tt { background: #000000; }
 
     footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
   </style>
@@ -153,7 +137,6 @@
   <div class="player-wrap">
     <h2>Zobacz najnowszy film</h2>
     <div class="ratio">
-      <!-- Player playlisty (YouTube sam obsłuży kolejne filmy) -->
       <iframe
         src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn"
         title="YouTube Playlist - ExploRide Opuszczone Miejsca"
@@ -161,10 +144,136 @@
         allowfullscreen
       ></iframe>
     </div>
+
+    <!-- SOCIAL: PRZYWRÓCONE -->
+    <div class="buttons">
+      <a class="yt" href="https://www.youtube.com/@ExploRideURBEX" target="_blank">YouTube</a>
+      <a class="fb" href="https://www.facebook.com/ExploRideURBEX" target="_blank">Facebook</a>
+      <a class="ig" href="https://www.instagram.com/exploride.urbex" target="_blank">Instagram</a>
+      <a class="tt" href="https://www.tiktok.com/@exploride.urbex" target="_blank">TikTok</a>
+    </div>
   </div>
 
   <h2>Wszystkie filmy z playlisty</h2>
-  <p class="lead">Przeglądaj od najnowszych. Kliknij kafelek, aby obejrzeć w YouTube.</p>
+  <p class="lead">Jeśli lista się nie wczyta (limit/klucz), poniżej zadziała tryb awaryjny.</p>
 
   <div class="center">
-    <div id="loader" class="loader">Ł
+    <div id="loader" class="loader">Ładowanie listy filmów…</div>
+    <div id="fallback" class="fallback" style="display:none;">
+      Nie udało się pobrać listy przez API. Poniżej pokazuję kafelki w trybie awaryjnym.
+      <br />
+      <small>Tip: jeżeli testujesz lokalnie (file:// lub http://localhost), a klucz ma
+      ograniczenie „HTTP referrer”, dodaj localhost do dozwolonych lub testuj na exploride.pl.</small>
+    </div>
+  </div>
+
+  <div id="playlist"></div>
+
+  <footer>
+    © ExploRide • Urbex, filmy i mapa miejsc, których prawie nie ma
+  </footer>
+
+  <script>
+    // --- USTAWIENIA ---
+    const API_KEY     = "AIzaSyAWgh8sgcGfnEc26JAe5EA-1gNyJw9XZlA";
+    const PLAYLIST_ID = "PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn";
+
+    // Tryb awaryjny: PODMIEŃ TE ID NA SWOJE 6–12 NAJNOWSZYCH WIDEO
+    const STATIC_FALLBACK_VIDEO_IDS = [
+      "dQw4w9WgXcQ",  // <- podmień
+      "o-YBDTqX_ZU",  // <- podmień
+      "3JZ_D3ELwOQ"   // <- podmień
+    ];
+
+    function fmtDate(isoStr) {
+      if (!isoStr) return "";
+      const d = new Date(isoStr);
+      if (isNaN(d)) return "";
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${day}.${m}.${y}`;
+    }
+
+    function renderTiles(items) {
+      const grid = document.getElementById("playlist");
+      grid.innerHTML = items.map(v => {
+        const vid   = v.id || v.videoId || "";
+        const title = v.title || "Zobacz na YouTube";
+        const date  = v.date || "";
+        const thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+        return `
+          <a class="video-tile" href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">
+            <div class="thumb">
+              <img src="${thumb}" alt="${title}" loading="lazy" />
+            </div>
+            <div class="meta">
+              <div class="title">${title}</div>
+              <div class="date">${date}</div>
+            </div>
+          </a>
+        `;
+      }).join("");
+    }
+
+    async function fetchAllPlaylistItems(playlistId) {
+      const base = "https://www.googleapis.com/youtube/v3/playlistItems";
+      let pageToken = "";
+      const all = [];
+      do {
+        const url = new URL(base);
+        url.searchParams.set("part", "snippet,contentDetails");
+        url.searchParams.set("maxResults", "50");
+        url.searchParams.set("playlistId", playlistId);
+        url.searchParams.set("key", API_KEY);
+        if (pageToken) url.searchParams.set("pageToken", pageToken);
+
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        if (Array.isArray(data.items)) all.push(...data.items);
+        pageToken = data.nextPageToken || "";
+      } while (pageToken);
+      return all.map(item => ({
+        id: (item.snippet?.resourceId?.videoId) || (item.contentDetails?.videoId) || "",
+        title: item.snippet?.title || "Zobacz na YouTube",
+        date: fmtDate(item.contentDetails?.videoPublishedAt || item.snippet?.publishedAt)
+      }));
+    }
+
+    function renderStaticFallback() {
+      const list = STATIC_FALLBACK_VIDEO_IDS.map(id => ({ id, title: "ExploRide – wideo", date: "" }));
+      renderTiles(list);
+    }
+
+    async function init() {
+      const loader   = document.getElementById("loader");
+      const fallback = document.getElementById("fallback");
+
+      try {
+        const list = await fetchAllPlaylistItems(PLAYLIST_ID);
+        renderTiles(list);
+        loader.style.display = "none";
+      } catch (e) {
+        console.warn("Playlist API error -> tryb awaryjny", e);
+        loader.style.display = "none";
+        fallback.style.display = "block";
+        renderStaticFallback();
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  </script>
+
+  <noscript>
+    <div style="max-width:900px;margin:20px auto;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;color:#ddd;">
+      Ta strona pokazuje kafelki playlisty przez YouTube API. Włącz JavaScript, albo
+      <a href="https://www.youtube.com/playlist?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn" target="_blank" style="color:#fff;text-decoration:underline;">przejdź do playlisty na YouTube</a>.
+    </div>
+  </noscript>
+</body>
+</html>
