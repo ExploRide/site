@@ -86,7 +86,7 @@
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 18px;
       max-width: 1200px;
-      margin: 18px auto 16px;
+      margin: 18px auto 40px;
       padding: 0 16px;
     }
     .video-tile {
@@ -123,27 +123,11 @@
       background: #1a1a1a; border: 1px solid #2a2a2a;
       border-radius: 12px; padding: 18px; margin: 16px auto 0; max-width: 900px; color: #ddd;
     }
+    .fallback a.btn {
+      display: inline-block; margin-top: 10px; padding: 10px 16px;
+      border-radius: 10px; background: #e50914; color: #fff; text-decoration: none;
+    }
 
-    /* Przycisk "Pokaż kolejne 4" */
-    .load-more-wrap {
-      margin: 8px 0 36px;
-    }
-    #loadMore {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 18px;
-      border: 0;
-      border-radius: 10px;
-      background: #e50914;
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform .15s ease, background .2s ease;
-    }
-    #loadMore:hover { transform: translateY(-1px); background: #b20710; }
-    #loadMore[disabled] { opacity: .6; cursor: not-allowed; }
-    .arrow { font-size: 1.2em; line-height: 1; }
     footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
   </style>
 </head>
@@ -153,6 +137,7 @@
   <div class="player-wrap">
     <h2>Zobacz najnowszy film</h2>
     <div class="ratio">
+      <!-- Player playlisty (YouTube sam odtworzy najnowszy jako pierwszy) -->
       <iframe
         src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn"
         title="YouTube Playlist - ExploRide Opuszczone Miejsca"
@@ -161,7 +146,7 @@
       ></iframe>
     </div>
 
-    <!-- Social -->
+    <!-- SOCIAL -->
     <div class="buttons">
       <a class="yt" href="https://www.youtube.com/@ExploRideURBEX" target="_blank">YouTube</a>
       <a class="fb" href="https://www.facebook.com/ExploRideURBEX" target="_blank">Facebook</a>
@@ -171,49 +156,43 @@
   </div>
 
   <h2>Wszystkie filmy z playlisty</h2>
-  <p class="lead">Wyświetlamy po 4. Kliknij strzałkę, by pokazać kolejne.</p>
+  <p class="lead">Kafelki poniżej automatycznie pomijają najnowszy film (jest wyżej w playerze).</p>
 
   <div class="center">
     <div id="loader" class="loader">Ładowanie listy filmów…</div>
     <div id="fallback" class="fallback" style="display:none;">
-      Nie udało się pobrać listy przez API. Działa tryb awaryjny.
+      Nie udało się pobrać listy przez API. Pokazuję kafelki w trybie awaryjnym.
+      <br />
+      <a class="btn" target="_blank" href="https://www.youtube.com/playlist?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn">Otwórz playlistę na YouTube</a>
     </div>
   </div>
 
   <div id="playlist"></div>
 
-  <div class="load-more-wrap">
-    <button id="loadMore" style="display:none;">
-      <span class="arrow">⬇️</span> Pokaż kolejne 4
-    </button>
-  </div>
-
   <footer>
     © ExploRide • Urbex, filmy i mapa miejsc, których prawie nie ma
   </footer>
 
+  <!-- Skrypt na końcu, by statyczna treść zawsze się wyświetliła -->
   <script>
     // --- USTAWIENIA ---
     const API_KEY     = "AIzaSyAWgh8sgcGfnEc26JAe5EA-1gNyJw9XZlA";
     const PLAYLIST_ID = "PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn";
 
-    // Tryb awaryjny: PODMIEŃ TE ID NA SWOJE 8–16 NAJNOWSZYCH WIDEO
+    // Tryb awaryjny: PODMIEŃ TE ID NA SWOJE STARSZE FILMY (nie najnowszy)
     const STATIC_FALLBACK_VIDEO_IDS = [
-      "dQw4w9WgXcQ",  // podmień
-      "o-YBDTqX_ZU",  // podmień
-      "3JZ_D3ELwOQ",  // podmień
-      "kxopViU98Xo",  // podmień
-      "l482T0yNkeo",  // podmień
-      "Zi_XLOBDo_Y",  // podmień
-      "2vjPBrBU-TM",  // podmień
-      "eVTXPUF4Oz4"   // podmień
+      "dQw4w9WgXcQ",  // <- podmień (starszy film)
+      "o-YBDTqX_ZU",  // <- podmień
+      "3JZ_D3ELwOQ"   // <- podmień
     ];
 
-    // Stan paginacji po 4
-    const PAGE_SIZE = 4;
-    let currentIndex = 0;
-    let cachedItems = []; // {id,title,date}
-
+    // ---- Pomocnicze ----
+    function toISOorNull(x) {
+      // YouTube zwraca datę w ISO. Zwróć null jeśli pusta.
+      if (!x) return null;
+      const t = Date.parse(x);
+      return isNaN(t) ? null : new Date(t).toISOString();
+    }
     function fmtDate(isoStr) {
       if (!isoStr) return "";
       const d = new Date(isoStr);
@@ -224,12 +203,13 @@
       return `${day}.${m}.${y}`;
     }
 
-    function makeTiles(items) {
-      return items.map(v => {
-        const vid   = v.id || v.videoId || "";
+    function renderTiles(items) {
+      const grid = document.getElementById("playlist");
+      grid.innerHTML = items.map(v => {
+        const vid   = v.id;
         const title = v.title || "Zobacz na YouTube";
-        const date  = v.date || "";
-        const thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+        const date  = v.publishedAtISO ? fmtDate(v.publishedAtISO) : (v.date || "");
+        const thumb = v.thumb || `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
         return `
           <a class="video-tile" href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">
             <div class="thumb">
@@ -242,22 +222,6 @@
           </a>
         `;
       }).join("");
-    }
-
-    function renderNextChunk() {
-      const grid = document.getElementById("playlist");
-      const next = cachedItems.slice(currentIndex, currentIndex + PAGE_SIZE);
-      if (next.length) {
-        grid.insertAdjacentHTML("beforeend", makeTiles(next));
-        currentIndex += next.length;
-      }
-      // Pokaż/ukryj przycisk
-      const btn = document.getElementById("loadMore");
-      if (currentIndex < cachedItems.length) {
-        btn.style.display = "inline-flex";
-      } else {
-        btn.style.display = "none";
-      }
     }
 
     async function fetchAllPlaylistItems(playlistId) {
@@ -279,46 +243,54 @@
         pageToken = data.nextPageToken || "";
       } while (pageToken);
 
-      // Zmapuj i posortuj od najnowszych
-      return all.map(item => ({
-        id: (item.snippet?.resourceId?.videoId) || (item.contentDetails?.videoId) || "",
-        title: item.snippet?.title || "Zobacz na YouTube",
-        date: fmtDate(item.contentDetails?.videoPublishedAt || item.snippet?.publishedAt)
-      })).sort((a, b) => {
-        const da = new Date(a.date.split('.').reverse().join('-')).getTime();
-        const db = new Date(b.date.split('.').reverse().join('-')).getTime();
-        return db - da; // najnowsze pierwsze
+      // Zmapuj do uproszczonego formatu
+      return all.map(item => {
+        const vid = item.snippet?.resourceId?.videoId || item.contentDetails?.videoId || "";
+        const iso = toISOorNull(item.contentDetails?.videoPublishedAt || item.snippet?.publishedAt);
+        return {
+          id: vid,
+          title: item.snippet?.title || "Bez tytułu",
+          publishedAtISO: iso,
+          thumb: item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.high?.url || ""
+        };
       });
     }
 
-    function buildFallbackList() {
-      return STATIC_FALLBACK_VIDEO_IDS.map(id => ({
-        id, title: "ExploRide – wideo", date: ""
+    function renderStaticFallback() {
+      const list = STATIC_FALLBACK_VIDEO_IDS.map(id => ({
+        id,
+        title: "ExploRide – wideo",
+        date: "", // można wpisać ręcznie daty, jeśli chcesz
+        thumb: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
       }));
+      renderTiles(list);
     }
 
     async function init() {
       const loader   = document.getElementById("loader");
       const fallback = document.getElementById("fallback");
-      const btn      = document.getElementById("loadMore");
 
       try {
-        cachedItems = await fetchAllPlaylistItems(PLAYLIST_ID);
+        let list = await fetchAllPlaylistItems(PLAYLIST_ID);
+
+        // Posortuj od najnowszych (po ISO)
+        list.sort((a, b) => {
+          const ta = a.publishedAtISO ? Date.parse(a.publishedAtISO) : 0;
+          const tb = b.publishedAtISO ? Date.parse(b.publishedAtISO) : 0;
+          return tb - ta;
+        });
+
+        // Usuń najnowszy (pierwszy po sortowaniu)
+        if (list.length > 0) list = list.slice(1);
+
+        renderTiles(list);
         loader.style.display = "none";
       } catch (e) {
         console.warn("Playlist API error -> tryb awaryjny", e);
         loader.style.display = "none";
         fallback.style.display = "block";
-        cachedItems = buildFallbackList();
+        renderStaticFallback();
       }
-
-      // Start od pierwszych 4
-      currentIndex = 0;
-      document.getElementById("playlist").innerHTML = "";
-      renderNextChunk();
-
-      // Obsługa przycisku
-      btn.addEventListener("click", renderNextChunk);
     }
 
     if (document.readyState === "loading") {
