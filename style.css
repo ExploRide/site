@@ -139,7 +139,7 @@
       border: 1px solid #2a2a2a;
       width: 240px;
       flex: 0 0 240px;
- /*     height: 320px; */
+height: 
     }
     .video-tile:hover { transform: translateY(-3px); }
     .thumb {
