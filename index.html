@@ -39,6 +39,26 @@
     </div>
     <hr class="divider" />
 
+  <h2>Zobacz więcej filmów</h2>
+  <p class="lead"></p>
+
+  <div class="center">
+    <div id="loader" class="loader">Ładowanie listy filmów…</div>
+    <div id="fallback" class="fallback" style="display:none;">
+      Nie udało się pobrać listy przez API. Pokazuję kafelki w trybie awaryjnym.
+      <br />
+      <a class="btn" target="_blank" href="https://www.youtube.com/playlist?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn">Otwórz playlistę na YouTube</a>
+    </div>
+  </div>
+
+  <div id="playlist-window" class="playlist-window" tabindex="0">
+    <button id="btnPrev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+    <div id="playlist"></div>
+    <button id="btnNext" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+  </div>
+
+    <hr class="divider" />
+
     <div class="social-section">
     <!-- SOCIAL -->
     <p class="lead">Odwiedź nas na:</p>
@@ -62,25 +82,6 @@
     </div>
     </div>
     <hr class="divider" />
-
-
-  <h2>Zobacz więcej filmów</h2>
-  <p class="lead"></p>
-
-  <div class="center">
-    <div id="loader" class="loader">Ładowanie listy filmów…</div>
-    <div id="fallback" class="fallback" style="display:none;">
-      Nie udało się pobrać listy przez API. Pokazuję kafelki w trybie awaryjnym.
-      <br />
-      <a class="btn" target="_blank" href="https://www.youtube.com/playlist?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn">Otwórz playlistę na YouTube</a>
-    </div>
-  </div>
-
-  <div id="playlist-window" class="playlist-window" tabindex="0">
-    <button id="btnPrev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
-    <div id="playlist"></div>
-    <button id="btnNext" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
-  </div>
 
   <footer>
     © ExploRide • Urbex i podróże
