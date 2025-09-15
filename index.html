@@ -14,7 +14,8 @@
     html, body { height: 100%; }
     body {
       margin: 0;
-      background: #111;
+      background: #111 url('background.jpg') no-repeat center 0;
+      background-size: 110% 110%;
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
       text-align: center;
@@ -89,6 +90,20 @@
     .ig { background: #e1306c; }
     .tt { background: #000000; }
 
+    .social-section {
+      max-width: 1200px;
+      margin: 10px auto 8px;
+      padding: 0 16px;
+    }
+
+    .divider {
+      border: 0;
+      height: 2px;
+      background: #6b0000;
+      max-width: 1200px;
+      margin: 24px auto;
+    }
+
     /* Siatka kafelków */
     .playlist-window {
       max-width: 1200px;
@@ -159,11 +174,19 @@
       border-radius: 10px; background: #e50914; color: #fff; text-decoration: none;
     }
 
-    footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
-  </style>
-</head>
+      footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
+    </style>
+    <script>
+      document.addEventListener('scroll', () => {
+        const y = window.scrollY * 0.2;
+        document.body.style.backgroundPosition = `center ${-y}px`;
+      });
+    </script>
+  </head>
 <body>
   <header><img src="logo.png" alt="ExploRide logo" class="logo"> <span>EXPLORIDE.PL</span></header>
+
+    <hr class="divider" />
 
   <div class="player-wrap">
     <h2>Najnowszy film</h2>
@@ -177,6 +200,10 @@
       ></iframe>
     </div>
 
+    </div>
+    <hr class="divider" />
+
+    <div class="social-section">
     <!-- SOCIAL -->
     <p class="lead">Odwiedź nas na:</p>
     <div class="buttons">
@@ -197,7 +224,9 @@
         TikTok
       </a>
     </div>
-  </div>
+    </div>
+    <hr class="divider" />
+
 
   <h2>Zobacz więcej filmów</h2>
   <p class="lead"></p>
