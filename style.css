@@ -106,7 +106,10 @@
       gap: 18px;
       overflow-x: auto;
       scroll-behavior: smooth;
+       -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
     }
+#playlist::-webkit-scrollbar { display: none; } /* Chrome, Safari, Opera */
     .nav-btn {
       display: none;
       position: absolute;
@@ -131,8 +134,8 @@
       flex-direction: column;
       transition: transform 0.25s ease;
       border: 1px solid #2a2a2a;
-      min-width: 240px;
-      flex: 0 0 auto;
+     width: 240px;
+      flex: 0 0 240px;
     }
     .video-tile:hover { transform: translateY(-3px); }
     .thumb {
@@ -149,7 +152,14 @@
       display: block;
     }
     .meta { padding: 10px 12px 12px; }
-    .title { font-size: 0.98em; color: #fff; line-height: 1.3; margin: 0 0 4px; }
+      .title {
+      font-size: 0.98em;
+      color: #fff;
+      line-height: 1.3;
+      margin: 0 0 4px;
+      height: 2.6em; /* limit to two lines */
+      overflow: hidden;
+    }
     .date  { font-size: 0.85em; color: #bbb; }
 
     .center { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
