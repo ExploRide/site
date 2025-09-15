@@ -124,7 +124,7 @@
         const vid   = v.id;
         const title = v.title || "Zobacz na YouTube";
         const date  = v.publishedAtISO ? fmtDate(v.publishedAtISO) : (v.date || "");
-        const thumb = v.thumb || `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+        const thumb = v.thumb || `https://i.ytimg.com/vi/${vid}/hq720.jpg`;
         return `
           <a class="video-tile" href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">
             <div class="thumb">
