@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ExploRide</title>
+  <link rel="icon" type="image/png" href="logo.png" />
 
   <!-- Pinterest weryfikacja -->
   <meta name="p:domain_verify" content="5e67272b9374687db3751022c1c7559c"/>
@@ -25,7 +26,12 @@
       font-size: 2em;
       font-weight: bold;
       letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
     }
+    header .logo { height: 48px; }
     h2 {
       margin: 28px auto 12px;
       font-size: 1.8em;
@@ -157,7 +163,7 @@
   </style>
 </head>
 <body>
-  <header>ExploRide</header>
+  <header><img src="logo.png" alt="ExploRide logo" class="logo"> <span>EXPLORIDE.PL</span></header>
 
   <div class="player-wrap">
     <h2>Zobacz najnowszy film</h2>
