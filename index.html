@@ -8,41 +8,35 @@
   <!-- Pinterest weryfikacja -->
   <meta name="p:domain_verify" content="5e67272b9374687db3751022c1c7559c"/>
 
-  <!-- Podstawowy styl -->
   <style>
-    :root {
-      --bg: #111;
-      --fg: #fff;
-      --muted: #bbb;
-      --panel: #1e1e1e;
-      --accent: #e50914;
-      --accent-2: #b20710;
-    }
+    /* Prosty, pewny CSS bez zmiennych i bajerów */
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
       margin: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
       text-align: center;
     }
     header {
       background: #000;
+      color: #fff;           /* twardy kolor */
       padding: 20px;
       font-size: 2em;
       font-weight: bold;
       letter-spacing: 2px;
     }
     h2 {
-      margin: 28px auto 8px;
+      margin: 28px auto 12px;
       font-size: 1.8em;
-      color: var(--accent);
+      color: #e50914;        /* twardy kolor */
       padding: 0 16px;
       max-width: 1200px;
     }
     p.lead {
       margin: 0 auto 8px;
-      color: var(--muted);
+      color: #bbb;
       padding: 0 16px;
       max-width: 900px;
     }
@@ -58,23 +52,119 @@
       width: 100%;
       max-width: 900px;
       margin: 12px auto 0;
-      /* 16:9 */
-      aspect-ratio: 16 / 9;
+      /* fallback: 16:9 bez aspect-ratio */
+      padding-top: 56.25%;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 20px rgba(255,255,255,0.14);
+      background: #000;
     }
     .ratio iframe {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       border: 0;
+      display: block;
     }
 
-    /* Przyciski social */
-    .buttons {
-      margin: 26px 0 8px;
+    /* Siatka kafelków */
+    #playlist {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      max-width: 1200px;
+      margin: 26px auto 40px;
+      padding: 0 16px;
     }
+    .video-tile {
+      background: #1e1e1e;
+      border-radius: 12px;
+      overflow: hidden;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease;
+      border: 1px solid #2a2a2a;
+    }
+    .video-tile:hover { transform: translateY(-3px); }
+    .thumb {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #000;
+      overflow: hidden;
+    }
+    .thumb img {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .meta { padding: 10px 12px 12px; }
+    .title { font-size: 0.98em; color: #fff; line-height: 1.3; margin: 0 0 4px; }
+    .date  { font-size: 0.85em; color: #bbb; }
+
+    /* Loader / Fallback */
+    .center { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .loader { margin: 16px auto 0; color: #bbb; font-size: 0.95em; }
+    .fallback {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 18px;
+      margin: 16px auto 0;
+      max-width: 900px;
+      color: #ddd;
+    }
+    .fallback a.btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #e50914;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    /* Social buttons (zostawiamy jak było) */
+    .buttons { margin: 26px 0 8px; }
     .buttons a {
-      display
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 24px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05em;
+      border-radius: 10px;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .buttons a:hover { transform: translateY(-1px); }
+    .yt { background: #ff0000; }
+    .fb { background: #1877f2; }
+    .ig { background: #e1306c; }
+    .tt { background: #000000; }
+
+    footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
+  </style>
+</head>
+<body>
+  <header>ExploRide</header>
+
+  <div class="player-wrap">
+    <h2>Zobacz najnowszy film</h2>
+    <div class="ratio">
+      <!-- Player playlisty (YouTube sam obsłuży kolejne filmy) -->
+      <iframe
+        src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn"
+        title="YouTube Playlist - ExploRide Opuszczone Miejsca"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+
+  <h2>Wszystkie filmy z playlisty</h2>
+  <p class="lead">Przeglądaj od najnowszych. Kliknij kafelek, aby obejrzeć w YouTube.</p>
+
+  <div class="center">
+    <div id="loader" class="loader">Ł
