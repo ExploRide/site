@@ -59,11 +59,11 @@
     }
     .brand:hover,
     .brand:focus-visible { color: #e50914; }
-    .brand-name {
-      display: inline-block;
-       font-family:'Base02', Arial, Helvetica, sans-serif;
-  font-weight:400;           /* ważne: Base02 masz tylko w 400 */
-    }
+  .brand-name {
+  font-family: 'Base02', Arial, Helvetica, sans-serif !important;
+  font-weight: 400 !important;
+}
+
     header .logo { height: 48px; }
     .top-nav {
       display: flex;
