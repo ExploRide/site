@@ -31,6 +31,7 @@
     h5,
     h6 {
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
+        font-weight:400;
     }
     p {
       font-family: 'Base02', Arial, Helvetica, sans-serif;
