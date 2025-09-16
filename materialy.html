@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Materiały do pobrania – ExploRide</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script>
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.2;
+      document.body.style.backgroundPosition = `center ${-y}px`;
+    });
+  </script>
+</head>
+<body class="page-downloads">
+  <header>
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+      <span class="brand-name">EXPLORIDE.PL</span>
+    </a>
+    <nav class="top-nav" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--home" href="index.html#filmy">Filmy</a>
+      <a class="nav-link" href="index.html#posty-fb">Posty na FB</a>
+      <a class="nav-link" href="index.html#posty-ig">Posty z IG</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Kontakt</button>
+      <a class="nav-link nav-link--downloads" href="materialy.html" aria-current="page">Materiały do pobrania</a>
+    </nav>
+  </header>
+
+  <main class="downloads-main">
+    <h1>Materiały do pobrania</h1>
+    <p class="lead">Pobierz oficjalne logo ExploRide, aby wykorzystać je w grafikach, artykułach lub materiałach promocyjnych.</p>
+
+    <section class="download-card">
+      <object class="download-preview" data="logo.pdf#toolbar=0&navpanes=0&scrollbar=0" type="application/pdf" aria-label="Podgląd logo ExploRide">
+        <p>Twoja przeglądarka nie obsługuje podglądu PDF. <a href="logo.pdf">Pobierz logo</a>.</p>
+      </object>
+
+      <div class="download-info">
+        <h2>Logo ExploRide</h2>
+        <p class="download-description">Plik w formacie PDF zawiera logo ExploRide w wysokiej jakości, gotowe do druku i publikacji online.</p>
+        <div class="download-actions">
+          <a class="download-btn" href="logo.pdf" download>
+            <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M5 20h14v-2H5v2zm7-18-7 7h4v6h6v-6h4l-7-7z"/></svg>
+            Pobierz logo (PDF)
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
