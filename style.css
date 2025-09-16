@@ -1,44 +1,24 @@
   <style>
-    @font-face {
-      font-family: 'Base02';
-      src: url('fonts/Base02.woff2') format('woff2');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'BebasNeue';
-      src: url('fonts/BebasNeue-Regular.woff2') format('woff2');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
+@font-face{
+  font-family:'Base02';
+  src:url('./fonts/Base02.woff2') format('woff2');
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'BebasNeue';
+  src:url('./fonts/BebasNeue-Regular.woff2') format('woff2');
+  font-weight:400; font-style:normal; font-display:swap;
+}
     * { box-sizing: border-box; }
     html {
       height: 100%;
       scroll-behavior: smooth;
     }
-    body {
-      height: 100%;
-      margin: 0;
-      background: #111 url('background.jpg') no-repeat center 0;
-      background-size: 110% 110%;
-      color: #fff;
-      font-family: 'Base02', Arial, Helvetica, sans-serif;
-      text-align: center;
-      overflow-x: hidden;
-    }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
-    }
-    p {
-      font-family: 'Base02', Arial, Helvetica, sans-serif;
-    }
+    body{ font-family:'Base02', Arial, Helvetica, sans-serif; }
+h1,h2,h3,h4,h5,h6{
+  font-family:'BebasNeue','Base02', Arial, Helvetica, sans-serif;
+  font-weight:400;
+}
     header {
       background: #000;
       color: #fff;
@@ -64,7 +44,8 @@
     .brand:focus-visible { color: #e50914; }
     .brand-name {
       display: inline-block;
-      font-family: 'Base02', Arial, Helvetica, sans-serif;
+       font-family:'Base02', Arial, Helvetica, sans-serif;
+  font-weight:400;           /* ważne: Base02 masz tylko w 400 */
     }
     header .logo { height: 48px; }
     .top-nav {
