@@ -189,56 +189,11 @@
         return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
       };
 
-      const pickSrc = m => {
-        if (!m) return null;
-        if (m.src) return m.src;
-        if (m.media_type === "IMAGE") {
-          return m.media_url || null;
-        }
-        if (m.media_type === "VIDEO") {
-          return m.thumbnail_url || m.media_url || null;
-        }
-        if (m.media_type === "CAROUSEL_ALBUM") {
-          let child = null;
-          if (m.children && Array.isArray(m.children.data)) {
-            child = m.children.data.find(Boolean) || null;
-          }
-          if (child) {
-            return child.thumbnail_url || child.media_url || null;
-          }
-        }
-        return null;
-      };
-
-      const normalizeIgItems = data => {
-        const raw = Array.isArray(data && data.items)
-          ? data.items
-          : Array.isArray(data && data.data)
-            ? data.data
-            : [];
-        const mapped = raw
-          .map(item => ({
-            id: item.id,
-            caption: item.caption || "",
-            type: item.media_type,
-            src: pickSrc(item),
-            permalink: item.permalink,
-            timestamp: item.timestamp
-          }))
-          .filter(item => !!item.src);
-
-        mapped.sort((a, b) => {
-          const ta = a.timestamp ? Date.parse(a.timestamp) : 0;
-          const tb = b.timestamp ? Date.parse(b.timestamp) : 0;
-          return (tb || 0) - (ta || 0);
-        });
-        return mapped;
-      };
-
       const card = m => `
         <a class="ig-tile" href="${m.permalink}" target="_blank" rel="noopener">
           <div class="ig-media">
-            <img src="${m.src}" alt="Instagram ExploRide" loading="lazy">
+            <img src="${m.src}" alt="Instagram ExploRide" loading="lazy"
+                 onerror="this.closest('.ig-tile')?.remove()">
           </div>
           ${m.caption ? `<div class="ig-caption">${esc(m.caption)}</div>` : ""}
           <div class="ig-date">${fmt(m.timestamp)}</div>
@@ -256,7 +211,21 @@
           const res = await fetch(u.toString(), { credentials: "omit" });
           if (!res.ok) throw new Error("HTTP " + res.status);
           const data = await res.json();
-          const items = normalizeIgItems(data);
+          // 🔧 Ujednolicenie: wspiera IG (src/permalink/timestamp/caption) oraz FB (media[0].src/permalink_url/created_time/message)
+          const items = (data.items || []).map(x => {
+            const src = x.src || (Array.isArray(x.media) && x.media[0]?.src) || null;
+            const permalink = x.permalink || x.permalink_url || "#";
+            const timestamp = x.timestamp || x.created_time || "";
+            const caption = x.caption || x.message || "";
+            return { src, permalink, timestamp, caption };
+          }).filter(i => !!i.src);
+
+          items.sort((a, b) => {
+            const ta = a.timestamp ? Date.parse(a.timestamp) : 0;
+            const tb = b.timestamp ? Date.parse(b.timestamp) : 0;
+            return (tb || 0) - (ta || 0);
+          });
+
           if (!items.length) throw new Error("Brak postów IG");
           grid.innerHTML = items.map(card).join("");
           loader.style.display = "none";
