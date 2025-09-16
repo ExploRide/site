@@ -299,7 +299,7 @@
       padding: 0 16px;
     }
     .fb-card {
-      background: #1e1e1e;
+      background: #eeeeee
       border: 1px solid #2a2a2a;
       border-radius: 12px;
       overflow: hidden;
@@ -327,12 +327,12 @@
     .fb-body { padding: 12px 14px; }
     .fb-date {
       font-size: 0.85em;
-      color: #bbb;
+      color: #303030;
       margin-bottom: 6px;
     }
     .fb-text {
       white-space: pre-wrap;
-      color: #fff;
+      color: #000000;
       font-size: 0.98em;
       line-height: 1.35;
       max-height: 6.5em;
