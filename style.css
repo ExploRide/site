@@ -543,6 +543,135 @@
       }
     }
 
+    /* Ikony marek wykorzystywane w sekcjach wsparcia */
+    .brand-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    .brand-icon svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+    .brand-icon--lg {
+      width: 48px;
+      height: 48px;
+    }
+    .brand-icon--sm {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .brand-icon--buycoffee {
+      background: linear-gradient(135deg, #ffe08a, #f5b63f);
+      color: #2c1600;
+    }
+    .brand-icon--youtube {
+      background: #ff0000;
+      color: #fff;
+    }
+    .brand-icon--facebook {
+      background: #1877f2;
+    }
+    .brand-icon--paypal {
+      background: linear-gradient(135deg, #003087, #009cde);
+      color: #fff;
+    }
+    .brand-icon--bank {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffdf91;
+    }
+
+    /* Mini sekcja wsparcia na stronie głównej */
+    .home-support {
+      max-width: 960px;
+      margin: 48px auto 0;
+      padding: 0 16px 60px;
+      color: #cfcfcf;
+      font-size: 0.94em;
+    }
+    .home-support__card {
+      background: rgba(17, 17, 17, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 24px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    }
+    .home-support__title {
+      margin: 0;
+      font-size: 1.4em;
+      letter-spacing: 0.03em;
+      color: #e64b4b;
+    }
+    .home-support__lead {
+      margin: 0;
+      line-height: 1.55;
+    }
+    .home-support__note {
+      margin: 6px 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .home-support__links {
+      list-style: none;
+      margin: 4px 0 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .home-support__link,
+    .home-support__link--static {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .home-support__link:hover,
+    .home-support__link:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(229, 9, 20, 0.9);
+      background: rgba(229, 9, 20, 0.18);
+      outline: none;
+    }
+    .home-support__link--static {
+      cursor: default;
+    }
+    .home-support__account {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.86);
+    }
+    @media (max-width: 520px) {
+      .home-support__links {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .home-support__link,
+      .home-support__link--static {
+        justify-content: flex-start;
+      }
+    }
+
     /* Wesprzyj nas */
     .support-main {
       max-width: 960px;
@@ -592,9 +721,9 @@
     }
     .support-list li {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px 16px;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
@@ -603,8 +732,20 @@
       line-height: 1.55;
     }
     .support-icon {
-      font-size: 1.6em;
-      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(229, 9, 20, 0.16);
+      color: #ff8b6a;
+      flex-shrink: 0;
+    }
+    .support-icon svg {
+      width: 22px;
+      height: 22px;
+      display: block;
     }
     .support-options {
       list-style: none;
@@ -634,10 +775,6 @@
       background: rgba(229, 9, 20, 0.14);
       outline: none;
     }
-    .support-option-icon {
-      font-size: 1.7em;
-      line-height: 1;
-    }
     .support-option-content {
       display: flex;
       flex-direction: column;
@@ -649,17 +786,15 @@
       font-weight: 700;
       letter-spacing: 0.01em;
     }
-    .support-option-link {
-      font-size: 0.95em;
-      color: rgba(255, 255, 255, 0.85);
-      word-break: break-word;
+    .support-option-desc {
+      font-size: 0.92em;
+      color: rgba(255, 255, 255, 0.7);
     }
-    .support-option-link code {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 2px 6px;
-      border-radius: 6px;
+    .support-option-note {
       font-size: 0.95em;
-      color: #fff;
+      color: rgba(255, 255, 255, 0.82);
+      letter-spacing: 0.02em;
+      word-break: break-word;
     }
     .support-option--static {
       cursor: default;
