@@ -1,4 +1,3 @@
-  <style>
 @font-face{
   font-family:'Base02';
   src:url('./fonts/Base02.woff2') format('woff2');
@@ -420,4 +419,3 @@ h1,h2,h3,h4,h5,h6{
     }
 
       footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
-    </style>
