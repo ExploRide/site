@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>O nas – ExploRide</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script>
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.2;
+      document.body.style.backgroundPosition = `center ${-y}px`;
+    });
+  </script>
+</head>
+<body class="page-about">
+  <header>
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+      <span class="brand-name">EXPLORIDE.PL</span>
+    </a>
+    <nav class="top-nav" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--about" href="onas.html" aria-current="page">O nas</a>
+      <a class="nav-link nav-link--home" href="index.html#filmy">Filmy</a>
+      <a class="nav-link" href="index.html#posty-fb">Posty na FB</a>
+      <a class="nav-link" href="index.html#posty-ig">Posty z IG</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Kontakt</button>
+      <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+    </nav>
+  </header>
+
+  <main class="about-main">
+    <article class="about-card">
+      <h1>O nas</h1>
+      <div class="about-text">
+        <p>ExploRide to projekt tworzony z pasji do odkrywania miejsc, o których większość już zapomniała.</p>
+        <p>Łączymy urbex, podróże i historię w jedną opowieść – pokazujemy opuszczone budynki, dawne fabryki, schrony czy zapomniane wille, a także piękne zakątki natury, które spotykamy w drodze.</p>
+        <p>Naszą misją jest udokumentowanie i zachowanie śladów przeszłości, zanim całkowicie znikną. Każda eksploracja to nie tylko zdjęcia i filmy, ale też historie ludzi i wydarzeń ukryte w murach i krajobrazie.</p>
+        <p>Naszą twórczość – zdjęcia i filmy – znajdziesz na wielu popularnych portalach: YouTube, Facebook, Instagram, TikTok, gdzie regularnie dzielimy się kolejnymi odkryciami i przygodami.</p>
+        <p>Wierzymy, że dzięki naszym zdjęciom i filmom opuszczone miejsca mogą przetrwać w pamięci nawet wtedy, gdy w rzeczywistości znikają z mapy, a podróże nawet te poza utartym szlakiem uczą patrzeć na rzeczywistość z innej perspektywy.</p>
+      </div>
+      <figure class="about-figure">
+        <img src="Photos/onas.jpg" alt="Zdjęcie zespołu ExploRide podczas eksploracji" class="about-photo">
+      </figure>
+    </article>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
