@@ -437,4 +437,13 @@
     }
 
       footer { color: #bbb; font-size: 0.9em; margin: 24px 0 30px; }
+
+/* Wersja „młotek” – pewniak */
+header .brand .brand-name {
+  font-family: 'Base02', Arial, Helvetica, sans-serif !important;
+  font-weight: 400 !important;      /* Base02 masz tylko w 400 */
+  text-transform: none;             /* tymczasowo wyłącz, żeby zobaczyć różnicę */
+  letter-spacing: 0;                /* tymczasowo zero, żeby nie myliło */
+}
+
     </style>
