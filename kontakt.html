@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kontakt – ExploRide</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script>
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.2;
+      document.body.style.backgroundPosition = `center ${-y}px`;
+    });
+  </script>
+</head>
+<body class="page-contact">
+  <header>
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+      <span class="brand-name">EXPLORIDE.PL</span>
+    </a>
+    <nav class="top-nav" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--about" href="onas.html">O nas</a>
+      <a class="nav-link nav-link--home" href="index.html#filmy">Filmy</a>
+      <a class="nav-link" href="index.html#posty-fb">Posty na FB</a>
+      <a class="nav-link" href="index.html#posty-ig">Posty z IG</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <a class="nav-link nav-link--contact" href="kontakt.html" aria-current="page">Kontakt</a>
+      <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+    </nav>
+  </header>
+
+  <main class="contact-main">
+    <article class="contact-card">
+      <h1>Kontakt</h1>
+      <p class="contact-lead">Masz pytania, chcesz zaproponować współpracę lub podesłać nam ciekawe miejsce do eksploracji? Napisz do nas kanałem, który jest dla Ciebie najwygodniejszy.</p>
+
+      <ul class="contact-list">
+        <li>
+          <a class="contact-item contact-item--email" href="mailto:exploride.kontakt@gmail.com">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.5 4h-17A1.5 1.5 0 0 0 2 5.5v13A1.5 1.5 0 0 0 3.5 20h17a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 20.5 4Zm-.4 2-7.96 6.02a.75.75 0 0 1-.92 0L3.2 6h16.9ZM4 18v-9.1l6.73 5.09a2.25 2.25 0 0 0 2.74 0L20.2 8.9V18H4Z"/></svg>
+            </span>
+            <span class="contact-content">
+              <span class="contact-label">E-mail</span>
+              <span class="contact-value">exploride.kontakt@gmail.com</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-item contact-item--messenger" href="https://m.me/explorideurbex" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.04c-5.51 0-10 3.95-10 8.82 0 2.79 1.5 5.29 3.84 6.88v3.22l3.52-1.94c.88.24 1.82.37 2.8.37 5.51 0 10-3.95 10-8.82s-4.49-8.53-10-8.53Zm.79 11.66-2.55-2.73-4.97 2.73 5.46-5.8 2.6 2.73 4.93-2.73-5.47 5.8Z"/></svg>
+            </span>
+            <span class="contact-content">
+              <span class="contact-label">Messenger</span>
+              <span class="contact-value">m.me/explorideurbex</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-item contact-item--instagram" href="https://www.instagram.com/direct/t/exploride.urbex/" target="_blank" rel="noopener noreferrer">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.17c3.17 0 3.55.01 4.8.07 1.16.05 1.79.24 2.2.4.55.21.94.46 1.35.87.41.41.66.8.87 1.35.16.41.35 1.04.4 2.2.06 1.25.07 1.63.07 4.8s-.01 3.55-.07 4.8c-.05 1.16-.24 1.79-.4 2.2a3.23 3.23 0 0 1-.87 1.35 3.23 3.23 0 0 1-1.35.87c-.41.16-1.04.35-2.2.4-1.25.06-1.63.07-4.8.07s-3.55-.01-4.8-.07c-1.16-.05-1.79-.24-2.2-.4a3.23 3.23 0 0 1-1.35-.87 3.23 3.23 0 0 1-.87-1.35c-.16-.41-.35-1.04-.4-2.2-.06-1.25-.07-1.63-.07-4.8s.01-3.55.07-4.8c.05-1.16.24-1.79.4-2.2.21-.55.46-.94.87-1.35.41-.41.8-.66 1.35-.87.41-.16 1.04-.35 2.2-.4 1.25-.06 1.63-.07 4.8-.07ZM12 0C8.78 0 8.36.01 7.1.07 5.84.12 4.96.33 4.21.62c-.78.3-1.44.7-2.09 1.35A4.38 4.38 0 0 0 .77 4.06c-.29.75-.5 1.63-.55 2.89C.16 8.1.15 8.52.15 11.74c0 3.22.01 3.64.07 4.9.05 1.26.26 2.14.55 2.89.3.78.7 1.44 1.35 2.09.65.65 1.31 1.05 2.09 1.35.75.29 1.63.5 2.89.55 1.26.06 1.68.07 4.9.07s3.64-.01 4.9-.07c1.26-.05 2.14-.26 2.89-.55a4.38 4.38 0 0 0 2.09-1.35 4.38 4.38 0 0 0 1.35-2.09c.29-.75.5-1.63.55-2.89.06-1.26.07-1.68.07-4.9s-.01-3.64-.07-4.9c-.05-1.26-.26-2.14-.55-2.89a4.38 4.38 0 0 0-1.35-2.09A4.38 4.38 0 0 0 19.94.62c-.75-.29-1.63-.5-2.89-.55C15.65.01 15.23 0 12 0Zm0 5.83a6.17 6.17 0 1 0 0 12.34 6.17 6.17 0 0 0 0-12.34Zm0 10.17a4 4 0 1 1 0-7.99 4 4 0 0 1 0 7.99Zm6.32-11.91a1.44 1.44 0 1 0-2.88 0 1.44 1.44 0 0 0 2.88 0Z"/></svg>
+            </span>
+            <span class="contact-content">
+              <span class="contact-label">Instagram</span>
+              <span class="contact-value">@exploride.urbex</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </article>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
