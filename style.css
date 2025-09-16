@@ -391,7 +391,7 @@
     .fb-card:hover { transform: translateY(-3px); }
     .fb-card:focus-visible { outline: 2px solid #e50914; outline-offset: 3px; }
     .fb-card--featured {
-      display: grid;
+     /* display: grid;*/
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
       gap: 24px;
       padding: 18px;
@@ -429,6 +429,10 @@
       gap: 2px;
       background: #000;
       aspect-ratio: 1;
+          justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
     }
     .fb-card--featured .fb-media--multi {
       aspect-ratio: 16 / 9;
