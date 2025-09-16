@@ -82,9 +82,84 @@
 
     <hr class="divider" />
 
+  <!-- ======== Facebook: Najnowsze posty ======== -->
+  <h2>Najnowsze posty z Facebooka</h2>
+  <p class="lead">Kliknij kartę, aby otworzyć post na Facebooku.</p>
+
+  <div class="center">
+    <div id="fb-feed-loader" class="loader">Ładowanie postów…</div>
+    <div id="fb-feed-fallback" class="fallback" style="display:none;">
+      Nie udało się pobrać postów. Zobacz więcej na Facebooku:
+      <br />
+      <a class="btn" target="_blank" href="https://www.facebook.com/ExploRideURBEX">Otwórz Facebook</a>
+    </div>
+  </div>
+
+  <div id="fb-feed" class="fb-grid"></div>
+  <!-- ======== /Facebook: Najnowsze posty ======== -->
+
+    <hr class="divider" />
+
   <footer>
     © ExploRide • Urbex i podróże
   </footer>
+
+  <script>
+    // ---- USTAWIENIA ----
+    const WORKER_URL = "https://fb-feed.eksplorajder.workers.dev/api/fb/posts";
+    const FB_PAGE_ID = "145171925888318";   // Twoje Page ID
+    const FB_LIMIT   = 6;                   // ile postów pokazać
+
+    const esc = (s = "") => s.replaceAll("<", "&lt;");
+
+    const fmtDatePL = iso => {
+      const d = new Date(iso); if (isNaN(d)) return "";
+      return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
+    };
+
+    const postCard = p => {
+      const firstImg = (p.media && p.media.length) ? p.media[0].src : null;
+      return `
+        <a class="fb-card" href="${p.permalink_url}" target="_blank" rel="noopener">
+          ${firstImg ? `<div class="fb-media"><img src="${firstImg}" alt="Post ExploRide" loading="lazy"></div>` : ""}
+          <div class="fb-body">
+            <div class="fb-date">${fmtDatePL(p.created_time)}</div>
+            <div class="fb-text">${esc(p.message || "")}</div>
+          </div>
+        </a>
+      `;
+    };
+
+    async function loadFbFeed() {
+      const loader = document.getElementById("fb-feed-loader");
+      const fallback = document.getElementById("fb-feed-fallback");
+      const grid = document.getElementById("fb-feed");
+      try {
+        const url = new URL(WORKER_URL);
+        url.searchParams.set("page_id", FB_PAGE_ID);
+        url.searchParams.set("limit", String(FB_LIMIT));
+
+        const res = await fetch(url.toString(), { credentials: "omit" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const items = data.items || [];
+        if (!items.length) throw new Error("Brak postów");
+
+        grid.innerHTML = items.map(postCard).join("");
+        loader.style.display = "none";
+      } catch (e) {
+        console.warn("FB feed error", e);
+        loader.style.display = "none";
+        fallback.style.display = "block";
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadFbFeed);
+    } else {
+      loadFbFeed();
+    }
+  </script>
 
   <!-- Skrypt na końcu, by statyczna treść zawsze się wyświetliła -->
   <script>
