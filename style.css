@@ -355,6 +355,11 @@
       flex-direction: column;
       gap: 28px;
     }
+    .fb-featured {
+      align-self: center;
+      width: 100%;
+      max-width: 600px;
+    }
     .fb-featured:empty {
       display: none;
     }
