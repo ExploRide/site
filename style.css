@@ -99,7 +99,25 @@
       border-color: #e50914;
       color: #fff;
     }
-    .top-nav .nav-link[aria-current="page"] {
+    .top-nav .nav-link--support {
+      background: linear-gradient(135deg, #e50914, #ff6b2c);
+      border-color: rgba(255, 107, 44, 0.85);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(229, 9, 20, 0.35);
+    }
+    .top-nav .nav-link--support:hover,
+    .top-nav .nav-link--support:focus-visible,
+    .top-nav .nav-link--support[aria-current="page"] {
+      background: linear-gradient(135deg, #ff2d1a, #ffa04d);
+      border-color: rgba(255, 140, 64, 0.95);
+      color: #fff;
+    }
+    .top-nav .nav-link--support[aria-current="page"] {
+      box-shadow: none;
+      cursor: default;
+    }
+    .top-nav .nav-link[aria-current="page"]:not(.nav-link--support) {
       background: #e50914;
       border-color: #e50914;
       color: #fff;
@@ -522,6 +540,148 @@
       }
       .download-actions {
         justify-content: flex-start;
+      }
+    }
+
+    /* Wesprzyj nas */
+    .support-main {
+      max-width: 960px;
+      margin: 36px auto 80px;
+      padding: 0 16px;
+    }
+    .support-card {
+      background: rgba(17, 17, 17, 0.85);
+      border: 1px solid #2a2a2a;
+      border-radius: 18px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+    }
+    .support-card h1 {
+      margin: 0;
+      font-size: 2.5em;
+      color: #fff;
+      text-align: center;
+    }
+    .support-intro {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      color: #ddd;
+      font-size: 1.05em;
+      line-height: 1.65;
+    }
+    .support-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .support-heading {
+      margin: 0;
+      font-size: 1.32em;
+      color: #e50914;
+    }
+    .support-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .support-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      color: #eee;
+      font-size: 1.02em;
+      line-height: 1.55;
+    }
+    .support-icon {
+      font-size: 1.6em;
+      line-height: 1;
+    }
+    .support-options {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+    .support-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      height: 100%;
+    }
+    a.support-option:hover,
+    a.support-option:focus-visible {
+      transform: translateY(-2px);
+      border-color: #e50914;
+      box-shadow: 0 12px 24px rgba(229, 9, 20, 0.22);
+      background: rgba(229, 9, 20, 0.14);
+      outline: none;
+    }
+    .support-option-icon {
+      font-size: 1.7em;
+      line-height: 1;
+    }
+    .support-option-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
+    .support-option-name {
+      font-size: 1.08em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .support-option-link {
+      font-size: 0.95em;
+      color: rgba(255, 255, 255, 0.85);
+      word-break: break-word;
+    }
+    .support-option-link code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.95em;
+      color: #fff;
+    }
+    .support-option--static {
+      cursor: default;
+    }
+    .support-thanks {
+      margin: 8px 0 0;
+      color: #f5f5f5;
+      font-size: 1.12em;
+      text-align: center;
+      line-height: 1.6;
+    }
+    @media (min-width: 640px) {
+      .support-options {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+    }
+    @media (min-width: 768px) {
+      .support-card {
+        padding: 40px 48px;
+      }
+      .support-card h1 {
+        font-size: 2.7em;
       }
     }
 
