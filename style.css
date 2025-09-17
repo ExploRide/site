@@ -305,10 +305,10 @@
     }
     .buttons a:hover { transform: translateY(-1px); }
     .buttons svg { width: 1.2em; height: 1.2em; }
-    .yt { background: #aaa; }
-    .fb { background: #aaa; }
-    .ig { background: #aaa; }
-    .tt { background: #aaa; }
+    .yt { background: #d9d9d9; }
+    .fb { background: #d9d9d9; }
+    .ig { background: #d9d9d9; }
+    .tt { background: #d9d9d9; }
 
     @media (max-width: 768px) {
       .buttons a {
