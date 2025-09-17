@@ -100,17 +100,17 @@
       color: #fff;
     }
     .top-nav .nav-link--support {
-      background: linear-gradient(135deg, #e50914, #ff6b2c);
-      border-color: rgba(255, 107, 44, 0.85);
+    /*  background: linear-gradient(135deg, #e50914, #ff6b2c); 
+      border-color: rgba(255, 107, 44, 0.85); */
       color: #fff;
       font-weight: 600;
-      box-shadow: 0 6px 18px rgba(229, 9, 20, 0.35);
+     /* box-shadow: 0 6px 18px rgba(229, 9, 20, 0.35);*/
     }
     .top-nav .nav-link--support:hover,
     .top-nav .nav-link--support:focus-visible,
     .top-nav .nav-link--support[aria-current="page"] {
-      background: linear-gradient(135deg, #ff2d1a, #ffa04d);
-      border-color: rgba(255, 140, 64, 0.95);
+     /* background: linear-gradient(135deg, #ff2d1a, #ffa04d);
+      border-color: rgba(255, 140, 64, 0.95); */
       color: #fff;
     }
     .top-nav .nav-link--support[aria-current="page"] {
