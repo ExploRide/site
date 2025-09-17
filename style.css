@@ -273,15 +273,31 @@
     .nav-btn {
       display: none;
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-        background: rgb(255, 255, 255);
-    border: none;
-    color: #0f0f0f;
-      padding: 8px 12px;
+      z-index: 2;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
       cursor: pointer;
       font-size: 1.2em;
-      z-index: 1;
+      line-height: 1;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      user-select: none;
+    }
+    .nav-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .nav-btn:focus-visible {
+      outline: 2px solid #e50914;
+      outline-offset: 2px;
+    }
+    .playlist-window .nav-btn {
+      top: 50%;
+      transform: translateY(-50%);
     }
     .nav-btn.left { left: 0; }
     .nav-btn.right { right: 0; }
@@ -391,21 +407,18 @@
     .fb-card--carousel{ width:100%; flex:0 0 auto; }
 
     /* strzałki – wersja pionowa */
-    #fbBtnPrev,#fbBtnNext{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      z-index:2;
-      width:36px;height:36px;
-      border-radius:999px;border:0;
-      background:rgba(0,0,0,.65);color:#fff;
-      display:none;align-items:center;justify-content:center;
-      cursor:pointer;user-select:none;
+    .fb-carousel-window .nav-btn {
+      left: 50%;
+      transform: translateX(-50%);
+      user-select: none;
     }
-    #fbBtnPrev{ top:8px; }
-    #fbBtnNext{ bottom:8px; }
-    #fbBtnPrev:focus-visible,#fbBtnNext:focus-visible{
-      outline:2px solid #e50914; outline-offset:2px;
+    #fbBtnPrev {
+      top: 8px;
+      bottom: auto;
+    }
+    #fbBtnNext {
+      bottom: 8px;
+      top: auto;
     }
 
     .fb-featured:empty {

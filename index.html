@@ -627,9 +627,9 @@
 
     function updateNav() {
       if (!btnPrev || !btnNext || !playlist) return;
-      btnPrev.style.display = playlist.scrollLeft > 0 ? "block" : "none";
+      btnPrev.style.display = playlist.scrollLeft > 0 ? "flex" : "none";
       btnNext.style.display =
-        playlist.scrollLeft + playlist.clientWidth < playlist.scrollWidth ? "block" : "none";
+        playlist.scrollLeft + playlist.clientWidth < playlist.scrollWidth ? "flex" : "none";
     }
 
     async function fetchAllPlaylistItems(playlistId) {
