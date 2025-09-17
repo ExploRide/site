@@ -351,35 +351,75 @@
       max-width: 1200px;
       margin: 18px auto 40px;
       padding: 0 16px;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
       gap: 28px;
+      align-items: start;
     }
     .fb-featured {
-      align-self: center;
+      align-self: stretch;
       width: 100%;
-      max-width: 600px;
+      max-width: none;
     }
     .fb-featured:empty {
       display: none;
     }
     .fb-carousel-window {
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
       overflow: hidden;
+      max-height: 80vh;
+      min-height: 340px;
+      padding: 40px 0;
+    }
+    .fb-carousel-window[hidden] {
       display: none;
+    }
+    .fb-carousel-window .nav-btn {
+      left: 50%;
+      transform: translate(-50%, 0);
+      top: auto;
+      bottom: auto;
+      right: auto;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 999px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
+    .fb-carousel-window .nav-btn.left {
+      top: 8px;
+      left: 50%;
+    }
+    .fb-carousel-window .nav-btn.right {
+      bottom: 8px;
+      left: 50%;
+      right: auto;
     }
     .fb-carousel-window:focus { outline: none; }
     .fb-carousel {
       display: flex;
-      gap: 18px;
-      overflow-x: auto;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
       scroll-behavior: smooth;
       align-items: stretch;
-      padding-bottom: 4px;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      flex: 1 1 auto;
+      padding: 0 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(229, 9, 20, 0.55) rgba(255, 255, 255, 0.08);
     }
-    .fb-carousel::-webkit-scrollbar { display: none; }
+    .fb-carousel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .fb-carousel::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+    }
+    .fb-carousel::-webkit-scrollbar-thumb {
+      background: rgba(229, 9, 20, 0.55);
+      border-radius: 999px;
+    }
     .fb-card {
       background: #f1f1f1;
       border: 1px solid #2a2a2a;
@@ -401,8 +441,8 @@
       padding: 18px;
     }
     .fb-card--carousel {
-      flex: 0 0 300px;
-      width: 300px;
+      flex: 0 0 auto;
+      width: 100%;
     }
     .fb-media {
       position: relative;
@@ -573,6 +613,22 @@
     }
 
     @media (max-width: 1024px) {
+      .fb-feed {
+        grid-template-columns: 1fr;
+      }
+      .fb-carousel-window {
+        max-height: none;
+        min-height: 0;
+        padding: 0;
+      }
+      .fb-carousel {
+        max-height: none;
+        overflow-y: visible;
+        padding: 0;
+      }
+      .fb-carousel-window .nav-btn {
+        display: none !important;
+      }
       .fb-card--featured {
         grid-template-columns: 1fr;
       }
@@ -583,8 +639,8 @@
 
     @media (max-width: 600px) {
       .fb-card--carousel {
-        flex: 0 0 260px;
-        width: 260px;
+        flex: 0 0 auto;
+        width: 100%;
       }
     }
 
