@@ -377,6 +377,11 @@
     let fbBtnPrev = null;
     let fbBtnNext = null;
     let fbCarouselBound = false;
+    let fbCarouselWindowEl = null;
+    let fbFeaturedCardEl = null;
+    let fbLayoutResizeObserver = null;
+    let fbLayoutListenersBound = false;
+    const fbLayoutMediaQuery = window.matchMedia("(min-width: 1025px)");
 
     const esc = (s = "") => s.replaceAll("<", "&lt;");
 
@@ -399,6 +404,66 @@
       const d = new Date(iso); if (isNaN(d)) return "";
       return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
     };
+
+    function syncFbCarouselLayout() {
+      if (!fbCarousel || !fbCarouselWindowEl) return;
+      if (!fbLayoutMediaQuery.matches || fbCarouselWindowEl.hidden) {
+        fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
+        fbCarousel.style.removeProperty("--fb-carousel-count");
+        return;
+      }
+
+      const itemsCount = fbCarousel.children.length;
+      if (itemsCount <= 0) {
+        fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
+        fbCarousel.style.removeProperty("--fb-carousel-count");
+        return;
+      }
+
+      const featuredCard = fbFeaturedCardEl || document.getElementById("fb-featured")?.querySelector(".fb-card--featured");
+      if (!featuredCard) {
+        fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
+        return;
+      }
+
+      const rect = featuredCard.getBoundingClientRect();
+      if (rect.height > 0) {
+        fbCarouselWindowEl.style.setProperty("--fb-featured-height", `${rect.height}px`);
+      }
+      fbCarousel.style.setProperty("--fb-carousel-count", String(itemsCount));
+    }
+
+    function onFbLayoutChange() {
+      syncFbCarouselLayout();
+    }
+
+    function ensureFbLayoutListeners() {
+      if (fbLayoutListenersBound) return;
+      window.addEventListener("resize", onFbLayoutChange);
+      if (typeof fbLayoutMediaQuery.addEventListener === "function") {
+        fbLayoutMediaQuery.addEventListener("change", onFbLayoutChange);
+      } else if (typeof fbLayoutMediaQuery.addListener === "function") {
+        fbLayoutMediaQuery.addListener(onFbLayoutChange);
+      }
+      fbLayoutListenersBound = true;
+    }
+
+    function bindFbLayoutObserver() {
+      if (!("ResizeObserver" in window)) {
+        return;
+      }
+      if (fbLayoutResizeObserver) {
+        fbLayoutResizeObserver.disconnect();
+        fbLayoutResizeObserver = null;
+      }
+      if (!fbFeaturedCardEl) {
+        return;
+      }
+      fbLayoutResizeObserver = new ResizeObserver(() => {
+        syncFbCarouselLayout();
+      });
+      fbLayoutResizeObserver.observe(fbFeaturedCardEl);
+    }
 
     const postCard = (p, variant = "grid") => {
       const media = Array.isArray(p.media) ? p.media.filter(m => m && m.src) : [];
@@ -478,6 +543,7 @@
       fbCarousel = document.getElementById("fb-carousel");
       fbBtnPrev = document.getElementById("fbBtnPrev");
       fbBtnNext = document.getElementById("fbBtnNext");
+      fbCarouselWindowEl = carouselWindow;
       try {
         const url = new URL(WORKER_URL);
         url.searchParams.set("page_id", FB_PAGE_ID);
@@ -499,10 +565,15 @@
           featured.style.display = "none";
         }
 
+        fbFeaturedCardEl = featured?.querySelector(".fb-card--featured") || null;
+        bindFbLayoutObserver();
+
         if (rest.length && fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = rest.map(p => postCard(p, "carousel")).join("");
           fbCarousel.scrollTop = 0;
           carouselWindow.hidden = false;
+          ensureFbLayoutListeners();
+          syncFbCarouselLayout();
 
           if (!fbCarouselBound && fbBtnPrev && fbBtnNext) {
             fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientHeight));
@@ -526,10 +597,15 @@
           const raf = window.requestAnimationFrame
             ? window.requestAnimationFrame.bind(window)
             : fn => setTimeout(fn, 0);
-          raf(updateFbNav);
+          raf(() => {
+            updateFbNav();
+            syncFbCarouselLayout();
+          });
         } else if (fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = "";
           carouselWindow.hidden = true;
+          fbCarousel.style.removeProperty("--fb-carousel-count");
+          carouselWindow.style.removeProperty("--fb-featured-height");
         }
 
         loader.style.display = "none";
@@ -537,6 +613,12 @@
         console.warn("FB feed error", e);
         loader.style.display = "none";
         fallback.style.display = "block";
+        if (fbCarouselWindowEl) {
+          fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
+        }
+        if (fbCarousel) {
+          fbCarousel.style.removeProperty("--fb-carousel-count");
+        }
       }
     }
 
