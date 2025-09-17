@@ -374,6 +374,28 @@
     const FB_LIMIT   = 6;                   // ile postów pokazać
 
     let fbCarousel = null;
+    let fbBtnPrev = null;
+    let fbBtnNext = null;
+    let carouselWindow = null;
+    let fbCarouselBound = false;
+
+    function updateFbNav() {
+      if (!fbCarousel || !fbBtnPrev || !fbBtnNext) return;
+      const canScroll = fbCarousel.scrollHeight > fbCarousel.clientHeight + 1;
+      if (!canScroll) {
+        fbBtnPrev.style.display = "none";
+        fbBtnNext.style.display = "none";
+        return;
+      }
+      fbBtnPrev.style.display = fbCarousel.scrollTop > 0 ? "flex" : "none";
+      const maxScrollTop = fbCarousel.scrollHeight - fbCarousel.clientHeight - 1;
+      fbBtnNext.style.display = fbCarousel.scrollTop < maxScrollTop ? "flex" : "none";
+    }
+
+    function scrollFb(offset) {
+      if (!fbCarousel) return;
+      fbCarousel.scrollBy({ top: offset, behavior: "smooth" });
+    }
 
     const esc = (s = "") => s.replaceAll("<", "&lt;");
 
@@ -452,8 +474,37 @@
       const loader = document.getElementById("fb-feed-loader");
       const fallback = document.getElementById("fb-feed-fallback");
       const featured = document.getElementById("fb-featured");
-      const carouselWindow = document.getElementById("fb-carousel-window");
+      carouselWindow = document.getElementById("fb-carousel-window");
       fbCarousel = document.getElementById("fb-carousel");
+      fbBtnPrev = document.getElementById("fbBtnPrev");
+      fbBtnNext = document.getElementById("fbBtnNext");
+
+      if (!fbCarouselBound && fbCarousel && fbBtnPrev && fbBtnNext) {
+        fbCarouselBound = true;
+
+        // strzałki – skok o wysokość widocznej części listy
+        fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientHeight));
+        fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientHeight));
+
+        fbCarousel.addEventListener("scroll", updateFbNav);
+
+        if (carouselWindow) {
+          carouselWindow.addEventListener("keydown", e => {
+            if (e.key === "ArrowUp") {
+              e.preventDefault();
+              scrollFb(-fbCarousel.clientHeight);
+            } else if (e.key === "ArrowDown") {
+              e.preventDefault();
+              scrollFb(fbCarousel.clientHeight);
+            }
+          });
+        }
+        window.addEventListener("resize", updateFbNav);
+
+        // (opcjonalnie) podmień wygląd strzałek na ▲ / ▼
+        if (fbBtnPrev) { fbBtnPrev.setAttribute("aria-label","Przewiń w górę"); fbBtnPrev.textContent = "▲"; }
+        if (fbBtnNext) { fbBtnNext.setAttribute("aria-label","Przewiń w dół");  fbBtnNext.textContent = "▼"; }
+      }
       try {
         const url = new URL(WORKER_URL);
         url.searchParams.set("page_id", FB_PAGE_ID);
@@ -482,10 +533,12 @@
         }
 
         loader.style.display = "none";
+        updateFbNav();
       } catch (e) {
         console.warn("FB feed error", e);
         loader.style.display = "none";
         fallback.style.display = "block";
+        updateFbNav();
       }
     }
 
