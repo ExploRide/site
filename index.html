@@ -137,10 +137,10 @@
 
   <div id="fb-feed" class="fb-feed">
     <div id="fb-featured" class="fb-featured" aria-live="polite"></div>
-    <div id="fb-carousel-window" class="fb-carousel-window" style="display:none;" tabindex="0">
-      <button id="fbBtnPrev" class="nav-btn left" aria-label="Pokaż wcześniejsze posty">&#9664;</button>
+    <div id="fb-carousel-window" class="fb-carousel-window" hidden tabindex="0">
+      <button id="fbBtnPrev" class="nav-btn left" aria-label="Przewiń do wcześniejszych postów">&#9650;</button>
       <div id="fb-carousel" class="fb-carousel"></div>
-      <button id="fbBtnNext" class="nav-btn right" aria-label="Pokaż kolejne posty">&#9654;</button>
+      <button id="fbBtnNext" class="nav-btn right" aria-label="Przewiń do kolejnych postów">&#9660;</button>
     </div>
   </div>
   <!-- ======== /Facebook: Najnowsze posty ======== -->
@@ -453,21 +453,21 @@
 
     function updateFbNav() {
       if (!fbCarousel || !fbBtnPrev || !fbBtnNext) return;
-      const canScroll = fbCarousel.scrollWidth > fbCarousel.clientWidth + 1;
+      const canScroll = fbCarousel.scrollHeight > fbCarousel.clientHeight + 1;
       if (!canScroll) {
         fbBtnPrev.style.display = "none";
         fbBtnNext.style.display = "none";
         return;
       }
 
-      fbBtnPrev.style.display = fbCarousel.scrollLeft > 0 ? "block" : "none";
-      const maxScrollLeft = fbCarousel.scrollWidth - fbCarousel.clientWidth - 1;
-      fbBtnNext.style.display = fbCarousel.scrollLeft < maxScrollLeft ? "block" : "none";
+      fbBtnPrev.style.display = fbCarousel.scrollTop > 0 ? "block" : "none";
+      const maxScrollTop = fbCarousel.scrollHeight - fbCarousel.clientHeight - 1;
+      fbBtnNext.style.display = fbCarousel.scrollTop < maxScrollTop ? "block" : "none";
     }
 
     function scrollFb(offset) {
       if (!fbCarousel) return;
-      fbCarousel.scrollBy({ left: offset, behavior: "smooth" });
+      fbCarousel.scrollBy({ top: offset, behavior: "smooth" });
     }
 
     async function loadFbFeed() {
@@ -501,20 +501,21 @@
 
         if (rest.length && fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = rest.map(p => postCard(p, "carousel")).join("");
-          carouselWindow.style.display = "block";
+          fbCarousel.scrollTop = 0;
+          carouselWindow.hidden = false;
 
           if (!fbCarouselBound && fbBtnPrev && fbBtnNext) {
-            fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientWidth));
-            fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientWidth));
+            fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientHeight));
+            fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientHeight));
             fbCarousel.addEventListener("scroll", updateFbNav);
             if (carouselWindow) {
               carouselWindow.addEventListener("keydown", e => {
-                if (e.key === "ArrowLeft") {
+                if (e.key === "ArrowUp") {
                   e.preventDefault();
-                  scrollFb(-fbCarousel.clientWidth);
-                } else if (e.key === "ArrowRight") {
+                  scrollFb(-fbCarousel.clientHeight);
+                } else if (e.key === "ArrowDown") {
                   e.preventDefault();
-                  scrollFb(fbCarousel.clientWidth);
+                  scrollFb(fbCarousel.clientHeight);
                 }
               });
             }
@@ -528,7 +529,7 @@
           raf(updateFbNav);
         } else if (fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = "";
-          carouselWindow.style.display = "none";
+          carouselWindow.hidden = true;
         }
 
         loader.style.display = "none";
