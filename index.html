@@ -137,10 +137,10 @@
 
   <div id="fb-feed" class="fb-feed">
     <div id="fb-featured" class="fb-featured" aria-live="polite"></div>
-    <div id="fb-carousel-window" class="fb-carousel-window" hidden tabindex="0">
-      <button id="fbBtnPrev" class="nav-btn left" aria-label="Przewiń do wcześniejszych postów">&#9650;</button>
+    <div id="fb-carousel-window" class="fb-carousel-window" style="display:none;" tabindex="0">
+      <button id="fbBtnPrev" class="nav-btn left" aria-label="Pokaż wcześniejsze posty">&#9664;</button>
       <div id="fb-carousel" class="fb-carousel"></div>
-      <button id="fbBtnNext" class="nav-btn right" aria-label="Przewiń do kolejnych postów">&#9660;</button>
+      <button id="fbBtnNext" class="nav-btn right" aria-label="Pokaż kolejne posty">&#9654;</button>
     </div>
   </div>
   <!-- ======== /Facebook: Najnowsze posty ======== -->
@@ -377,11 +377,6 @@
     let fbBtnPrev = null;
     let fbBtnNext = null;
     let fbCarouselBound = false;
-    let fbCarouselWindowEl = null;
-    let fbFeaturedCardEl = null;
-    let fbLayoutResizeObserver = null;
-    let fbLayoutListenersBound = false;
-    const fbLayoutMediaQuery = window.matchMedia("(min-width: 1025px)");
 
     const esc = (s = "") => s.replaceAll("<", "&lt;");
 
@@ -404,66 +399,6 @@
       const d = new Date(iso); if (isNaN(d)) return "";
       return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
     };
-
-    function syncFbCarouselLayout() {
-      if (!fbCarousel || !fbCarouselWindowEl) return;
-      if (!fbLayoutMediaQuery.matches || fbCarouselWindowEl.hidden) {
-        fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
-        fbCarousel.style.removeProperty("--fb-carousel-count");
-        return;
-      }
-
-      const itemsCount = fbCarousel.children.length;
-      if (itemsCount <= 0) {
-        fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
-        fbCarousel.style.removeProperty("--fb-carousel-count");
-        return;
-      }
-
-      const featuredCard = fbFeaturedCardEl || document.getElementById("fb-featured")?.querySelector(".fb-card--featured");
-      if (!featuredCard) {
-        fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
-        return;
-      }
-
-      const rect = featuredCard.getBoundingClientRect();
-      if (rect.height > 0) {
-        fbCarouselWindowEl.style.setProperty("--fb-featured-height", `${rect.height}px`);
-      }
-      fbCarousel.style.setProperty("--fb-carousel-count", String(itemsCount));
-    }
-
-    function onFbLayoutChange() {
-      syncFbCarouselLayout();
-    }
-
-    function ensureFbLayoutListeners() {
-      if (fbLayoutListenersBound) return;
-      window.addEventListener("resize", onFbLayoutChange);
-      if (typeof fbLayoutMediaQuery.addEventListener === "function") {
-        fbLayoutMediaQuery.addEventListener("change", onFbLayoutChange);
-      } else if (typeof fbLayoutMediaQuery.addListener === "function") {
-        fbLayoutMediaQuery.addListener(onFbLayoutChange);
-      }
-      fbLayoutListenersBound = true;
-    }
-
-    function bindFbLayoutObserver() {
-      if (!("ResizeObserver" in window)) {
-        return;
-      }
-      if (fbLayoutResizeObserver) {
-        fbLayoutResizeObserver.disconnect();
-        fbLayoutResizeObserver = null;
-      }
-      if (!fbFeaturedCardEl) {
-        return;
-      }
-      fbLayoutResizeObserver = new ResizeObserver(() => {
-        syncFbCarouselLayout();
-      });
-      fbLayoutResizeObserver.observe(fbFeaturedCardEl);
-    }
 
     const postCard = (p, variant = "grid") => {
       const media = Array.isArray(p.media) ? p.media.filter(m => m && m.src) : [];
@@ -518,21 +453,21 @@
 
     function updateFbNav() {
       if (!fbCarousel || !fbBtnPrev || !fbBtnNext) return;
-      const canScroll = fbCarousel.scrollHeight > fbCarousel.clientHeight + 1;
+      const canScroll = fbCarousel.scrollWidth > fbCarousel.clientWidth + 1;
       if (!canScroll) {
         fbBtnPrev.style.display = "none";
         fbBtnNext.style.display = "none";
         return;
       }
 
-      fbBtnPrev.style.display = fbCarousel.scrollTop > 0 ? "block" : "none";
-      const maxScrollTop = fbCarousel.scrollHeight - fbCarousel.clientHeight - 1;
-      fbBtnNext.style.display = fbCarousel.scrollTop < maxScrollTop ? "block" : "none";
+      fbBtnPrev.style.display = fbCarousel.scrollLeft > 0 ? "block" : "none";
+      const maxScrollLeft = fbCarousel.scrollWidth - fbCarousel.clientWidth - 1;
+      fbBtnNext.style.display = fbCarousel.scrollLeft < maxScrollLeft ? "block" : "none";
     }
 
     function scrollFb(offset) {
       if (!fbCarousel) return;
-      fbCarousel.scrollBy({ top: offset, behavior: "smooth" });
+      fbCarousel.scrollBy({ left: offset, behavior: "smooth" });
     }
 
     async function loadFbFeed() {
@@ -543,7 +478,6 @@
       fbCarousel = document.getElementById("fb-carousel");
       fbBtnPrev = document.getElementById("fbBtnPrev");
       fbBtnNext = document.getElementById("fbBtnNext");
-      fbCarouselWindowEl = carouselWindow;
       try {
         const url = new URL(WORKER_URL);
         url.searchParams.set("page_id", FB_PAGE_ID);
@@ -565,28 +499,22 @@
           featured.style.display = "none";
         }
 
-        fbFeaturedCardEl = featured?.querySelector(".fb-card--featured") || null;
-        bindFbLayoutObserver();
-
         if (rest.length && fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = rest.map(p => postCard(p, "carousel")).join("");
-          fbCarousel.scrollTop = 0;
-          carouselWindow.hidden = false;
-          ensureFbLayoutListeners();
-          syncFbCarouselLayout();
+          carouselWindow.style.display = "block";
 
           if (!fbCarouselBound && fbBtnPrev && fbBtnNext) {
-            fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientHeight));
-            fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientHeight));
+            fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientWidth));
+            fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientWidth));
             fbCarousel.addEventListener("scroll", updateFbNav);
             if (carouselWindow) {
               carouselWindow.addEventListener("keydown", e => {
-                if (e.key === "ArrowUp") {
+                if (e.key === "ArrowLeft") {
                   e.preventDefault();
-                  scrollFb(-fbCarousel.clientHeight);
-                } else if (e.key === "ArrowDown") {
+                  scrollFb(-fbCarousel.clientWidth);
+                } else if (e.key === "ArrowRight") {
                   e.preventDefault();
-                  scrollFb(fbCarousel.clientHeight);
+                  scrollFb(fbCarousel.clientWidth);
                 }
               });
             }
@@ -597,15 +525,10 @@
           const raf = window.requestAnimationFrame
             ? window.requestAnimationFrame.bind(window)
             : fn => setTimeout(fn, 0);
-          raf(() => {
-            updateFbNav();
-            syncFbCarouselLayout();
-          });
+          raf(updateFbNav);
         } else if (fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = "";
-          carouselWindow.hidden = true;
-          fbCarousel.style.removeProperty("--fb-carousel-count");
-          carouselWindow.style.removeProperty("--fb-featured-height");
+          carouselWindow.style.display = "none";
         }
 
         loader.style.display = "none";
@@ -613,12 +536,6 @@
         console.warn("FB feed error", e);
         loader.style.display = "none";
         fallback.style.display = "block";
-        if (fbCarouselWindowEl) {
-          fbCarouselWindowEl.style.removeProperty("--fb-featured-height");
-        }
-        if (fbCarousel) {
-          fbCarousel.style.removeProperty("--fb-carousel-count");
-        }
       }
     }
 
