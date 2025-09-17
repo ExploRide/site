@@ -45,7 +45,7 @@
       align-items: center;
       gap: 18px;
           margin-bottom: 50px;
-   box-shadow: 0 0 11px 0px rgb(255 193 0 / 78%);
+ box-shadow: 0 0 20px 6px #000;
     }
     .brand {
       display: inline-flex;
@@ -105,7 +105,7 @@
     /*  background: linear-gradient(135deg, #e50914, #ff6b2c); 
       border-color: rgba(255, 107, 44, 0.85); */
       color: #fff;
-      font-weight: 600;
+    
      /* box-shadow: 0 6px 18px rgba(229, 9, 20, 0.35);*/
     }
     .top-nav .nav-link--support:hover,
@@ -295,7 +295,7 @@
       justify-content: center;
       gap: 8px;
       padding: 12px 24px;
-      color: #fff;
+      color: rgb(0 0 0);
       text-decoration: none;
       font-size: 1.05em;
       border-radius: 10px;
@@ -944,7 +944,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+          box-shadow: 0 0 12px 0px rgb(255 169 0 / 69%);
     }
     .home-support__title {
       margin: 0;
