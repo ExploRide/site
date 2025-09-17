@@ -564,7 +564,6 @@
       border-radius: 16px;
       border: 1px solid #2a2a2a;
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-      display: block;
     }
     @media (min-width: 768px) {
       .about-card {
