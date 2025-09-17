@@ -380,6 +380,21 @@
 
     const esc = (s = "") => s.replaceAll("<", "&lt;");
 
+    const shortenText = (text = "", limit = 600) => {
+      const value = (text || "").trim();
+      if (!value) {
+        return { value: "", truncated: false };
+      }
+      if (value.length <= limit) {
+        return { value, truncated: false };
+      }
+      const slice = value.slice(0, limit);
+      const withoutLastWord = slice.replace(/\s+\S*$/, "");
+      const safe = withoutLastWord.length > limit * 0.4 ? withoutLastWord : slice;
+      const finalValue = safe.replace(/[\s\n]+$/u, "");
+      return { value: finalValue + "…", truncated: true };
+    };
+
     const fmtDatePL = iso => {
       const d = new Date(iso); if (isNaN(d)) return "";
       return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
@@ -392,7 +407,13 @@
       if (variant === "featured") classes.push("fb-card--featured");
       if (variant === "carousel") classes.push("fb-card--carousel");
       let mediaHtml = "";
-      if (variant === "featured" && media.length > 1) {
+      if (variant === "featured" && media.length) {
+        const galleryItems = media
+          .map((m, idx) => `<div class="fb-gallery__item"><img src="${m.src}" alt="Post ExploRide – zdjęcie ${idx + 1}" loading="lazy"></div>`)
+          .join("");
+        const galleryAttrs = media.length > 1 ? " data-has-multiple=\"true\"" : "";
+        mediaHtml = `<div class="fb-gallery"${galleryAttrs} aria-label="Galeria zdjęć z posta">${galleryItems}</div>`;
+      } else if (media.length > 1) {
         const extraCount = media.length - 4;
         const multiClasses = ["fb-media", "fb-media--multi"];
         if (extraCount > 0) multiClasses.push("fb-media--multi--more");
@@ -405,12 +426,23 @@
       } else if (firstImg) {
         mediaHtml = `<div class="fb-media"><img src="${firstImg}" alt="Post ExploRide" loading="lazy"></div>`;
       }
+
+      const message = typeof p.message === "string" ? p.message : "";
+      let textData = { value: message, truncated: false };
+      if (variant === "featured") {
+        textData = shortenText(message, 600);
+      }
+      const textClasses = ["fb-text"];
+      if (variant === "featured" && textData.truncated) {
+        textClasses.push("fb-text--truncated");
+      }
+
       return `
         <a class="${classes.join(" ")}" href="${p.permalink_url}" target="_blank" rel="noopener">
           ${mediaHtml}
           <div class="fb-body">
             <div class="fb-date">${fmtDatePL(p.created_time)}</div>
-            <div class="fb-text">${esc(p.message || "")}</div>
+            <div class="${textClasses.join(" ")}">${esc(textData.value)}</div>
           </div>
         </a>
       `;
