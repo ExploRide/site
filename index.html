@@ -388,13 +388,32 @@
         return;
       }
       fbBtnPrev.style.display = fbCarousel.scrollTop > 0 ? "flex" : "none";
-      const maxScrollTop = fbCarousel.scrollHeight - fbCarousel.clientHeight - 1;
-      fbBtnNext.style.display = fbCarousel.scrollTop < maxScrollTop ? "flex" : "none";
+      const maxTop = fbCarousel.scrollHeight - fbCarousel.clientHeight - 1;
+      fbBtnNext.style.display = fbCarousel.scrollTop < maxTop ? "flex" : "none";
     }
 
     function scrollFb(offset) {
       if (!fbCarousel) return;
       fbCarousel.scrollBy({ top: offset, behavior: "smooth" });
+    }
+
+    function syncCarouselHeight() {
+      const featured = document.getElementById("fb-featured");
+      const win = document.getElementById("fb-carousel-window");
+      if (!featured || !win) return;
+      win.style.height = featured.offsetHeight + "px"; // prawa = dokładnie lewa
+      updateFbNav();
+    }
+
+    let fbRo;
+    function afterFbRendered() {
+      syncCarouselHeight();
+      // aktualizacja przy zmianie rozmiaru lewej karty
+      if (window.ResizeObserver && !fbRo) {
+        fbRo = new ResizeObserver(syncCarouselHeight);
+        fbRo.observe(document.getElementById("fb-featured"));
+      }
+      window.addEventListener("resize", syncCarouselHeight);
     }
 
     const esc = (s = "") => s.replaceAll("<", "&lt;");
@@ -482,26 +501,21 @@
       if (!fbCarouselBound && fbCarousel && fbBtnPrev && fbBtnNext) {
         fbCarouselBound = true;
 
-        // strzałki – skok o wysokość widocznej części listy
+        // skok o wysokość widocznego okna listy
         fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientHeight));
-        fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientHeight));
+        fbBtnNext.addEventListener("click", () => scrollFb( fbCarousel.clientHeight));
 
         fbCarousel.addEventListener("scroll", updateFbNav);
 
         if (carouselWindow) {
           carouselWindow.addEventListener("keydown", e => {
-            if (e.key === "ArrowUp") {
-              e.preventDefault();
-              scrollFb(-fbCarousel.clientHeight);
-            } else if (e.key === "ArrowDown") {
-              e.preventDefault();
-              scrollFb(fbCarousel.clientHeight);
-            }
+            if (e.key === "ArrowUp")   { e.preventDefault(); scrollFb(-fbCarousel.clientHeight); }
+            if (e.key === "ArrowDown") { e.preventDefault(); scrollFb( fbCarousel.clientHeight); }
           });
         }
         window.addEventListener("resize", updateFbNav);
 
-        // (opcjonalnie) podmień wygląd strzałek na ▲ / ▼
+        // wygląd strzałek: ▲ / ▼
         if (fbBtnPrev) { fbBtnPrev.setAttribute("aria-label","Przewiń w górę"); fbBtnPrev.textContent = "▲"; }
         if (fbBtnNext) { fbBtnNext.setAttribute("aria-label","Przewiń w dół");  fbBtnNext.textContent = "▼"; }
       }
@@ -532,12 +546,21 @@
           fbCarousel.innerHTML = "";
         }
 
+        if (carouselWindow) {
+          carouselWindow.style.display = rest.length ? "block" : "none";
+        }
+
+        afterFbRendered();
+
         loader.style.display = "none";
         updateFbNav();
       } catch (e) {
         console.warn("FB feed error", e);
         loader.style.display = "none";
         fallback.style.display = "block";
+        if (carouselWindow) {
+          carouselWindow.style.display = "none";
+        }
         updateFbNav();
       }
     }
