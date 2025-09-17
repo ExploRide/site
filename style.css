@@ -378,8 +378,8 @@
       height: 36px;
       border-radius: 999px;
       border: 0;
-      background: rgba(0, 0, 0, 0.65);
-      color: #fff;
+    background: #d9d9d9;
+    color: rgb(15, 15, 15);
       cursor: pointer;
       font-size: 1.2em;
       line-height: 1;
@@ -486,6 +486,7 @@
       overflow:hidden;   /* przewija tylko wnętrze */
       min-height:0;      /* ważne dla grida, żeby overflow działał */
       align-self:stretch;
+      border-radius: 12px;
     }
 
     /* pionowa lista kart */
@@ -643,6 +644,7 @@
       letter-spacing: 0.03em;
       pointer-events: none;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      display: none;
     }
     .fb-featured-media-grid__item:last-child .fb-media__more {
       right: 10px;
