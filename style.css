@@ -346,42 +346,51 @@
       border-radius: 10px; background: #e50914; color: #fff; text-decoration: none;
     }
 
-    /* === Facebook: układ 2-kolumnowy z pionowym przewijaniem prawej kolumny === */
-    .fb-feed {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      gap: 18px;
-      align-items: stretch;
-      max-width: 1200px;
-      margin: 18px auto 40px;
-      padding: 0 16px;
+    /* === Facebook: 2 kolumny: lewa featured, prawa przewijana pionowo === */
+    .fb-feed{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 340px; /* szer. prawej: zmień np. na 360px, 320px */
+      gap:18px;
+      align-items:stretch;
+      max-width:1200px;
+      margin:18px auto 40px;
+      padding:0 16px;
     }
-    .fb-featured {
-      max-width: none;
-      align-self: start;
-      width: 100%;
+
+    .fb-featured{
+      align-self:start;
+      max-width:none;   /* ważne – nie ograniczaj lewego */
+      width:100%;
     }
+
     .fb-featured:empty {
       display: none;
     }
-    .fb-carousel-window {
-      display: block !important;
-      min-height: 0;
-      align-self: stretch;
-      width: 100%;
+
+    /* Okno prawej kolumny ma mieć dokładnie wysokość lewej (grid to zapewnia) */
+    .fb-carousel-window{
+      position:relative;
+      display:block !important;
+      overflow:hidden; /* w środku przewija tylko lista */
+      min-height:0;    /* klucz w gridzie żeby overflow działał */
+      align-self:stretch;
     }
+
     .fb-carousel-window:focus { outline: none; }
-    .fb-carousel {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-bottom: 0;
-      -ms-overflow-style: auto;
-      scrollbar-width: thin;
+
+    /* Z poziomej karuzeli robimy pionową listę z przewijaniem */
+    .fb-carousel{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      height:100%;
+      overflow-y:auto;   /* przewijanie góra/dół */
+      overflow-x:hidden;
+      padding-bottom:0;
+      -ms-overflow-style:auto;
+      scrollbar-width:thin;
     }
+
     .fb-card {
       background: #f1f1f1;
       border: 1px solid #2a2a2a;
@@ -402,9 +411,33 @@
       gap: 24px;
       padding: 18px;
     }
-    .fb-card--carousel {
-      width: 100%;
-      flex: 0 0 auto;
+    /* Małe karty dopasowane do prawej kolumny */
+    .fb-card--carousel{
+      width:100%;
+      flex:0 0 auto;
+    }
+
+    /* Strzałki: zamieniamy na góra/dół i przypinamy do krawędzi */
+    #fbBtnPrev, #fbBtnNext{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:2;
+      width:36px; height:36px;
+      border-radius:999px;
+      border:0;
+      background:rgba(0,0,0,.65);
+      color:#fff;
+      display:none;
+      padding:0;
+      align-items:center; justify-content:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    #fbBtnPrev{ top:8px; }
+    #fbBtnNext{ bottom:8px; }
+    #fbBtnPrev:focus-visible, #fbBtnNext:focus-visible{
+      outline:2px solid #e50914; outline-offset:2px;
     }
     .fb-media {
       position: relative;
@@ -573,19 +606,12 @@
     .fb-card--carousel .fb-text__content {
       max-height: 5.4em;
     }
-
-    .fb-carousel-window .nav-btn { display: none !important; }
-
-    /* Na mniejszych ekranach wracamy do układu pod sobą */
-    @media (max-width: 900px) {
-      .fb-feed {
-        display: flex;
-        flex-direction: column;
-      }
-      .fb-carousel {
-        max-height: none;
-        overflow: visible;
-      }
+    /* Na mniejszych ekranach wracamy pod sobą – bez przewijania */
+    @media (max-width: 900px){
+      .fb-feed{ display:flex; flex-direction:column; }
+      .fb-carousel-window{ height:auto; }
+      .fb-carousel{ max-height:none; overflow:visible; }
+      #fbBtnPrev, #fbBtnNext{ display:none !important; }
     }
     @media (max-width: 1024px) {
       .fb-card--featured {
