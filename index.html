@@ -137,7 +137,7 @@
 
   <div id="fb-feed" class="fb-feed">
     <div id="fb-featured" class="fb-featured" aria-live="polite"></div>
-    <div id="fb-carousel-window" class="fb-carousel-window" style="display:none;" tabindex="0">
+    <div id="fb-carousel-window" class="fb-carousel-window" tabindex="0">
       <button id="fbBtnPrev" class="nav-btn left" aria-label="Pokaż wcześniejsze posty">&#9664;</button>
       <div id="fb-carousel" class="fb-carousel"></div>
       <button id="fbBtnNext" class="nav-btn right" aria-label="Pokaż kolejne posty">&#9654;</button>
@@ -374,9 +374,6 @@
     const FB_LIMIT   = 6;                   // ile postów pokazać
 
     let fbCarousel = null;
-    let fbBtnPrev = null;
-    let fbBtnNext = null;
-    let fbCarouselBound = false;
 
     const esc = (s = "") => s.replaceAll("<", "&lt;");
 
@@ -451,33 +448,12 @@
       `;
     };
 
-    function updateFbNav() {
-      if (!fbCarousel || !fbBtnPrev || !fbBtnNext) return;
-      const canScroll = fbCarousel.scrollWidth > fbCarousel.clientWidth + 1;
-      if (!canScroll) {
-        fbBtnPrev.style.display = "none";
-        fbBtnNext.style.display = "none";
-        return;
-      }
-
-      fbBtnPrev.style.display = fbCarousel.scrollLeft > 0 ? "block" : "none";
-      const maxScrollLeft = fbCarousel.scrollWidth - fbCarousel.clientWidth - 1;
-      fbBtnNext.style.display = fbCarousel.scrollLeft < maxScrollLeft ? "block" : "none";
-    }
-
-    function scrollFb(offset) {
-      if (!fbCarousel) return;
-      fbCarousel.scrollBy({ left: offset, behavior: "smooth" });
-    }
-
     async function loadFbFeed() {
       const loader = document.getElementById("fb-feed-loader");
       const fallback = document.getElementById("fb-feed-fallback");
       const featured = document.getElementById("fb-featured");
       const carouselWindow = document.getElementById("fb-carousel-window");
       fbCarousel = document.getElementById("fb-carousel");
-      fbBtnPrev = document.getElementById("fbBtnPrev");
-      fbBtnNext = document.getElementById("fbBtnNext");
       try {
         const url = new URL(WORKER_URL);
         url.searchParams.set("page_id", FB_PAGE_ID);
@@ -501,34 +477,8 @@
 
         if (rest.length && fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = rest.map(p => postCard(p, "carousel")).join("");
-          carouselWindow.style.display = "block";
-
-          if (!fbCarouselBound && fbBtnPrev && fbBtnNext) {
-            fbBtnPrev.addEventListener("click", () => scrollFb(-fbCarousel.clientWidth));
-            fbBtnNext.addEventListener("click", () => scrollFb(fbCarousel.clientWidth));
-            fbCarousel.addEventListener("scroll", updateFbNav);
-            if (carouselWindow) {
-              carouselWindow.addEventListener("keydown", e => {
-                if (e.key === "ArrowLeft") {
-                  e.preventDefault();
-                  scrollFb(-fbCarousel.clientWidth);
-                } else if (e.key === "ArrowRight") {
-                  e.preventDefault();
-                  scrollFb(fbCarousel.clientWidth);
-                }
-              });
-            }
-            window.addEventListener("resize", updateFbNav);
-            fbCarouselBound = true;
-          }
-
-          const raf = window.requestAnimationFrame
-            ? window.requestAnimationFrame.bind(window)
-            : fn => setTimeout(fn, 0);
-          raf(updateFbNav);
         } else if (fbCarousel && carouselWindow) {
           fbCarousel.innerHTML = "";
-          carouselWindow.style.display = "none";
         }
 
         loader.style.display = "none";
