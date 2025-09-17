@@ -346,10 +346,10 @@
       border-radius: 10px; background: #e50914; color: #fff; text-decoration: none;
     }
 
-    /* === Facebook: 2 kolumny: lewa featured, prawa przewijana pionowo === */
+    /* === Facebook: lewa featured, po prawej pionowy karuzel === */
     .fb-feed{
       display:grid;
-      grid-template-columns:minmax(0,1fr) 340px; /* szer. prawej: zmień np. na 360px, 320px */
+      grid-template-columns:minmax(0,1fr) 340px; /* zmień np. na 360/320 px */
       gap:18px;
       align-items:stretch;
       max-width:1200px;
@@ -359,37 +359,60 @@
 
     .fb-featured{
       align-self:start;
-      max-width:none;   /* ważne – nie ograniczaj lewego */
+      max-width:none;
       width:100%;
+    }
+
+    /* okno prawej kolumny = dokładnie wysokość lewej (resztę przewija w środku) */
+    .fb-carousel-window{
+      position:relative;
+      display:block !important;
+      overflow:hidden;   /* przewija tylko wnętrze */
+      min-height:0;      /* ważne dla grida, żeby overflow działał */
+      align-self:stretch;
+    }
+
+    /* pionowa lista kart */
+    .fb-carousel{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      height:100%;
+      overflow-y:auto;         /* przewijanie góra/dół */
+      overflow-x:hidden;
+      padding-bottom:0;
+      -ms-overflow-style:auto;
+      scrollbar-width:thin;
+      overscroll-behavior:contain;
+      touch-action: pan-y;     /* swajp palcem na tel. */
+    }
+
+    /* małe karty dopasowane do szerokości prawej kolumny */
+    .fb-card--carousel{ width:100%; flex:0 0 auto; }
+
+    /* strzałki – wersja pionowa */
+    #fbBtnPrev,#fbBtnNext{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:2;
+      width:36px;height:36px;
+      border-radius:999px;border:0;
+      background:rgba(0,0,0,.65);color:#fff;
+      display:none;align-items:center;justify-content:center;
+      cursor:pointer;user-select:none;
+    }
+    #fbBtnPrev{ top:8px; }
+    #fbBtnNext{ bottom:8px; }
+    #fbBtnPrev:focus-visible,#fbBtnNext:focus-visible{
+      outline:2px solid #e50914; outline-offset:2px;
     }
 
     .fb-featured:empty {
       display: none;
     }
 
-    /* Okno prawej kolumny ma mieć dokładnie wysokość lewej (grid to zapewnia) */
-    .fb-carousel-window{
-      position:relative;
-      display:block !important;
-      overflow:hidden; /* w środku przewija tylko lista */
-      min-height:0;    /* klucz w gridzie żeby overflow działał */
-      align-self:stretch;
-    }
-
     .fb-carousel-window:focus { outline: none; }
-
-    /* Z poziomej karuzeli robimy pionową listę z przewijaniem */
-    .fb-carousel{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      height:100%;
-      overflow-y:auto;   /* przewijanie góra/dół */
-      overflow-x:hidden;
-      padding-bottom:0;
-      -ms-overflow-style:auto;
-      scrollbar-width:thin;
-    }
 
     .fb-card {
       background: #f1f1f1;
@@ -410,34 +433,6 @@
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
       gap: 24px;
       padding: 18px;
-    }
-    /* Małe karty dopasowane do prawej kolumny */
-    .fb-card--carousel{
-      width:100%;
-      flex:0 0 auto;
-    }
-
-    /* Strzałki: zamieniamy na góra/dół i przypinamy do krawędzi */
-    #fbBtnPrev, #fbBtnNext{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      z-index:2;
-      width:36px; height:36px;
-      border-radius:999px;
-      border:0;
-      background:rgba(0,0,0,.65);
-      color:#fff;
-      display:none;
-      padding:0;
-      align-items:center; justify-content:center;
-      cursor:pointer;
-      user-select:none;
-    }
-    #fbBtnPrev{ top:8px; }
-    #fbBtnNext{ bottom:8px; }
-    #fbBtnPrev:focus-visible, #fbBtnNext:focus-visible{
-      outline:2px solid #e50914; outline-offset:2px;
     }
     .fb-media {
       position: relative;
@@ -606,12 +601,12 @@
     .fb-card--carousel .fb-text__content {
       max-height: 5.4em;
     }
-    /* Na mniejszych ekranach wracamy pod sobą – bez przewijania */
-    @media (max-width: 900px){
+    /* Mobile: jedna kolumna, naturalna wysokość, bez strzałek */
+    @media (max-width:900px){
       .fb-feed{ display:flex; flex-direction:column; }
-      .fb-carousel-window{ height:auto; }
+      .fb-carousel-window{ height:auto !important; }
       .fb-carousel{ max-height:none; overflow:visible; }
-      #fbBtnPrev, #fbBtnNext{ display:none !important; }
+      #fbBtnPrev,#fbBtnNext{ display:none !important; }
     }
     @media (max-width: 1024px) {
       .fb-card--featured {
