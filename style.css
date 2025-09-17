@@ -346,40 +346,42 @@
       border-radius: 10px; background: #e50914; color: #fff; text-decoration: none;
     }
 
-    /* Facebook feed */
+    /* === Facebook: układ 2-kolumnowy z pionowym przewijaniem prawej kolumny === */
     .fb-feed {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: stretch;
       max-width: 1200px;
       margin: 18px auto 40px;
       padding: 0 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
     }
     .fb-featured {
-      align-self: center;
+      max-width: none;
+      align-self: start;
       width: 100%;
-      max-width: 600px;
     }
     .fb-featured:empty {
       display: none;
     }
     .fb-carousel-window {
-      position: relative;
-      overflow: hidden;
-      display: none;
+      display: block !important;
+      min-height: 0;
+      align-self: stretch;
+      width: 100%;
     }
     .fb-carousel-window:focus { outline: none; }
     .fb-carousel {
       display: flex;
-      gap: 18px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      align-items: stretch;
-      padding-bottom: 4px;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 0;
+      -ms-overflow-style: auto;
+      scrollbar-width: thin;
     }
-    .fb-carousel::-webkit-scrollbar { display: none; }
     .fb-card {
       background: #f1f1f1;
       border: 1px solid #2a2a2a;
@@ -401,8 +403,8 @@
       padding: 18px;
     }
     .fb-card--carousel {
-      flex: 0 0 300px;
-      width: 300px;
+      width: 100%;
+      flex: 0 0 auto;
     }
     .fb-media {
       position: relative;
@@ -572,19 +574,25 @@
       max-height: 5.4em;
     }
 
+    .fb-carousel-window .nav-btn { display: none !important; }
+
+    /* Na mniejszych ekranach wracamy do układu pod sobą */
+    @media (max-width: 900px) {
+      .fb-feed {
+        display: flex;
+        flex-direction: column;
+      }
+      .fb-carousel {
+        max-height: none;
+        overflow: visible;
+      }
+    }
     @media (max-width: 1024px) {
       .fb-card--featured {
         grid-template-columns: 1fr;
       }
       .fb-card--featured .fb-body {
         padding-top: 12px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .fb-card--carousel {
-        flex: 0 0 260px;
-        width: 260px;
       }
     }
 
