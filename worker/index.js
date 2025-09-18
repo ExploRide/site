@@ -1,4 +1,5 @@
 const ALLOWED_ORIGIN = 'https://exploride.pl';
+const GALLERY_ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif']);
 
 export default {
   async fetch(request, env) {
@@ -15,6 +16,9 @@ export default {
       }
       if (path === '/api/fb/posts') {
         return await handleFbPosts(url, env);
+      }
+      if (path === '/api/gallery/list') {
+        return await handleGalleryList(env);
       }
 
       return withCors(json({ error: 'Not found' }, { status: 404 }));
@@ -239,6 +243,147 @@ function extractAttachmentMedia(attachment, push) {
       extractAttachmentMedia(sub, push);
     }
   }
+}
+
+async function handleGalleryList(env) {
+  const files = collectGalleryFiles(env);
+  return withCors(json({ items: files }));
+}
+
+function collectGalleryFiles(env) {
+  const entries = getManifestEntries(env);
+  const seen = new Set();
+  const files = [];
+
+  for (const entry of entries) {
+    if (typeof entry !== 'string') {
+      continue;
+    }
+    const normalized = normalizeManifestEntry(entry);
+    if (!normalized) {
+      continue;
+    }
+
+    const lower = normalized.toLowerCase();
+    if (!lower.startsWith('gallery/')) {
+      continue;
+    }
+
+    const fileName = normalized.slice('gallery/'.length);
+    if (!fileName || fileName.endsWith('/')) {
+      continue;
+    }
+
+    const extension = `.${(fileName.split('.').pop() || '').toLowerCase()}`;
+    if (!GALLERY_ALLOWED_EXTENSIONS.has(extension)) {
+      continue;
+    }
+
+    const canonical = `gallery/${fileName}`;
+    if (seen.has(canonical)) {
+      continue;
+    }
+    seen.add(canonical);
+    files.push(canonical);
+  }
+
+  files.sort((a, b) => {
+    const orderA = parseNumericPrefix(a);
+    const orderB = parseNumericPrefix(b);
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+    return a.localeCompare(b, 'pl', { numeric: true, sensitivity: 'base' });
+  });
+
+  return files;
+}
+
+function getManifestEntries(env) {
+  const entries = [];
+  const manifests = new Set();
+
+  if (env && typeof env.__STATIC_CONTENT_MANIFEST === 'string' && env.__STATIC_CONTENT_MANIFEST) {
+    manifests.add(env.__STATIC_CONTENT_MANIFEST);
+  }
+
+  if (typeof __STATIC_CONTENT_MANIFEST !== 'undefined' && __STATIC_CONTENT_MANIFEST) {
+    manifests.add(__STATIC_CONTENT_MANIFEST);
+  }
+
+  for (const raw of manifests) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        for (const value of parsed) {
+          if (typeof value === 'string') {
+            entries.push(value);
+          } else if (value && typeof value === 'object') {
+            if (typeof value.path === 'string') {
+              entries.push(value.path);
+            }
+            if (typeof value.file === 'string') {
+              entries.push(value.file);
+            }
+            if (typeof value.name === 'string') {
+              entries.push(value.name);
+            }
+          }
+        }
+      } else if (parsed && typeof parsed === 'object') {
+        for (const key of Object.keys(parsed)) {
+          entries.push(key);
+        }
+      } else if (typeof parsed === 'string') {
+        entries.push(parsed);
+      }
+    } catch (err) {
+      console.error('Static manifest parse error', err);
+    }
+  }
+
+  return entries;
+}
+
+function normalizeManifestEntry(entry) {
+  if (typeof entry !== 'string') {
+    return '';
+  }
+
+  let candidate = entry.trim();
+  if (!candidate) {
+    return '';
+  }
+
+  if (/^https?:\/\//i.test(candidate)) {
+    try {
+      const url = new URL(candidate);
+      candidate = url.pathname || candidate;
+    } catch (err) {
+      console.error('Invalid manifest URL entry', candidate, err);
+    }
+  }
+
+  const withoutQuery = candidate.split('?')[0].split('#')[0];
+  let normalized = withoutQuery.replace(/^\.\/+/i, '').replace(/^\/+/, '');
+
+  try {
+    normalized = decodeURIComponent(normalized);
+  } catch (err) {
+    // Ignore decode errors, fall back to the raw value
+  }
+
+  return normalized;
+}
+
+function parseNumericPrefix(path) {
+  const name = (path.split('/').pop() || '').trim();
+  const match = name.match(/^(\d+)/);
+  if (!match) {
+    return Number.POSITIVE_INFINITY;
+  }
+  const value = parseInt(match[1], 10);
+  return Number.isFinite(value) ? value : Number.POSITIVE_INFINITY;
 }
 
 const json = (obj, init = {}) => {

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galeria – ExploRide</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script>
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.2;
+      document.body.style.backgroundPosition = `center ${-y}px`;
+    });
+  </script>
+</head>
+<body class="page-gallery">
+  <header>
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+      <span class="brand-name">EXPLORIDE.PL</span>
+    </a>
+    <nav class="top-nav" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--about" href="onas.html">O nas</a>
+      <a class="nav-link nav-link--home" href="index.html#filmy">Filmy</a>
+      <a class="nav-link nav-link--gallery" href="galeria.html" aria-current="page">Galeria</a>
+      <a class="nav-link" href="index.html#posty-fb">Posty na FB</a>
+      <a class="nav-link" href="index.html#posty-ig">Posty z IG</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <a class="nav-link nav-link--support" href="wesprzyj-nas.html">Wesprzyj nas</a>
+      <a class="nav-link nav-link--contact" href="kontakt.html">Kontakt</a>
+      <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+    </nav>
+  </header>
+
+  <main class="gallery-main">
+    <section class="gallery-intro" aria-labelledby="gallery-title">
+      <div class="gallery-intro__text">
+        <h1 id="gallery-title">Galeria</h1>
+        <p>Oto wybrane przez nas najlepsze kadry z naszych eksploracji – wyjątkowe wnętrza, detale i przestrzenie, które najbardziej oddają charakter opuszczonych miejsc.</p>
+      </div>
+    </section>
+
+    <section class="gallery-section" aria-label="Galeria zdjęć ExploRide">
+      <div class="gallery-status" id="gallery-status" role="status" aria-live="polite">Wczytywanie zdjęć…</div>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <p class="gallery-empty" id="gallery-empty" hidden>W tej chwili nie znaleziono żadnych zdjęć. Zajrzyj tu wkrótce ponownie!</p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone.
+  </footer>
+
+  <div class="lightbox" id="gallery-lightbox" hidden aria-hidden="true">
+    <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption">
+      <button type="button" class="lightbox__close" aria-label="Zamknij podgląd">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <figure class="lightbox__figure">
+        <img src="" alt="" class="lightbox__image" id="lightbox-image" decoding="async" />
+        <figcaption class="lightbox__caption" id="lightbox-caption"></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function () {
+      const statusEl = document.getElementById('gallery-status');
+      const gridEl = document.getElementById('gallery-grid');
+      const emptyEl = document.getElementById('gallery-empty');
+      const lightboxEl = document.getElementById('gallery-lightbox');
+      const lightboxImage = document.getElementById('lightbox-image');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const closeButton = lightboxEl.querySelector('.lightbox__close');
+      const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif'];
+      const pattern = [3, 2, 1];
+      let lastFocusedElement = null;
+
+      const disableContextMenu = (event) => {
+        event.preventDefault();
+      };
+      document.addEventListener('contextmenu', disableContextMenu);
+
+      function setStatus(message) {
+        if (!statusEl) {
+          return;
+        }
+        if (message) {
+          statusEl.hidden = false;
+          statusEl.textContent = message;
+        } else {
+          statusEl.hidden = true;
+          statusEl.textContent = '';
+        }
+      }
+
+      function normaliseItems(data) {
+        if (!data) {
+          return [];
+        }
+        if (Array.isArray(data)) {
+          return data;
+        }
+        if (Array.isArray(data.items)) {
+          return data.items;
+        }
+        if (Array.isArray(data.images)) {
+          return data.images;
+        }
+        return [];
+      }
+
+      function parseDirectoryListing(html) {
+        try {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const anchors = Array.from(doc.querySelectorAll('a'));
+          return anchors
+            .map((anchor) => anchor.getAttribute('href') || '')
+            .filter((href) => href && !href.startsWith('..'))
+            .map((href) => href.replace(/^\.\/?/, ''))
+            .map((href) => (href.startsWith('gallery/') ? href : `gallery/${href}`));
+        } catch (error) {
+          console.error('Błąd parsowania listy katalogów', error);
+          return [];
+        }
+      }
+
+      function parseOrder(fileName) {
+        const match = fileName.match(/^(\d+)/);
+        if (!match) {
+          return Number.POSITIVE_INFINITY;
+        }
+        const value = parseInt(match[1], 10);
+        return Number.isFinite(value) ? value : Number.POSITIVE_INFINITY;
+      }
+
+      function formatLabel(fileName, fallbackIndex) {
+        const base = fileName.replace(/\.[^.]+$/, '');
+        const withoutPrefix = base.replace(/^\d+[-_ ]*/, '');
+        const cleaned = withoutPrefix.replace(/[-_]+/g, ' ').trim();
+        if (cleaned) {
+          return cleaned
+            .split(/\s+/)
+            .filter(Boolean)
+            .map((part) => part.charAt(0).toLocaleUpperCase('pl-PL') + part.slice(1))
+            .join(' ');
+        }
+        const order = parseOrder(fileName);
+        if (Number.isFinite(order)) {
+          return `Kadr ${order}`;
+        }
+        return `Kadr ${fallbackIndex}`;
+      }
+
+      function prepareItems(paths) {
+        const seen = new Set();
+        const items = [];
+
+        for (const rawPath of paths) {
+          if (typeof rawPath !== 'string') {
+            continue;
+          }
+          const trimmed = rawPath.trim();
+          if (!trimmed) {
+            continue;
+          }
+          let candidate = trimmed;
+          if (/^https?:/i.test(candidate)) {
+            try {
+              const url = new URL(candidate);
+              candidate = url.pathname || candidate;
+            } catch (err) {
+              console.warn('Nieprawidłowy adres URL obrazu w galerii', candidate, err);
+            }
+          }
+          const withoutQuery = candidate.split('?')[0].split('#')[0];
+          const normalised = withoutQuery.replace(/^\//, '');
+          const relative = normalised.startsWith('gallery/') ? normalised : `gallery/${normalised}`;
+          const fileName = relative.split('/').pop();
+          if (!fileName) {
+            continue;
+          }
+          const extension = `.${fileName.split('.').pop() || ''}`.toLowerCase();
+          if (!allowedExtensions.includes(extension)) {
+            continue;
+          }
+          const key = relative.toLowerCase();
+          if (seen.has(key)) {
+            continue;
+          }
+          seen.add(key);
+          items.push({
+            path: relative,
+            fileName,
+            order: parseOrder(fileName)
+          });
+        }
+
+        items.sort((a, b) => {
+          if (a.order !== b.order) {
+            return a.order - b.order;
+          }
+          return a.fileName.localeCompare(b.fileName, 'pl', { numeric: true, sensitivity: 'base' });
+        });
+
+        return items.map((item, index) => ({
+          path: item.path,
+          fileName: item.fileName,
+          label: formatLabel(item.fileName, index + 1)
+        }));
+      }
+
+      async function fetchGalleryItems() {
+        const endpoints = ['/api/gallery/list', 'gallery/index.json'];
+
+        for (const endpoint of endpoints) {
+          try {
+            const response = await fetch(endpoint, { cache: 'no-cache', headers: { Accept: 'application/json' } });
+            if (!response.ok) {
+              continue;
+            }
+            const data = await response.json();
+            const items = prepareItems(normaliseItems(data));
+            if (items.length) {
+              return items;
+            }
+          } catch (error) {
+            console.warn(`Nie udało się pobrać danych galerii z ${endpoint}`, error);
+          }
+        }
+
+        try {
+          const response = await fetch('gallery/', { cache: 'no-store' });
+          if (response.ok) {
+            const html = await response.text();
+            const items = prepareItems(parseDirectoryListing(html));
+            if (items.length) {
+              return items;
+            }
+          }
+        } catch (error) {
+          console.warn('Nie udało się pobrać listy plików z katalogu gallery/', error);
+        }
+
+        return [];
+      }
+
+      function openLightbox(button) {
+        const imageSrc = button.dataset.fullsize;
+        const caption = button.dataset.caption || '';
+        if (!imageSrc) {
+          return;
+        }
+
+        lastFocusedElement = document.activeElement;
+        lightboxImage.src = imageSrc;
+        lightboxImage.alt = button.querySelector('img')?.alt || caption || 'Powiększone zdjęcie z galerii ExploRide';
+        lightboxCaption.textContent = caption;
+        lightboxEl.hidden = false;
+        lightboxEl.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-open');
+
+        requestAnimationFrame(() => {
+          lightboxEl.classList.add('lightbox--visible');
+          closeButton.focus({ preventScroll: true });
+        });
+      }
+
+      function closeLightbox() {
+        lightboxEl.classList.remove('lightbox--visible');
+        lightboxEl.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('lightbox-open');
+        lightboxImage.src = '';
+        lightboxCaption.textContent = '';
+        setTimeout(() => {
+          lightboxEl.hidden = true;
+          if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+            lastFocusedElement.focus({ preventScroll: true });
+          }
+        }, 200);
+      }
+
+      lightboxEl.addEventListener('click', (event) => {
+        if (event.target === lightboxEl) {
+          closeLightbox();
+        }
+      });
+
+      closeButton.addEventListener('click', () => {
+        closeLightbox();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !lightboxEl.hidden) {
+          closeLightbox();
+        }
+      });
+
+      gridEl.addEventListener('click', (event) => {
+        const button = event.target.closest('.gallery-thumb');
+        if (!button) {
+          return;
+        }
+        openLightbox(button);
+      });
+
+      async function init() {
+        setStatus('Wczytywanie zdjęć…');
+        try {
+          const items = await fetchGalleryItems();
+          if (!items.length) {
+            setStatus('Nie znaleziono zdjęć w katalogu galerii.');
+            emptyEl.hidden = false;
+            return;
+          }
+
+          setStatus('');
+          emptyEl.hidden = true;
+
+          gridEl.textContent = '';
+          let index = 0;
+          let patternIndex = 0;
+          while (index < items.length) {
+            const desired = pattern[patternIndex % pattern.length];
+            const remaining = items.length - index;
+            const chunkSize = Math.min(desired, remaining);
+            const row = document.createElement('div');
+            row.className = `gallery-row gallery-row--${chunkSize}`;
+
+            for (let i = 0; i < chunkSize; i += 1) {
+              const item = items[index + i];
+              const figure = document.createElement('figure');
+              figure.className = 'gallery-item';
+
+              const button = document.createElement('button');
+              button.type = 'button';
+              button.className = 'gallery-thumb';
+              const imagePath = item.path.startsWith('/') ? item.path : `/${item.path}`;
+              button.dataset.fullsize = imagePath;
+              button.dataset.caption = item.label;
+
+              const img = document.createElement('img');
+              img.src = imagePath;
+              img.loading = 'lazy';
+              img.decoding = 'async';
+              img.alt = `Galeria ExploRide – ${item.label}`;
+
+              button.appendChild(img);
+
+              const srText = document.createElement('span');
+              srText.className = 'sr-only';
+              srText.textContent = `Powiększ zdjęcie: ${item.label}`;
+              button.appendChild(srText);
+
+              figure.appendChild(button);
+              row.appendChild(figure);
+            }
+
+            gridEl.appendChild(row);
+            index += chunkSize;
+            patternIndex += 1;
+          }
+        } catch (error) {
+          console.error('Błąd podczas inicjalizacji galerii', error);
+          setStatus('Wystąpił problem podczas ładowania galerii. Spróbuj ponownie później.');
+          emptyEl.hidden = false;
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
