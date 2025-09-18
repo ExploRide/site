@@ -1,12 +1,18 @@
 {
   "items": [
-    { "path": "gallery/1_fotele.jpg", "label": "Salon o świcie" },
-    { "path":  "gallery/2_toaletka.jpg", "label": "Górska chata" },
-    { "path":  "gallery/3_salon.jpg", "label": "Górska chata" },
-    { "path":  "gallery/4_kelen.jpg", "label": "Górska chata" },
-    { "path":  "gallery/5_radiokule.jpg", "label": "Górska chata" },
-    { "path":  "gallery/6_mech.jpg", "label": "Górska chata" }
-    
+    { "path": "gallery/1_fotele.jpg", "label": "Ośrodek z lat 80." },
+    { "path":  "gallery/2_toaletka.jpg", "label": "Biała toaletka" },
+    { "path":  "gallery/3_salon.jpg", "label": "Salon z żyrandolem" },
+    { "path":  "gallery/4_kelen.jpg", "label": "Zielona sterownia" },
+    { "path":  "gallery/5_radiokule.jpg", "label": "Stare radio i kule" },
+    { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/7_zamek.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
   ]
 }
 
