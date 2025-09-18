@@ -100,6 +100,13 @@
           layer.style.animation = 'fadeOut var(--background-fade-duration) ease forwards';
         };
 
+        const updateVerticalOffset = () => {
+          const offset = window.scrollY * 0.2;
+          layers.forEach((layer) => {
+            layer.style.backgroundPositionY = `${offset}px`;
+          });
+        };
+
         layers.forEach((layer) => {
           layer.addEventListener('animationend', (event) => {
             if (event.animationName === 'fadeOut') {
@@ -128,6 +135,7 @@
           const layer = layers[activeIndex];
           layer.style.backgroundImage = `url('${backgrounds[imageIndex]}')`;
           playPan(layer, moveRight ? 'right' : 'left', true);
+          updateVerticalOffset();
           moveRight = !moveRight;
         };
 
@@ -136,6 +144,7 @@
           imageIndex = (imageIndex + 1) % backgrounds.length;
           nextLayer.style.backgroundImage = `url('${backgrounds[imageIndex]}')`;
           playPan(nextLayer, moveRight ? 'right' : 'left', true);
+          updateVerticalOffset();
 
           const currentLayer = layers[activeIndex];
           fadeOut(currentLayer);
@@ -146,6 +155,7 @@
 
         showInitial();
         setInterval(rotateBackground, cycleDuration);
+        document.addEventListener('scroll', updateVerticalOffset, { passive: true });
       });
     </script>
   </head>
