@@ -145,6 +145,7 @@
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       cursor: pointer;
       white-space: nowrap;
+      letter-spacing: 2px;
     }
     .top-nav a.nav-link { text-decoration: none; }
     .top-nav button.nav-link {
