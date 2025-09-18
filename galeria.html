@@ -101,16 +101,39 @@
         if (!data) {
           return [];
         }
-        if (Array.isArray(data)) {
-          return data;
-        }
-        if (Array.isArray(data.items)) {
-          return data.items;
-        }
-        if (Array.isArray(data.images)) {
-          return data.images;
-        }
-        return [];
+
+        const candidates = Array.isArray(data)
+          ? data
+          : Array.isArray(data.items)
+            ? data.items
+            : Array.isArray(data.images)
+              ? data.images
+              : [];
+
+        return candidates
+          .map((item) => {
+            if (typeof item === 'string') {
+              return { path: item };
+            }
+            if (item && typeof item === 'object') {
+              const result = { ...item };
+              const pathValue = [item.path, item.file, item.src].find(
+                (value) => typeof value === 'string' && value.trim()
+              );
+              const labelValue = [item.label, item.title, item.name].find(
+                (value) => typeof value === 'string' && value.trim()
+              );
+              if (pathValue) {
+                result.path = pathValue;
+              }
+              if (labelValue) {
+                result.label = labelValue;
+              }
+              return result;
+            }
+            return null;
+          })
+          .filter(Boolean);
       }
 
       function parseDirectoryListing(html) {
@@ -156,15 +179,38 @@
         return `Kadr ${fallbackIndex}`;
       }
 
-      function prepareItems(paths) {
+      function prepareItems(entries) {
         const seen = new Set();
         const items = [];
 
-        for (const rawPath of paths) {
-          if (typeof rawPath !== 'string') {
+        for (const entry of entries) {
+          let pathCandidate = null;
+          let labelCandidate = '';
+
+          if (typeof entry === 'string') {
+            pathCandidate = entry;
+          } else if (entry && typeof entry === 'object') {
+            const pathValue = [entry.path, entry.file, entry.src].find(
+              (value) => typeof value === 'string' && value.trim()
+            );
+            if (pathValue) {
+              pathCandidate = pathValue;
+            }
+            const labelValue = [entry.label, entry.title, entry.name].find(
+              (value) => typeof value === 'string' && value.trim()
+            );
+            if (labelValue) {
+              labelCandidate = labelValue.trim();
+            }
+          } else {
             continue;
           }
-          const trimmed = rawPath.trim();
+
+          if (!pathCandidate) {
+            continue;
+          }
+
+          const trimmed = pathCandidate.trim();
           if (!trimmed) {
             continue;
           }
@@ -196,7 +242,8 @@
           items.push({
             path: relative,
             fileName,
-            order: parseOrder(fileName)
+            order: parseOrder(fileName),
+            label: labelCandidate
           });
         }
 
@@ -210,7 +257,7 @@
         return items.map((item, index) => ({
           path: item.path,
           fileName: item.fileName,
-          label: formatLabel(item.fileName, index + 1)
+          label: (typeof item.label === 'string' && item.label.trim()) || formatLabel(item.fileName, index + 1)
         }));
       }
 
@@ -341,19 +388,20 @@
               button.className = 'gallery-thumb';
               const imagePath = item.path.startsWith('/') ? item.path : `/${item.path}`;
               button.dataset.fullsize = imagePath;
-              button.dataset.caption = item.label;
+              const caption = item.label;
+              button.dataset.caption = caption;
 
               const img = document.createElement('img');
               img.src = imagePath;
               img.loading = 'lazy';
               img.decoding = 'async';
-              img.alt = `Galeria ExploRide – ${item.label}`;
+              img.alt = `Galeria ExploRide – ${caption}`;
 
               button.appendChild(img);
 
               const srText = document.createElement('span');
               srText.className = 'sr-only';
-              srText.textContent = `Powiększ zdjęcie: ${item.label}`;
+              srText.textContent = `Powiększ zdjęcie: ${caption}`;
               button.appendChild(srText);
 
               figure.appendChild(button);
