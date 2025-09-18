@@ -14,15 +14,72 @@
       height: 100%;
       scroll-behavior: smooth;
     }
+   :root {
+      --background-cycle-duration: 5000ms;
+      --background-fade-duration: 1200ms;
+    }
    body {
       height: 100%;
       margin: 0;
-      background: #111 url('background.jpg') no-repeat center 0;
+      background: #111 url('backgrounds/background1.jpg') no-repeat center 0;
       background-size: 300% 300%;
       color: #fff;
       font-family: 'Base02', Arial, Helvetica, sans-serif;
       text-align: center;
       overflow-x: hidden;
+      position: relative;
+    }
+    .background-rotator {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      background: #111;
+    }
+    .background-rotator__image {
+      position: absolute;
+      inset: 0;
+      background-repeat: no-repeat;
+      background-size: 300% 300%;
+      background-position: 50% 50%;
+      opacity: 0;
+      transform-origin: left bottom;
+      clip-path: circle(150% at 0% 100%);
+    }
+    @keyframes fadeFromCorner {
+      0% {
+        opacity: 0;
+        clip-path: circle(0% at 0% 100%);
+      }
+      100% {
+        opacity: 1;
+        clip-path: circle(150% at 0% 100%);
+      }
+    }
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes panRight {
+      0% {
+        background-position-x: 40%;
+      }
+      100% {
+        background-position-x: 60%;
+      }
+    }
+    @keyframes panLeft {
+      0% {
+        background-position-x: 60%;
+      }
+      100% {
+        background-position-x: 40%;
+      }
     }
     h1,
     h2,
