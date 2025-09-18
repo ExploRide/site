@@ -67,18 +67,18 @@
     }
     @keyframes panRight {
       0% {
-        background-position-x: 40%;
+        background-position-x: 47.5%;
       }
       100% {
-        background-position-x: 60%;
+        background-position-x: 52.5%;
       }
     }
     @keyframes panLeft {
       0% {
-        background-position-x: 60%;
+        background-position-x: 52.5%;
       }
       100% {
-        background-position-x: 40%;
+        background-position-x: 47.5%;
       }
     }
     h1,
