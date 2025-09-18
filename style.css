@@ -22,7 +22,7 @@
       height: 100%;
       margin: 0;
       background: #111 url('backgrounds/background1.jpg') no-repeat center center;
-      background-size: cover;
+      background-size: 130% auto;
       color: #fff;
       font-family: 'Base02', Arial, Helvetica, sans-serif;
       text-align: center;
@@ -41,7 +41,7 @@
       position: absolute;
       inset: 0;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: 130% auto;
       background-position: 50% 50%;
       opacity: 0;
       transform-origin: left bottom;
