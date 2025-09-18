@@ -1,10 +1,12 @@
 {
   "items": [
-    "gallery/1_fotele.jpg",
-    "gallery/2_toaletka.jpg",
-    "gallery/3_salon.jpg",
-    "gallery/4_kelen.jpg",
-    "gallery/5_radiokule.jpg",
-    "gallery/6_mech.jpg"
+    { "path": "gallery/1_fotele.jpg", "label": "Salon o świcie" },
+    { "path":  "gallery/2_toaletka.jpg", "label": "Górska chata" },
+    { "path":      "gallery/3_salon.jpg", "label": "Górska chata" },
+      { "path":    "gallery/4_kelen.jpg", "label": "Górska chata" },
+      { "path":   "gallery/5_radiokule.jpg", "label": "Górska chata" },
+      { "path":  "gallery/6_mech.jpg", "label": "Górska chata" },
+    
   ]
 }
+
