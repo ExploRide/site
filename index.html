@@ -81,7 +81,7 @@
           forceReflow(layer);
 
           const fadePart = includeFade ? 'fadeFromCorner var(--background-fade-duration) ease forwards, ' : '';
-          layer.style.animation = `${fadePart}${panName} var(--background-cycle-duration) ease-in-out forwards`;
+          layer.style.animation = `${fadePart}${panName} var(--background-cycle-duration) linear forwards`;
         };
 
         const fadeOut = (layer) => {
