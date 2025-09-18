@@ -1,18 +1,32 @@
 {
   "items": [
     { "path": "gallery/1_fotele.jpg", "label": "Ośrodek z lat 80." },
+    
     { "path":  "gallery/2_toaletka.jpg", "label": "Biała toaletka" },
+    
     { "path":  "gallery/3_salon.jpg", "label": "Salon z żyrandolem" },
+    
     { "path":  "gallery/4_kelen.jpg", "label": "Zielona sterownia" },
+    
     { "path":  "gallery/5_radiokule.jpg", "label": "Stare radio i kule" },
+    
     { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+    
       { "path":  "gallery/7_zamek.jpg", "label": "07 zgłoś mech" },
-      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
-      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
-      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
-      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
-      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
-      { "path":  "gallery/6_mech.jpg", "label": "07 zgłoś mech" },
+    
+      { "path":  "gallery/8_szpital.jpg", "label": "07 zgłoś mech" },
+    
+      { "path":  "gallery/9_tv.jpg", "label": "07 zgłoś mech" },
+    
+      { "path":  "gallery/10_bialypokoj.jpg", "label": "07 zgłoś mech" },
+    
+      { "path":  "gallery/11_sukienka.jpg", "label": "07 zgłoś mech" },
+    
+      { "path":  "gallery/12_samoloty.jpg", "label": "07 zgłoś mech" },
+    
+      { "path":  "gallery/13_sztolniawagon.jpg", "label": "07 zgłoś mech" },
+    
+          { "path":  "gallery/14_labo.jpg", "label": "07 zgłoś mech" }
   ]
 }
 
