@@ -48,7 +48,7 @@
           'backgrounds/background5.jpg',
           'backgrounds/background6.jpg'
         ];
-        const cycleDuration = 5000;
+        const cycleDuration = 12000;
         const rotator = document.createElement('div');
         rotator.className = 'background-rotator';
 
@@ -66,14 +66,6 @@
 
         const forceReflow = (element) => {
           void element.offsetWidth;
-        };
-
-        const updateVerticalOffset = () => {
-          const offset = window.scrollY * 0.2;
-          const value = `calc(50% - ${offset}px)`;
-          layers.forEach((layer) => {
-            layer.style.backgroundPositionY = value;
-          });
         };
 
         const playPan = (layer, direction, includeFade) => {
@@ -136,7 +128,6 @@
           const layer = layers[activeIndex];
           layer.style.backgroundImage = `url('${backgrounds[imageIndex]}')`;
           playPan(layer, moveRight ? 'right' : 'left', true);
-          updateVerticalOffset();
           moveRight = !moveRight;
         };
 
@@ -145,7 +136,6 @@
           imageIndex = (imageIndex + 1) % backgrounds.length;
           nextLayer.style.backgroundImage = `url('${backgrounds[imageIndex]}')`;
           playPan(nextLayer, moveRight ? 'right' : 'left', true);
-          updateVerticalOffset();
 
           const currentLayer = layers[activeIndex];
           fadeOut(currentLayer);
@@ -156,7 +146,6 @@
 
         showInitial();
         setInterval(rotateBackground, cycleDuration);
-        document.addEventListener('scroll', updateVerticalOffset, { passive: true });
       });
     </script>
   </head>

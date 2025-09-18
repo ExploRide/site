@@ -15,14 +15,14 @@
       scroll-behavior: smooth;
     }
    :root {
-      --background-cycle-duration: 5000ms;
+      --background-cycle-duration: 12000ms;
       --background-fade-duration: 1200ms;
     }
    body {
       height: 100%;
       margin: 0;
-      background: #111 url('backgrounds/background1.jpg') no-repeat center 0;
-      background-size: 300% 300%;
+      background: #111 url('backgrounds/background1.jpg') no-repeat center center;
+      background-size: cover;
       color: #fff;
       font-family: 'Base02', Arial, Helvetica, sans-serif;
       text-align: center;
@@ -41,7 +41,7 @@
       position: absolute;
       inset: 0;
       background-repeat: no-repeat;
-      background-size: 300% 300%;
+      background-size: cover;
       background-position: 50% 50%;
       opacity: 0;
       transform-origin: left bottom;
@@ -67,18 +67,18 @@
     }
     @keyframes panRight {
       0% {
-        background-position-x: 47.5%;
+        background-position-x: 40%;
       }
       100% {
-        background-position-x: 52.5%;
+        background-position-x: 60%;
       }
     }
     @keyframes panLeft {
       0% {
-        background-position-x: 52.5%;
+        background-position-x: 60%;
       }
       100% {
-        background-position-x: 47.5%;
+        background-position-x: 40%;
       }
     }
     h1,
