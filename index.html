@@ -37,9 +37,124 @@
 
 
     <script>
-      document.addEventListener('scroll', () => {
-        const y = window.scrollY * 0.2;
-        document.body.style.backgroundPosition = `center ${-y}px`;
+      document.addEventListener('DOMContentLoaded', () => {
+        const backgrounds = [
+          'backgrounds/background1.jpg',
+          'backgrounds/background2.jpg',
+          'backgrounds/background3.jpg',
+          'backgrounds/background4.jpg',
+          'backgrounds/background5.jpg',
+          'backgrounds/background6.jpg'
+        ];
+        const cycleDuration = 5000;
+        const rotator = document.createElement('div');
+        rotator.className = 'background-rotator';
+
+        const layers = [document.createElement('div'), document.createElement('div')];
+        layers.forEach((layer) => {
+          layer.className = 'background-rotator__image';
+          rotator.appendChild(layer);
+        });
+
+        document.body.prepend(rotator);
+
+        let activeIndex = 0;
+        let imageIndex = 0;
+        let moveRight = true;
+
+        const forceReflow = (element) => {
+          void element.offsetWidth;
+        };
+
+        const updateVerticalOffset = () => {
+          const offset = window.scrollY * 0.2;
+          const value = `calc(50% - ${offset}px)`;
+          layers.forEach((layer) => {
+            layer.style.backgroundPositionY = value;
+          });
+        };
+
+        const playPan = (layer, direction, includeFade) => {
+          const panName = direction === 'right' ? 'panRight' : 'panLeft';
+          const startX = direction === 'right' ? '40%' : '60%';
+          const finalX = direction === 'right' ? '60%' : '40%';
+
+          layer.dataset.direction = direction;
+          layer.dataset.finalX = finalX;
+          layer.style.zIndex = 2;
+          layer.style.backgroundPositionX = startX;
+          layer.style.animation = 'none';
+          forceReflow(layer);
+
+          const fadePart = includeFade ? 'fadeFromCorner var(--background-fade-duration) ease forwards, ' : '';
+          layer.style.animation = `${fadePart}${panName} var(--background-cycle-duration) ease-in-out forwards`;
+        };
+
+        const fadeOut = (layer) => {
+          if (!layer) {
+            return;
+          }
+
+          const finalX = layer.dataset.finalX || (layer.dataset.direction === 'right' ? '60%' : '40%');
+          if (finalX) {
+            layer.style.backgroundPositionX = finalX;
+          }
+
+          layer.style.zIndex = 1;
+          layer.style.animation = 'none';
+          forceReflow(layer);
+          layer.style.animation = 'fadeOut var(--background-fade-duration) ease forwards';
+        };
+
+        layers.forEach((layer) => {
+          layer.addEventListener('animationend', (event) => {
+            if (event.animationName === 'fadeOut') {
+              layer.style.opacity = 0;
+              layer.style.animation = '';
+              layer.style.zIndex = '';
+            }
+
+            if (event.animationName === 'fadeFromCorner') {
+              layer.style.opacity = 1;
+            }
+
+            if (event.animationName === 'panRight') {
+              layer.dataset.finalX = '60%';
+              layer.style.backgroundPositionX = '60%';
+            }
+
+            if (event.animationName === 'panLeft') {
+              layer.dataset.finalX = '40%';
+              layer.style.backgroundPositionX = '40%';
+            }
+          });
+        });
+
+        const showInitial = () => {
+          const layer = layers[activeIndex];
+          layer.style.backgroundImage = `url('${backgrounds[imageIndex]}')`;
+          playPan(layer, moveRight ? 'right' : 'left', true);
+          updateVerticalOffset();
+          moveRight = !moveRight;
+        };
+
+        const rotateBackground = () => {
+          const nextLayer = layers[1 - activeIndex];
+          imageIndex = (imageIndex + 1) % backgrounds.length;
+          nextLayer.style.backgroundImage = `url('${backgrounds[imageIndex]}')`;
+          playPan(nextLayer, moveRight ? 'right' : 'left', true);
+          updateVerticalOffset();
+
+          const currentLayer = layers[activeIndex];
+          fadeOut(currentLayer);
+
+          activeIndex = 1 - activeIndex;
+          moveRight = !moveRight;
+        };
+
+        showInitial();
+        setInterval(rotateBackground, cycleDuration);
+        document.addEventListener('scroll', updateVerticalOffset, { passive: true });
       });
     </script>
   </head>
