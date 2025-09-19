@@ -594,91 +594,16 @@
 
   <script>
     (function () {
-      const FB_POSTS_API = "https://fb-feed.eksplorajder.workers.dev/api/fb/posts";
       const FB_PAGE_ID = "145171925888318";
-      const FACEBOOK_PAGE_URL = "https://www.facebook.com/ExploRideURBEX";
-      const WORKER_URL = (() => {
-        try {
-          return new URL(FB_POSTS_API).origin;
-        } catch (err) {
-          return "";
-        }
-      })();
-      const FB_OEMBED_API = (() => {
-        if (WORKER_URL) {
-          return `${WORKER_URL}/api/fb/oembed`;
-        }
-        try {
-          return new URL("/api/fb/oembed", FB_POSTS_API).toString();
-        } catch (err) {
-          return "";
-        }
-      })();
-
-      function waitForFacebookSDK(timeoutMs = 5000) {
-        return new Promise(resolve => {
-          let resolved = false;
-
-          const finish = () => {
-            if (resolved) {
-              return true;
-            }
-            if (window.FB && typeof window.FB.XFBML?.parse === "function") {
-              resolved = true;
-              resolve(window.FB);
-              return true;
-            }
-            return false;
-          };
-
-          if (finish()) {
-            return;
-          }
-
-          let timeoutId = null;
-          if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
-            timeoutId = setTimeout(() => {
-              if (!resolved) {
-                resolved = true;
-                resolve(null);
-              }
-            }, timeoutMs);
-          }
-
-          const previousInit = window.fbAsyncInit;
-          window.fbAsyncInit = function () {
-            if (typeof previousInit === "function") {
-              try {
-                previousInit();
-              } catch (err) {
-                console.error("fbAsyncInit error", err);
-              }
-            }
-            if (timeoutId) {
-              clearTimeout(timeoutId);
-            }
-            finish();
-          };
-        });
-      }
-
-      function setHostContent(host, html) {
-        if (host) {
-          host.innerHTML = html;
-        }
-      }
-
-      function fallbackMarkup() {
-        return `
-          <div class="fb-embed-fallback">
-            <a class="btn" target="_blank" rel="noopener" href="${FACEBOOK_PAGE_URL}">Zobacz najnowszy post na Facebooku</a>
-          </div>
-        `;
-      }
-
-      function loadingMarkup() {
-        return '<div class="fb-embed-loading">Ładowanie posta…</div>';
-      }
+      const FB_POSTS_API = "https://fb-feed.eksplorajder.workers.dev/api/fb/posts";
+      const FB_OEMBED_API = "https://fb-feed.eksplorajder.workers.dev/api/fb/oembed";
+      const FACEBOOK_PAGE_URL = `https://www.facebook.com/${FB_PAGE_ID}`;
+      const LOADING_MARKUP = '<div class="fb-embed-loading">Ładowanie posta…</div>';
+      const FALLBACK_MARKUP = `
+        <div class="fb-embed-fallback">
+          <a class="btn" target="_blank" rel="noopener" href="${FACEBOOK_PAGE_URL}">Zobacz najnowszy post na Facebooku</a>
+        </div>
+      `;
 
       function normalizePermalink(post) {
         if (!post) {
@@ -700,76 +625,63 @@
         return post?.is_published !== false && !!normalizePermalink(post);
       }
 
-      function pickFirstRenderable(items) {
-        return Array.isArray(items) ? items.find(isRenderable) || null : null;
-      }
-
-      function isVideoPermalink(permalink) {
-        return /\/(videos|reel)\//i.test(String(permalink || ""));
-      }
-
       async function fetchLatestPublishedPost() {
         const url = new URL(FB_POSTS_API);
         url.searchParams.set("page_id", FB_PAGE_ID);
         url.searchParams.set("limit", "10");
 
-        const response = await fetch(url.toString(), { credentials: "omit" });
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
+        const res = await fetch(url.toString(), { credentials: "omit" });
+        if (!res.ok) {
+          throw new Error(`posts HTTP ${res.status}`);
         }
 
-        const data = await response.json();
+        const data = await res.json().catch(() => ({}));
         const items = Array.isArray(data?.items) ? data.items : [];
-        return pickFirstRenderable(items);
+        return items.find(isRenderable) || null;
       }
 
       async function fetchOEmbedHtml(permalink) {
-        if (!FB_OEMBED_API) {
-          throw new Error("Brak endpointu oEmbed");
+        const u = new URL(FB_OEMBED_API);
+        u.searchParams.set("url", permalink);
+        u.searchParams.set("maxwidth", "780");
+        u.searchParams.set("omitscript", "true");
+
+        const res = await fetch(u.toString(), { credentials: "omit" });
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`oEmbed HTTP ${res.status}: ${txt || "no body"}`);
         }
 
-        const targetPermalink = normalizePermalink({ permalink_url: permalink });
-        if (!targetPermalink) {
-          throw new Error("Brak permalinku do oEmbed");
+        const data = await res.json().catch(() => ({}));
+        if (data?.error) {
+          throw new Error(`oEmbed: ${data.error}`);
         }
-
-        let requestUrl;
-        try {
-          requestUrl = new URL(FB_OEMBED_API);
-        } catch (err) {
-          throw new Error("Niepoprawny adres oEmbed");
+        if (!data?.html) {
+          throw new Error("oEmbed: empty html");
         }
-
-        requestUrl.searchParams.set("page_id", FB_PAGE_ID);
-        requestUrl.searchParams.set("url", targetPermalink);
-        requestUrl.searchParams.set("maxwidth", "780");
-        requestUrl.searchParams.set("omitscript", "true");
-
-        const response = await fetch(requestUrl.toString(), { credentials: "omit" });
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-        const html = typeof data?.html === "string" ? data.html : "";
-        if (!html) {
-          throw new Error("Brak treści oEmbed");
-        }
-
-        return html;
+        return data.html;
       }
 
-      function buildXfbmlMarkup(permalink) {
-        const cleanUrl = normalizePermalink({ permalink_url: permalink });
-        if (!cleanUrl) {
-          return "";
-        }
+      function waitForFacebookSDK(timeoutMs = 8000) {
+        return new Promise(resolve => {
+          const t0 = Date.now();
+          (function poll() {
+            const fb = window.FB;
+            if (fb && fb.XFBML && typeof fb.XFBML.parse === "function") {
+              return resolve(fb);
+            }
+            if (Date.now() - t0 > timeoutMs) {
+              return resolve(null);
+            }
+            setTimeout(poll, 150);
+          })();
+        });
+      }
 
-        if (isVideoPermalink(cleanUrl)) {
-          return `<div class="fb-video" data-href="${cleanUrl}" data-width="100%" data-show-text="true" data-allowfullscreen="true"></div>`;
+      function setHostContent(el, html) {
+        if (el) {
+          el.innerHTML = html;
         }
-
-        return `<div class="fb-post" data-href="${cleanUrl}" data-width="100%" data-show-text="true"></div>`;
       }
 
       async function renderLatestFbEmbed(hostId = "fb-latest-embed") {
@@ -778,52 +690,30 @@
           return;
         }
 
-        setHostContent(host, loadingMarkup());
+        setHostContent(host, LOADING_MARKUP);
 
         try {
-          const latest = await fetchLatestPublishedPost();
-          if (!latest) {
-            throw new Error("Brak renderowalnego posta");
+          const post = await fetchLatestPublishedPost();
+          if (!post) {
+            throw new Error("Brak publicznych postów");
           }
 
-          const permalink = normalizePermalink(latest);
+          const permalink = normalizePermalink(post);
           if (!permalink) {
-            throw new Error("Brak poprawnego odnośnika");
+            throw new Error("Brak permalinku");
           }
 
-          try {
-            const html = await fetchOEmbedHtml(permalink);
-            setHostContent(host, html);
+          const html = await fetchOEmbedHtml(permalink);
+          setHostContent(host, html);
 
-            // KLUCZOWE: oEmbed bez skryptu wymaga ręcznego parsowania XFBML
-            const FBSDK = await waitForFacebookSDK(7000);
-            if (FBSDK && typeof FBSDK.XFBML?.parse === "function") {
-              FBSDK.XFBML.parse(host);
-              return; // mamy działający embed
-            }
-
-            // awaryjnie spróbujmy render XFBML niżej (zrobisz to już w istniejącym fallbacku)
-            console.warn("FB SDK niegotowe po oEmbed – lecę fallbackiem");
-          } catch (oEmbedErr) {
-            console.warn("FB oEmbed error", oEmbedErr);
+          const FBSDK = await waitForFacebookSDK();
+          if (!FBSDK || typeof FBSDK.XFBML?.parse !== "function") {
+            throw new Error("FB SDK unavailable");
           }
-
-          const markup = buildXfbmlMarkup(permalink);
-          if (!markup) {
-            throw new Error("Brak danych do renderowania XFBML");
-          }
-
-          setHostContent(host, markup);
-          const FB = await waitForFacebookSDK();
-          if (FB && typeof FB.XFBML?.parse === "function") {
-            FB.XFBML.parse(host);
-            return;
-          }
-
-          throw new Error("FB SDK unavailable");
-        } catch (err) {
-          console.warn("FB embed error", err);
-          setHostContent(host, fallbackMarkup());
+          FBSDK.XFBML.parse(host);
+        } catch (e) {
+          console.error("FB embed error:", e);
+          setHostContent(host, FALLBACK_MARKUP);
         }
       }
 
