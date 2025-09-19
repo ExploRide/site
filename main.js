@@ -11,14 +11,41 @@
       return;
     }
 
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+    const isDesktop = () => mediaQuery.matches;
+
+    const updateNavHeight = () => {
+      if (isDesktop()) {
+        nav.style.removeProperty('--top-nav-expanded-height');
+        return;
+      }
+
+      const navHeight = nav.scrollHeight;
+      nav.style.setProperty('--top-nav-expanded-height', `${navHeight}px`);
+    };
+
+    const setNavAriaHidden = (hidden) => {
+      if (isDesktop()) {
+        nav.removeAttribute('aria-hidden');
+        return;
+      }
+
+      nav.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+    };
+
     const closeNav = () => {
+      updateNavHeight();
       header.classList.remove('is-nav-open');
       toggle.setAttribute('aria-expanded', 'false');
+      setNavAriaHidden(true);
     };
 
     const openNav = () => {
+      updateNavHeight();
       header.classList.add('is-nav-open');
       toggle.setAttribute('aria-expanded', 'true');
+      setNavAriaHidden(false);
     };
 
     const toggleNav = () => {
@@ -48,10 +75,19 @@
       }
     });
 
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
     const handleMediaChange = (event) => {
+      updateNavHeight();
+
       if (event.matches) {
         closeNav();
+      } else if (!header.classList.contains('is-nav-open')) {
+        setNavAriaHidden(true);
+      }
+    };
+
+    const handleResize = () => {
+      if (!isDesktop()) {
+        updateNavHeight();
       }
     };
 
@@ -59,6 +95,12 @@
       mediaQuery.addEventListener('change', handleMediaChange);
     } else if (typeof mediaQuery.addListener === 'function') {
       mediaQuery.addListener(handleMediaChange);
+    }
+    window.addEventListener('resize', handleResize);
+
+    updateNavHeight();
+    if (!isDesktop()) {
+      setNavAriaHidden(header.classList.contains('is-nav-open') ? false : true);
     }
   }
 
