@@ -7,7 +7,7 @@ const ALLOWED_ORIGINS = new Set([
 
 function corsHeaders(origin) {
   const h = new Headers();
-  if (origin && ALLOWED_ORIGINS.has(origin)) h.set('Access-Control-Allow-Origin', origin);
+ h.set('Access-Control-Allow-Origin', (origin && ALLOWED_ORIGINS.has(origin)) ? origin : '*');
   h.set('Vary', 'Origin');
   h.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
   h.set('Access-Control-Allow-Headers', 'Content-Type');
