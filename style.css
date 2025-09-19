@@ -124,6 +124,56 @@
 }
 
     header .logo { height: 48px; }
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .nav-toggle__bars {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nav-toggle__bars span {
+      width: 22px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .nav-toggle__label {
+      font-size: 0.9em;
+    }
+    .nav-toggle:hover,
+    .nav-toggle:focus-visible {
+      background: #e50914;
+      border-color: #e50914;
+      color: #fff;
+    }
+    header.is-nav-open .nav-toggle {
+      background: #e50914;
+      border-color: #e50914;
+      color: #fff;
+    }
+    header.is-nav-open .nav-toggle__bars span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    header.is-nav-open .nav-toggle__bars span:nth-child(2) {
+      opacity: 0;
+    }
+    header.is-nav-open .nav-toggle__bars span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
     .top-nav {
       display: flex;
       flex-wrap: wrap;
@@ -194,6 +244,33 @@
       background: rgba(255, 255, 255, 0.05);
       border-color: rgba(255, 255, 255, 0.08);
       color: #fff;
+    }
+    @media (max-width: 767px) {
+      header {
+        align-items: stretch;
+      }
+      .nav-toggle {
+        display: inline-flex;
+        align-self: flex-end;
+      }
+      .top-nav {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 10px;
+        padding-top: 12px;
+        margin-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        background: transparent;
+      }
+      header.is-nav-open .top-nav {
+        display: flex;
+      }
+      .top-nav .nav-link {
+        justify-content: center;
+        width: 100%;
+      }
     }
     @media (min-width: 768px) {
       header {

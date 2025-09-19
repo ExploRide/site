@@ -6,6 +6,7 @@
   <title>O nas – ExploRide</title>
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
   <script>
     document.addEventListener('scroll', () => {
       const y = window.scrollY * 0.2;
@@ -19,7 +20,15 @@
       <img src="logo.png" alt="ExploRide logo" class="logo">
       <span class="brand-name">EXPLORIDE.PL</span>
     </a>
-    <nav class="top-nav" aria-label="Główna nawigacja">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="top-nav" id="main-navigation" aria-label="Główna nawigacja">
       <a class="nav-link nav-link--about" href="onas.html" aria-current="page">O nas</a>
       <a class="nav-link nav-link--home" href="index.html#filmy">Filmy</a>
       <a class="nav-link nav-link--gallery" href="galeria.html">Galeria</a>
