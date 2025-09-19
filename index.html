@@ -205,41 +205,50 @@
     <hr class="divider" />
 
   <div class="video-switcher is-urbex" id="filmy">
-    <div class="video-switcher__viewport">
+    <div class="player-wrap">
+      <h2>Najnowszy film</h2>
+      <div
+        class="video-switcher__controls"
+        id="video-switcher-controls"
+        role="tablist"
+        aria-label="Wybierz kategorię filmów"
+      >
+        <button
+          class="video-toggle is-active"
+          type="button"
+          role="tab"
+          data-video-target="urbex"
+          aria-controls="urbex-section"
+          aria-selected="true"
+        >
+          <span class="video-toggle__label">URBEX</span>
+        </button>
+        <button
+          class="video-toggle"
+          type="button"
+          role="tab"
+          data-video-target="travel"
+          aria-controls="travel-section"
+          aria-selected="false"
+        >
+          <span class="video-toggle__label">PODRÓŻE</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="video-switcher__viewport video-switcher__viewport--player">
       <div class="video-switcher__slider">
-        <section class="video-panel video-panel--urbex" id="urbex-section" aria-label="Filmy urbex" tabindex="-1">
+        <section
+          class="video-panel video-panel--urbex"
+          id="urbex-section"
+          aria-label="Filmy urbex"
+          tabindex="-1"
+          data-video-panel="urbex"
+          data-panel-role="player"
+          aria-hidden="false"
+        >
           <div class="video-panel__inner">
             <div class="player-wrap">
-              <h2>Najnowszy film</h2>
-              <div class="video-switcher__controls-slot">
-                <div
-                  class="video-switcher__controls"
-                  id="video-switcher-controls"
-                  role="tablist"
-                  aria-label="Wybierz kategorię filmów"
-                >
-                  <button
-                    class="video-toggle is-active"
-                    type="button"
-                    role="tab"
-                    data-video-target="urbex"
-                    aria-controls="urbex-section"
-                    aria-selected="true"
-                  >
-                    <span class="video-toggle__label">URBEX</span>
-                  </button>
-                  <button
-                    class="video-toggle"
-                    type="button"
-                    role="tab"
-                    data-video-target="travel"
-                    aria-controls="travel-section"
-                    aria-selected="false"
-                  >
-                    <span class="video-toggle__label">PODRÓŻE</span>
-                  </button>
-                </div>
-              </div>
               <div class="ratio">
                 <!-- Player playlisty (YouTube sam odtworzy najnowszy jako pierwszy) -->
                 <iframe
@@ -250,12 +259,49 @@
                 ></iframe>
               </div>
             </div>
+          </div>
+        </section>
+        <section
+          class="video-panel video-panel--travel"
+          id="travel-section"
+          aria-label="Filmy z podróży"
+          tabindex="-1"
+          data-video-panel="travel"
+          data-panel-role="player"
+          hidden
+          aria-hidden="true"
+        >
+          <div class="video-panel__inner">
+            <div class="player-wrap">
+              <div class="ratio">
+                <iframe
+                  src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq"
+                  title="YouTube Playlist - ExploRide Podróże"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
 
-            <hr class="divider" />
+    <hr class="divider" />
 
-            <h2>Zobacz więcej filmów</h2>
-            <p class="lead"></p>
+    <h2>Zobacz więcej filmów</h2>
+    <p class="lead"></p>
 
+    <div class="video-switcher__viewport video-switcher__viewport--playlist">
+      <div class="video-switcher__slider">
+        <section
+          class="video-panel video-panel--urbex"
+          aria-label="Lista filmów urbex"
+          data-video-panel="urbex"
+          data-panel-role="playlist"
+          aria-hidden="false"
+        >
+          <div class="video-panel__inner">
             <div class="center">
               <div id="urbex-loader" class="loader">Ładowanie listy filmów…</div>
               <div id="urbex-fallback" class="fallback" style="display:none;">
@@ -272,26 +318,15 @@
             </div>
           </div>
         </section>
-        <section class="video-panel video-panel--travel" id="travel-section" aria-label="Filmy z podróży" tabindex="-1">
+        <section
+          class="video-panel video-panel--travel"
+          aria-label="Lista filmów z podróży"
+          data-video-panel="travel"
+          data-panel-role="playlist"
+          hidden
+          aria-hidden="true"
+        >
           <div class="video-panel__inner">
-            <div class="player-wrap">
-              <h2>Najnowszy film</h2>
-              <div class="video-switcher__controls-slot"></div>
-              <div class="ratio">
-                <iframe
-                  src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq"
-                  title="YouTube Playlist - ExploRide Podróże"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-              </div>
-            </div>
-
-            <hr class="divider" />
-
-            <h2>Zobacz więcej filmów</h2>
-            <p class="lead"></p>
-
             <div class="center">
               <div id="travel-loader" class="loader">Ładowanie listy filmów…</div>
               <div id="travel-fallback" class="fallback" style="display:none;">
@@ -965,6 +1000,19 @@
         travel: document.getElementById("travel-section"),
       };
 
+      const panels = Array.from(switcher.querySelectorAll("[data-video-panel]"));
+      const panelsByTarget = panels.reduce((acc, panel) => {
+        const target = panel?.dataset?.videoPanel;
+        if (!target) {
+          return acc;
+        }
+        if (!acc[target]) {
+          acc[target] = [];
+        }
+        acc[target].push(panel);
+        return acc;
+      }, {});
+
       const controls = document.getElementById("video-switcher-controls");
       const toggleButtons = controls ? Array.from(controls.querySelectorAll("[data-video-target]")) : [];
       const togglesByTarget = toggleButtons.reduce((acc, btn) => {
@@ -978,26 +1026,20 @@
         acc[target].push(btn);
         return acc;
       }, {});
-      const controlSlots = {
-        urbex: sections.urbex?.querySelector(".video-switcher__controls-slot"),
-        travel: sections.travel?.querySelector(".video-switcher__controls-slot"),
-      };
 
       function updateUIForSection(name) {
         const isTravel = name === "travel";
         switcher.classList.toggle("is-travel", isTravel);
         switcher.classList.toggle("is-urbex", !isTravel);
 
-        if (sections.travel) {
-          sections.travel.setAttribute("aria-hidden", isTravel ? "false" : "true");
-        }
-        if (sections.urbex) {
-          sections.urbex.setAttribute("aria-hidden", isTravel ? "true" : "false");
-        }
-
-        if (controls && controlSlots[name] && controls.parentElement !== controlSlots[name]) {
-          controlSlots[name].appendChild(controls);
-        }
+        Object.entries(panelsByTarget).forEach(([targetName, panelList]) => {
+          const isActive = targetName === name;
+          panelList.forEach((panel) => {
+            if (!panel) return;
+            panel.toggleAttribute("hidden", !isActive);
+            panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+          });
+        });
 
         Object.entries(togglesByTarget).forEach(([targetName, buttons]) => {
           const isActive = targetName === name;
@@ -1005,6 +1047,7 @@
             if (!btn) return;
             btn.classList.toggle("is-active", isActive);
             btn.setAttribute("aria-selected", isActive ? "true" : "false");
+            btn.setAttribute("aria-hidden", "false");
           });
         });
       }
