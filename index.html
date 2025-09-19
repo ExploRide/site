@@ -211,6 +211,35 @@
           <div class="video-panel__inner">
             <div class="player-wrap">
               <h2>Najnowszy film</h2>
+              <div class="video-switcher__controls-slot">
+                <div
+                  class="video-switcher__controls"
+                  id="video-switcher-controls"
+                  role="tablist"
+                  aria-label="Wybierz kategorię filmów"
+                >
+                  <button
+                    class="video-toggle is-active"
+                    type="button"
+                    role="tab"
+                    data-video-target="urbex"
+                    aria-controls="urbex-section"
+                    aria-selected="true"
+                  >
+                    <span class="video-toggle__label">URBEX</span>
+                  </button>
+                  <button
+                    class="video-toggle"
+                    type="button"
+                    role="tab"
+                    data-video-target="travel"
+                    aria-controls="travel-section"
+                    aria-selected="false"
+                  >
+                    <span class="video-toggle__label">PODRÓŻE</span>
+                  </button>
+                </div>
+              </div>
               <div class="ratio">
                 <!-- Player playlisty (YouTube sam odtworzy najnowszy jako pierwszy) -->
                 <iframe
@@ -247,6 +276,7 @@
           <div class="video-panel__inner">
             <div class="player-wrap">
               <h2>Najnowszy film</h2>
+              <div class="video-switcher__controls-slot"></div>
               <div class="ratio">
                 <iframe
                   src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq"
@@ -280,15 +310,6 @@
         </section>
       </div>
     </div>
-    <button id="toggle-travel" class="video-toggle video-toggle--travel" type="button" aria-controls="travel-section" aria-expanded="false">
-      <span class="video-toggle__label">PODRÓŻE</span>
-      <span class="video-toggle__arrow" aria-hidden="true">&#9654;</span>
-    </button>
-    <button id="toggle-urbex" class="video-toggle video-toggle--urbex" type="button" aria-controls="urbex-section" aria-expanded="true">
-      <span class="video-toggle__arrow" aria-hidden="true">&#9664;</span>
-      <span class="video-toggle__label">URBEX</span>
-      
-    </button>
   </div>
 
     <hr class="divider" />
@@ -939,25 +960,57 @@
       const switcher = document.querySelector(".video-switcher");
       if (!switcher) return;
 
-      const toggleTravel = document.getElementById("toggle-travel");
-      const toggleUrbex = document.getElementById("toggle-urbex");
       const sections = {
         urbex: document.getElementById("urbex-section"),
         travel: document.getElementById("travel-section"),
       };
 
-      function showSection(name, focusTarget) {
-        if (name === "travel") {
-          switcher.classList.add("is-travel");
-          switcher.classList.remove("is-urbex");
-          toggleTravel?.setAttribute("aria-expanded", "true");
-          toggleUrbex?.setAttribute("aria-expanded", "false");
-        } else {
-          switcher.classList.add("is-urbex");
-          switcher.classList.remove("is-travel");
-          toggleTravel?.setAttribute("aria-expanded", "false");
-          toggleUrbex?.setAttribute("aria-expanded", "true");
+      const controls = document.getElementById("video-switcher-controls");
+      const toggleButtons = controls ? Array.from(controls.querySelectorAll("[data-video-target]")) : [];
+      const togglesByTarget = toggleButtons.reduce((acc, btn) => {
+        const target = btn?.dataset?.videoTarget;
+        if (!target) {
+          return acc;
         }
+        if (!acc[target]) {
+          acc[target] = [];
+        }
+        acc[target].push(btn);
+        return acc;
+      }, {});
+      const controlSlots = {
+        urbex: sections.urbex?.querySelector(".video-switcher__controls-slot"),
+        travel: sections.travel?.querySelector(".video-switcher__controls-slot"),
+      };
+
+      function updateUIForSection(name) {
+        const isTravel = name === "travel";
+        switcher.classList.toggle("is-travel", isTravel);
+        switcher.classList.toggle("is-urbex", !isTravel);
+
+        if (sections.travel) {
+          sections.travel.setAttribute("aria-hidden", isTravel ? "false" : "true");
+        }
+        if (sections.urbex) {
+          sections.urbex.setAttribute("aria-hidden", isTravel ? "true" : "false");
+        }
+
+        if (controls && controlSlots[name] && controls.parentElement !== controlSlots[name]) {
+          controlSlots[name].appendChild(controls);
+        }
+
+        Object.entries(togglesByTarget).forEach(([targetName, buttons]) => {
+          const isActive = targetName === name;
+          buttons.forEach((btn) => {
+            if (!btn) return;
+            btn.classList.toggle("is-active", isActive);
+            btn.setAttribute("aria-selected", isActive ? "true" : "false");
+          });
+        });
+      }
+
+      function showSection(name, focusTarget) {
+        updateUIForSection(name);
 
         const target = sections[name];
         if (focusTarget && target) {
@@ -969,8 +1022,12 @@
         }
       }
 
-      toggleTravel?.addEventListener("click", () => showSection("travel", true));
-      toggleUrbex?.addEventListener("click", () => showSection("urbex", true));
+      toggleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.videoTarget === "travel" ? "travel" : "urbex";
+          showSection(target, true);
+        });
+      });
 
       showSection("urbex", false);
     }
