@@ -1027,6 +1027,8 @@
         return acc;
       }, {});
 
+      const sliders = Array.from(switcher.querySelectorAll(".video-switcher__slider"));
+
       function updateUIForSection(name) {
         const isTravel = name === "travel";
         switcher.classList.toggle("is-travel", isTravel);
@@ -1036,8 +1038,10 @@
           const isActive = targetName === name;
           panelList.forEach((panel) => {
             if (!panel) return;
-            panel.toggleAttribute("hidden", !isActive);
+            panel.removeAttribute("hidden");
             panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+            panel.classList.toggle("is-active", isActive);
+            panel.classList.toggle("is-inactive", !isActive);
           });
         });
 
@@ -1049,6 +1053,12 @@
             btn.setAttribute("aria-selected", isActive ? "true" : "false");
             btn.setAttribute("aria-hidden", "false");
           });
+        });
+
+        const translateValue = isTravel ? "-100%" : "0%";
+        sliders.forEach((slider) => {
+          if (!slider) return;
+          slider.style.transform = `translateX(${translateValue})`;
         });
       }
 
