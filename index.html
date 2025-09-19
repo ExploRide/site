@@ -793,7 +793,16 @@
           try {
             const html = await fetchOEmbedHtml(permalink);
             setHostContent(host, html);
-            return;
+
+            // KLUCZOWE: oEmbed bez skryptu wymaga ręcznego parsowania XFBML
+            const FBSDK = await waitForFacebookSDK(7000);
+            if (FBSDK && typeof FBSDK.XFBML?.parse === "function") {
+              FBSDK.XFBML.parse(host);
+              return; // mamy działający embed
+            }
+
+            // awaryjnie spróbujmy render XFBML niżej (zrobisz to już w istniejącym fallbacku)
+            console.warn("FB SDK niegotowe po oEmbed – lecę fallbackiem");
           } catch (oEmbedErr) {
             console.warn("FB oEmbed error", oEmbedErr);
           }
