@@ -226,11 +226,9 @@ async function handleFbOEmbed(url, env) {
     fbUrl.searchParams.set('maxwidth', maxWidth);
   }
 
-  const omitScriptParam = url.searchParams.has('omitscript')
-    ? url.searchParams.get('omitscript') || 'true'
-    : 'true';
-  if (omitScriptParam) {
-    fbUrl.searchParams.set('omitscript', omitScriptParam);
+  const omitscript = url.searchParams.get('omitscript');
+  if (omitscript === 'true' || omitscript === 'false') {
+    fbUrl.searchParams.set('omitscript', omitscript);
   }
 
   const res = await fetch(fbUrl.toString());
