@@ -1,10 +1,12 @@
 const ALLOWED_ORIGIN = 'https://exploride.pl';
 
 function corsHeaders(origin) {
-  const allow = ALLOWED_ORIGIN === '*' || origin === ALLOWED_ORIGIN;
   const hdrs = new Headers();
-  if (allow) {
-    hdrs.set('Access-Control-Allow-Origin', origin);
+
+  if (ALLOWED_ORIGIN === '*') {
+    hdrs.set('Access-Control-Allow-Origin', '*');
+  } else {
+    hdrs.set('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
     hdrs.set('Vary', 'Origin');
   }
   hdrs.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
@@ -38,20 +40,18 @@ export default {
     const path = url.pathname;
 
     try {
-      if (path === '/api/ig/media') {
-        return await handleIgMedia(url, request, env);
+      switch (path) {
+        case '/api/ig/media':
+          return await handleIgMedia(url, request, env);
+        case '/api/fb/posts':
+          return await handleFbPosts(url, request, env);
+        case '/api/fb/oembed':
+          return await handleFbOEmbed(url, request, env);
+        case '/api/gallery/list':
+          return await handleGalleryList(request, env);
+        default:
+          return withCors(json({ error: 'Not found', path }, 404), request);
       }
-      if (path === '/api/fb/posts') {
-        return await handleFbPosts(url, request, env);
-      }
-      if (path === '/api/fb/oembed') {
-        return await handleFbOEmbed(url, request);
-      }
-      if (path === '/api/gallery/list') {
-        return await handleGalleryList(request, env);
-      }
-
-      return withCors(json({ error: 'Not found' }, 404), request);
     } catch (err) {
       console.error('Worker error', err);
       return withCors(json({ error: 'Internal error' }, 500), request);
@@ -217,38 +217,54 @@ async function getFbPosts(pageId, token, limit) {
   return mappedItems;
 }
 
-async function handleFbOEmbed(url, request) {
+async function handleFbOEmbed(url, request, env) {
   const target = url.searchParams.get('url');
-  const maxWidth = url.searchParams.get('maxwidth') || '';
+  const maxwidth = url.searchParams.get('maxwidth') || '';
   const omitscript = url.searchParams.get('omitscript');
 
   if (!target) {
-    return withCors(json({ html: '' }, 400), request);
+    return withCors(json({ error: 'Missing url' }, 400), request);
   }
 
   const isVideo = /\/(videos|reel)\//i.test(target);
-  const base = isVideo
-    ? 'https://www.facebook.com/plugins/video/oembed.json/'
-    : 'https://www.facebook.com/plugins/post/oembed.json/';
-
-  const fbUrl = new URL(base);
+  const endpoint = isVideo ? 'oembed_video' : 'oembed_post';
+  const fbUrl = new URL(`https://graph.facebook.com/v20.0/${endpoint}`);
   fbUrl.searchParams.set('url', target);
-  if (maxWidth) fbUrl.searchParams.set('maxwidth', maxWidth);
+  if (maxwidth) {
+    fbUrl.searchParams.set('maxwidth', maxwidth);
+  }
   if (omitscript === 'true' || omitscript === 'false') {
     fbUrl.searchParams.set('omitscript', omitscript);
   }
 
-  try {
-    const res = await fetch(fbUrl.toString());
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      const msg = data?.error?.message || `FB oEmbed ${res.status}`;
-      return withCors(json({ error: msg }, res.status), request);
-    }
-    return withCors(json({ html: data?.html || '' }), request);
-  } catch (e) {
-    return withCors(json({ error: String(e) }, 502), request);
+  const accessToken = env.FB_APP_ID && env.FB_APP_SECRET
+    ? `${env.FB_APP_ID}|${env.FB_APP_SECRET}`
+    : (env.FB_PAGE_TOKEN || '');
+  if (!accessToken) {
+    return withCors(json({ error: 'Missing access token for oEmbed' }, 500), request);
   }
+  fbUrl.searchParams.set('access_token', accessToken);
+
+  let res;
+  try {
+    res = await fetch(fbUrl.toString());
+  } catch (err) {
+    console.error('FB oEmbed fetch error', err);
+    return withCors(json({ error: 'FB oEmbed request failed' }, 502), request);
+  }
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = data?.error?.message || `FB oEmbed ${res.status}`;
+    return withCors(json({ error: msg }, res.status), request);
+  }
+
+  const html = data?.html || '';
+  if (!html) {
+    return withCors(json({ error: 'Empty html from oEmbed' }, 502), request);
+  }
+
+  return withCors(json({ html }), request);
 }
 
 function collectPostMedia(post) {
