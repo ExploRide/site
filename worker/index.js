@@ -17,6 +17,9 @@ export default {
       if (path === '/api/fb/posts') {
         return await handleFbPosts(url, env);
       }
+      if (path === '/api/fb/oembed') {
+        return await handleFbOEmbed(url);
+      }
       if (path === '/api/gallery/list') {
         return await handleGalleryList(env);
       }
@@ -173,26 +176,74 @@ async function getFbPosts(pageId, token, limit) {
     throw new Error(`FB posts fetch failed: ${message}`);
   }
 
-  const mappedItems = Array.isArray(data.data)
-    ? data.data.map(post => ({
-        id: post.id,
-        message: post.message || '',
-        permalink_url: post.permalink_url || '',
-        created_time: post.created_time || '',
-        is_published: post.is_published !== false,
-        media: collectPostMedia(post)
-      }))
-    : [];
+  const rawItems = Array.isArray(data.data) ? data.data : [];
+  const filtered = rawItems.filter(
+    post => post && post.is_published !== false && (post.permalink_url || post.permalink || post.url)
+  );
+  const limited = filtered.slice(0, Number(limit) || 1);
 
-  const items = mappedItems.filter(item => item.is_published !== false && item.permalink_url);
+  const mappedItems = limited.map(post => ({
+    id: post.id,
+    message: post.message || '',
+    permalink_url: post.permalink_url || post.permalink || post.url || '',
+    created_time: post.created_time || '',
+    is_published: post.is_published !== false,
+    media: collectPostMedia(post)
+  }));
 
-  items.sort((a, b) => {
+  mappedItems.sort((a, b) => {
     const ta = a.created_time ? Date.parse(a.created_time) : 0;
     const tb = b.created_time ? Date.parse(b.created_time) : 0;
     return (tb || 0) - (ta || 0);
   });
 
-  return items.slice(0, limit);
+  return mappedItems;
+}
+
+async function handleFbOEmbed(url) {
+  const permalink = url.searchParams.get('url');
+  if (!permalink) {
+    return withCors(json({ error: 'Missing url parameter' }, { status: 400 }));
+  }
+
+  const base = /\/(videos|reel)\//i.test(permalink)
+    ? 'https://www.facebook.com/plugins/video/oembed.json/'
+    : 'https://www.facebook.com/plugins/post/oembed.json/';
+
+  const fbUrl = new URL(base);
+  fbUrl.searchParams.set('url', permalink);
+
+  const maxWidth = url.searchParams.get('maxwidth');
+  if (maxWidth) {
+    fbUrl.searchParams.set('maxwidth', maxWidth);
+  }
+
+  const omitScriptParam = url.searchParams.has('omitscript')
+    ? url.searchParams.get('omitscript') || 'true'
+    : 'true';
+  if (omitScriptParam) {
+    fbUrl.searchParams.set('omitscript', omitScriptParam);
+  }
+
+  const res = await fetch(fbUrl.toString());
+  let data = {};
+  try {
+    data = await res.json();
+  } catch (err) {
+    console.error('FB oEmbed JSON parse error', err);
+  }
+
+  if (!res.ok) {
+    const message = data?.error?.message || `Unexpected status ${res.status}`;
+    return withCors(json({ error: message }, { status: res.status || 502 }));
+  }
+
+  const html = typeof data?.html === 'string' ? data.html : '';
+  if (!html) {
+    return withCors(json({ error: 'Missing html content' }, { status: 502 }));
+  }
+
+  return withCors(json({ html }));
 }
 
 function collectPostMedia(post) {
