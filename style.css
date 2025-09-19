@@ -255,12 +255,16 @@
       padding: 0 clamp(28px, 6vw, 60px);
     }
     .video-switcher__controls {
+      --switcher-gap: 8px;
+      --switcher-padding-x: 6px;
+      --switcher-padding-y: 6px;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: var(--switcher-gap);
       margin: 14px auto 0;
-      padding: 6px;
+      padding: var(--switcher-padding-y) var(--switcher-padding-x);
       width: min(420px, 100%);
       border-radius: 999px;
       border: 1px solid rgba(229, 9, 20, 0.35);
@@ -269,7 +273,31 @@
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
     }
+    .video-switcher__highlight {
+      position: absolute;
+      z-index: 0;
+      top: var(--switcher-padding-y);
+      bottom: var(--switcher-padding-y);
+      left: var(--switcher-padding-x);
+      width: calc((100% - (var(--switcher-padding-x) * 2) - var(--switcher-gap)) / 2);
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e50914, #ff3b6a);
+      box-shadow: 0 12px 26px rgba(229, 9, 20, 0.45);
+      pointer-events: none;
+      transform: translateX(0);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .video-switcher.is-travel .video-switcher__highlight {
+      transform: translateX(calc(100% + var(--switcher-gap)));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .video-switcher__highlight {
+        transition: none;
+      }
+    }
     .video-toggle {
+      position: relative;
+      z-index: 1;
       flex: 1 1 0;
       min-width: 0;
       display: inline-flex;
@@ -296,9 +324,7 @@
       background: rgba(229, 9, 20, 0.16);
     }
     .video-toggle.is-active {
-      background: linear-gradient(135deg, #e50914, #ff3b6a);
       color: #ffffff;
-      box-shadow: 0 12px 26px rgba(229, 9, 20, 0.45);
     }
     .video-toggle:active {
       transform: scale(0.97);
@@ -317,13 +343,13 @@
       .video-panel__inner { padding: 0 20px; }
       .video-switcher__controls {
         margin: 14px auto 0;
-        padding: 6px 5px;
+        --switcher-padding-x: 5px;
       }
     }
     @media (max-width: 520px) {
       .video-panel__inner { padding: 0 16px; }
       .video-switcher__controls {
-        gap: 6px;
+        --switcher-gap: 6px;
       }
       .video-toggle {
         padding: 9px 14px;
