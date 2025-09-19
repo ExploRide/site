@@ -234,10 +234,22 @@
       overflow: hidden;
     }
     .video-switcher__slider {
-      display: block;
+      display: flex;
+      width: 100%;
+      transition: transform 400ms ease;
+      will-change: transform;
     }
     .video-panel {
+      flex: 0 0 100%;
       width: 100%;
+    }
+    .video-panel.is-active {
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .video-panel.is-inactive {
+      visibility: hidden;
+      pointer-events: none;
     }
     .video-panel__inner {
       padding: 0 clamp(28px, 6vw, 60px);
@@ -256,9 +268,6 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-    }
-    .video-panel[hidden] {
-      display: none;
     }
     .video-toggle {
       flex: 1 1 0;
