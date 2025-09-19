@@ -18,7 +18,7 @@ export default {
         return await handleFbPosts(url, env);
       }
       if (path === '/api/fb/oembed') {
-        return await handleFbOEmbed(url);
+        return await handleFbOEmbed(url, env);
       }
       if (path === '/api/gallery/list') {
         return await handleGalleryList(env);
@@ -200,10 +200,17 @@ async function getFbPosts(pageId, token, limit) {
   return mappedItems;
 }
 
-async function handleFbOEmbed(url) {
+async function handleFbOEmbed(url, env) {
   const permalink = url.searchParams.get('url');
   if (!permalink) {
     return withCors(json({ error: 'Missing url parameter' }, { status: 400 }));
+  }
+
+  const token = env?.FB_PAGE_TOKEN;
+  if (!token) {
+    return withCors(
+      json({ error: 'Facebook page token is not configured' }, { status: 500 })
+    );
   }
 
   const base = /\/(videos|reel)\//i.test(permalink)
@@ -212,6 +219,7 @@ async function handleFbOEmbed(url) {
 
   const fbUrl = new URL(base);
   fbUrl.searchParams.set('url', permalink);
+  fbUrl.searchParams.set('access_token', token);
 
   const maxWidth = url.searchParams.get('maxwidth');
   if (maxWidth) {
@@ -234,8 +242,16 @@ async function handleFbOEmbed(url) {
   }
 
   if (!res.ok) {
-    const message = data?.error?.message || `Unexpected status ${res.status}`;
-    return withCors(json({ error: message }, { status: res.status || 502 }));
+    const message =
+      data?.error?.message || res.statusText || `Unexpected status ${res.status}`;
+    const errorPayload = { error: message };
+    if (data?.error) {
+      errorPayload.details = data.error;
+    }
+    if (res.statusText) {
+      errorPayload.statusText = res.statusText;
+    }
+    return withCors(json(errorPayload, { status: res.status || 502 }));
   }
 
   const html = typeof data?.html === 'string' ? data.html : '';
