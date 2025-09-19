@@ -1,10 +1,37 @@
 const ALLOWED_ORIGIN = 'https://exploride.pl';
+
+function corsHeaders(origin) {
+  const allow = ALLOWED_ORIGIN === '*' || origin === ALLOWED_ORIGIN;
+  const hdrs = new Headers();
+  if (allow) {
+    hdrs.set('Access-Control-Allow-Origin', origin);
+    hdrs.set('Vary', 'Origin');
+  }
+  hdrs.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  hdrs.set('Access-Control-Allow-Headers', 'Content-Type');
+  hdrs.set('Access-Control-Max-Age', '86400');
+  return hdrs;
+}
+
+function withCors(resp, request) {
+  const h = corsHeaders(request.headers.get('Origin') || '');
+  for (const [k, v] of h.entries()) resp.headers.set(k, v);
+  return resp;
+}
+
+function json(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'content-type': 'application/json; charset=utf-8' }
+  });
+}
+
 const GALLERY_ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif']);
 
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') {
-      return handleOptions();
+      return withCors(new Response(null, { status: 204 }), request);
     }
 
     const url = new URL(request.url);
@@ -12,53 +39,43 @@ export default {
 
     try {
       if (path === '/api/ig/media') {
-        return await handleIgMedia(url, env);
+        return await handleIgMedia(url, request, env);
       }
       if (path === '/api/fb/posts') {
-        return await handleFbPosts(url, env);
+        return await handleFbPosts(url, request, env);
       }
       if (path === '/api/fb/oembed') {
-        return await handleFbOEmbed(url, env);
+        return await handleFbOEmbed(url, request);
       }
       if (path === '/api/gallery/list') {
-        return await handleGalleryList(env);
+        return await handleGalleryList(request, env);
       }
 
-      return withCors(json({ error: 'Not found' }, { status: 404 }));
+      return withCors(json({ error: 'Not found' }, 404), request);
     } catch (err) {
       console.error('Worker error', err);
-      return withCors(json({ error: 'Internal error' }, { status: 500 }));
+      return withCors(json({ error: 'Internal error' }, 500), request);
     }
   }
 };
 
-function handleOptions() {
-  const resp = new Response(null, { status: 204 });
-  resp.headers.set('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  resp.headers.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  resp.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-  resp.headers.set('Access-Control-Max-Age', '86400');
-  resp.headers.set('Vary', 'Origin');
-  return resp;
-}
-
-async function handleIgMedia(url, env) {
+async function handleIgMedia(url, request, env) {
   const pageId = url.searchParams.get('page_id');
   const limitParam = parseInt(url.searchParams.get('limit') || '9', 10);
   const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(limitParam, 50) : 9;
   const token = env.FB_PAGE_TOKEN;
 
   if (!pageId || !token) {
-    return withCors(json({ items: [] }));
+    return withCors(json({ items: [] }), request);
   }
 
   const igId = await getIgUserId(pageId, token);
   if (!igId) {
-    return withCors(json({ items: [] }));
+    return withCors(json({ items: [] }), request);
   }
 
   const out = await getIgMedia(igId, token, limit);
-  return withCors(json(out));
+  return withCors(json(out), request);
 }
 
 async function getIgUserId(pageId, token) {
@@ -140,18 +157,18 @@ async function getIgMedia(igUserId, token, limit) {
   return { items };
 }
 
-async function handleFbPosts(url, env) {
+async function handleFbPosts(url, request, env) {
   const pageId = url.searchParams.get('page_id');
   const limitParam = parseInt(url.searchParams.get('limit') || '6', 10);
   const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(limitParam, 50) : 6;
   const token = env.FB_PAGE_TOKEN;
 
   if (!pageId || !token) {
-    return withCors(json({ items: [] }));
+    return withCors(json({ items: [] }), request);
   }
 
   const items = await getFbPosts(pageId, token, limit);
-  return withCors(json({ items }));
+  return withCors(json({ items }), request);
 }
 
 async function getFbPosts(pageId, token, limit) {
@@ -200,64 +217,38 @@ async function getFbPosts(pageId, token, limit) {
   return mappedItems;
 }
 
-async function handleFbOEmbed(url, env) {
-  const permalink = url.searchParams.get('url');
-  if (!permalink) {
-    return withCors(json({ error: 'Missing url parameter' }, { status: 400 }));
+async function handleFbOEmbed(url, request) {
+  const target = url.searchParams.get('url');
+  const maxWidth = url.searchParams.get('maxwidth') || '';
+  const omitscript = url.searchParams.get('omitscript');
+
+  if (!target) {
+    return withCors(json({ html: '' }, 400), request);
   }
 
-  const token = env?.FB_PAGE_TOKEN;
-  if (!token) {
-    return withCors(
-      json({ error: 'Facebook page token is not configured' }, { status: 500 })
-    );
-  }
-
-  const base = /\/(videos|reel)\//i.test(permalink)
+  const isVideo = /\/(videos|reel)\//i.test(target);
+  const base = isVideo
     ? 'https://www.facebook.com/plugins/video/oembed.json/'
     : 'https://www.facebook.com/plugins/post/oembed.json/';
 
   const fbUrl = new URL(base);
-  fbUrl.searchParams.set('url', permalink);
-  fbUrl.searchParams.set('access_token', token);
-
-  const maxWidth = url.searchParams.get('maxwidth');
-  if (maxWidth) {
-    fbUrl.searchParams.set('maxwidth', maxWidth);
-  }
-
-  const omitscript = url.searchParams.get('omitscript');
+  fbUrl.searchParams.set('url', target);
+  if (maxWidth) fbUrl.searchParams.set('maxwidth', maxWidth);
   if (omitscript === 'true' || omitscript === 'false') {
     fbUrl.searchParams.set('omitscript', omitscript);
   }
 
-  const res = await fetch(fbUrl.toString());
-  let data = {};
   try {
-    data = await res.json();
-  } catch (err) {
-    console.error('FB oEmbed JSON parse error', err);
-  }
-
-  if (!res.ok) {
-    const message =
-      data?.error?.message || res.statusText || `Unexpected status ${res.status}`;
-    const errorPayload = { error: message };
-    if (data?.error) {
-      errorPayload.details = data.error;
+    const res = await fetch(fbUrl.toString());
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const msg = data?.error?.message || `FB oEmbed ${res.status}`;
+      return withCors(json({ error: msg }, res.status), request);
     }
-    if (res.statusText) {
-      errorPayload.statusText = res.statusText;
-    }
-    return withCors(json(errorPayload, { status: res.status || 502 }));
+    return withCors(json({ html: data?.html || '' }), request);
+  } catch (e) {
+    return withCors(json({ error: String(e) }, 502), request);
   }
-
-  const html = typeof data?.html === 'string' ? data.html : '';
-  if (!html) {
-    return withCors(json({ error: 'Missing html content' }, { status: 502 }));
-  }
-
-  return withCors(json({ html }));
 }
 
 function collectPostMedia(post) {
@@ -313,9 +304,9 @@ function extractAttachmentMedia(attachment, push) {
   }
 }
 
-async function handleGalleryList(env) {
+async function handleGalleryList(request, env) {
   const files = collectGalleryFiles(env);
-  return withCors(json({ items: files }));
+  return withCors(json({ items: files }), request);
 }
 
 function collectGalleryFiles(env) {
@@ -454,16 +445,3 @@ function parseNumericPrefix(path) {
   return Number.isFinite(value) ? value : Number.POSITIVE_INFINITY;
 }
 
-const json = (obj, init = {}) => {
-  const headers = new Headers(init.headers);
-  headers.set('content-type', 'application/json; charset=utf-8');
-  return new Response(JSON.stringify(obj), { ...init, headers });
-};
-
-function withCors(resp) {
-  resp.headers.set('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  resp.headers.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  resp.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-  resp.headers.set('Vary', 'Origin');
-  return resp;
-}

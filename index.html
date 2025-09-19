@@ -740,6 +740,7 @@
           throw new Error("Niepoprawny adres oEmbed");
         }
 
+        requestUrl.searchParams.set("page_id", FB_PAGE_ID);
         requestUrl.searchParams.set("url", targetPermalink);
         requestUrl.searchParams.set("maxwidth", "780");
         requestUrl.searchParams.set("omitscript", "true");
