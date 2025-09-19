@@ -173,7 +173,7 @@ async function getFbPosts(pageId, token, limit) {
     throw new Error(`FB posts fetch failed: ${message}`);
   }
 
-  const items = Array.isArray(data.data)
+  const mappedItems = Array.isArray(data.data)
     ? data.data.map(post => ({
         id: post.id,
         message: post.message || '',
@@ -183,6 +183,8 @@ async function getFbPosts(pageId, token, limit) {
         media: collectPostMedia(post)
       }))
     : [];
+
+  const items = mappedItems.filter(item => item.is_published !== false && item.permalink_url);
 
   items.sort((a, b) => {
     const ta = a.created_time ? Date.parse(a.created_time) : 0;
