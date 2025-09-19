@@ -657,9 +657,10 @@
 
         const data = await response.json();
         const items = Array.isArray(data?.items) ? data.items : [];
-        const latest = items[0] || null;
+        const latest =
+          items.find(item => item && item.is_published !== false && item.permalink_url) || null;
 
-        if (!latest || latest.is_published === false || !latest.permalink_url) {
+        if (!latest) {
           return null;
         }
 
