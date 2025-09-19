@@ -234,22 +234,13 @@
       overflow: hidden;
     }
     .video-switcher__slider {
-      display: flex;
-      transition: transform 0.6s ease;
-      will-change: transform;
+      display: block;
     }
-    .video-switcher.is-urbex .video-switcher__slider { transform: translateX(0); }
-    .video-switcher.is-travel .video-switcher__slider { transform: translateX(-100%); }
     .video-panel {
       width: 100%;
-      flex: 0 0 100%;
     }
     .video-panel__inner {
       padding: 0 clamp(28px, 6vw, 60px);
-    }
-    .video-switcher__controls-slot {
-      display: flex;
-      justify-content: center;
     }
     .video-switcher__controls {
       display: flex;
@@ -265,6 +256,9 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
+    }
+    .video-panel[hidden] {
+      display: none;
     }
     .video-toggle {
       flex: 1 1 0;
