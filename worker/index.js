@@ -1,26 +1,24 @@
-const ALLOWED_ORIGIN = 'https://exploride.pl';
+const ALLOWED_ORIGINS = new Set([
+  'https://exploride.pl',
+  'https://www.exploride.pl',
+  'http://localhost:5173',
+  'http://localhost:3000'
+]);
 
 function corsHeaders(origin) {
-  const hdrs = new Headers();
-
-  if (ALLOWED_ORIGIN === '*') {
-    hdrs.set('Access-Control-Allow-Origin', '*');
-  } else {
-    hdrs.set('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-    hdrs.set('Vary', 'Origin');
-  }
-  hdrs.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  hdrs.set('Access-Control-Allow-Headers', 'Content-Type');
-  hdrs.set('Access-Control-Max-Age', '86400');
-  return hdrs;
+  const h = new Headers();
+  if (origin && ALLOWED_ORIGINS.has(origin)) h.set('Access-Control-Allow-Origin', origin);
+  h.set('Vary', 'Origin');
+  h.set('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  h.set('Access-Control-Allow-Headers', 'Content-Type');
+  h.set('Access-Control-Max-Age', '86400');
+  return h;
 }
-
 function withCors(resp, request) {
-  const h = corsHeaders(request.headers.get('Origin') || '');
-  for (const [k, v] of h.entries()) resp.headers.set(k, v);
+  const ch = corsHeaders(request.headers.get('Origin'));
+  for (const [k, v] of ch) resp.headers.set(k, v);
   return resp;
 }
-
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -41,20 +39,19 @@ export default {
 
     try {
       switch (path) {
-        case '/api/ig/media':
-          return await handleIgMedia(url, request, env);
-        case '/api/fb/posts':
-          return await handleFbPosts(url, request, env);
         case '/api/fb/oembed':
-          return await handleFbOEmbed(url, request, env);
+          return withCors(await handleFbOEmbed(url, request, env), request);
+        case '/api/fb/posts':
+          return withCors(await handleFbPosts(url, request, env), request);
+        case '/api/ig/media':
+          return withCors(await handleIgMedia(url, request, env), request);
         case '/api/gallery/list':
-          return await handleGalleryList(request, env);
+          return withCors(await handleGalleryList(request, env), request);
         default:
           return withCors(json({ error: 'Not found', path }, 404), request);
       }
-    } catch (err) {
-      console.error('Worker error', err);
-      return withCors(json({ error: 'Internal error' }, 500), request);
+    } catch (e) {
+      return withCors(json({ error: String(e) }, 500), request);
     }
   }
 };
@@ -66,16 +63,16 @@ async function handleIgMedia(url, request, env) {
   const token = env.FB_PAGE_TOKEN;
 
   if (!pageId || !token) {
-    return withCors(json({ items: [] }), request);
+    return json({ items: [] });
   }
 
   const igId = await getIgUserId(pageId, token);
   if (!igId) {
-    return withCors(json({ items: [] }), request);
+    return json({ items: [] });
   }
 
   const out = await getIgMedia(igId, token, limit);
-  return withCors(json(out), request);
+  return json(out);
 }
 
 async function getIgUserId(pageId, token) {
@@ -164,11 +161,11 @@ async function handleFbPosts(url, request, env) {
   const token = env.FB_PAGE_TOKEN;
 
   if (!pageId || !token) {
-    return withCors(json({ items: [] }), request);
+    return json({ items: [] });
   }
 
   const items = await getFbPosts(pageId, token, limit);
-  return withCors(json({ items }), request);
+  return json({ items });
 }
 
 async function getFbPosts(pageId, token, limit) {
@@ -223,12 +220,12 @@ async function handleFbOEmbed(url, request, env) {
   const omitscript = url.searchParams.get('omitscript');
 
   if (!target) {
-    return withCors(json({ error: 'Missing url' }, 400), request);
+    return json({ error: 'Missing url' }, 400);
   }
 
   const isVideo = /\/(videos|reel)\//i.test(target);
   const endpoint = isVideo ? 'oembed_video' : 'oembed_post';
-  const fbUrl = new URL(`https://graph.facebook.com/v20.0/${endpoint}`);
+  const fbUrl = new URL(`https://graph.facebook.com/v23.0/${endpoint}`);
   fbUrl.searchParams.set('url', target);
   if (maxwidth) {
     fbUrl.searchParams.set('maxwidth', maxwidth);
@@ -241,7 +238,7 @@ async function handleFbOEmbed(url, request, env) {
     ? `${env.FB_APP_ID}|${env.FB_APP_SECRET}`
     : (env.FB_PAGE_TOKEN || '');
   if (!accessToken) {
-    return withCors(json({ error: 'Missing access token for oEmbed' }, 500), request);
+    return json({ error: 'Missing access token for oEmbed' }, 500);
   }
   fbUrl.searchParams.set('access_token', accessToken);
 
@@ -250,21 +247,23 @@ async function handleFbOEmbed(url, request, env) {
     res = await fetch(fbUrl.toString());
   } catch (err) {
     console.error('FB oEmbed fetch error', err);
-    return withCors(json({ error: 'FB oEmbed request failed' }, 502), request);
+    return json({ error: 'FB oEmbed request failed' }, 502);
   }
 
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const msg = data?.error?.message || `FB oEmbed ${res.status}`;
-    return withCors(json({ error: msg }, res.status), request);
+    return json({ error: msg }, res.status);
   }
 
   const html = data?.html || '';
   if (!html) {
-    return withCors(json({ error: 'Empty html from oEmbed' }, 502), request);
+    return json({ error: 'Empty html from oEmbed' }, 502);
   }
 
-  return withCors(json({ html }), request);
+  const resp = json({ html });
+  resp.headers.set('X-Route', 'oembed');
+  return resp;
 }
 
 function collectPostMedia(post) {
@@ -322,7 +321,7 @@ function extractAttachmentMedia(attachment, push) {
 
 async function handleGalleryList(request, env) {
   const files = collectGalleryFiles(env);
-  return withCors(json({ items: files }), request);
+  return json({ items: files });
 }
 
 function collectGalleryFiles(env) {
