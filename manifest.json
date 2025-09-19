@@ -1,0 +1,17 @@
+{
+  "name": "ExploRide",
+  "short_name": "ExploRide",
+  "lang": "pl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1080x1080",
+      "type": "image/png"
+    }
+  ]
+}
