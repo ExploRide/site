@@ -155,7 +155,7 @@ async function getFbPosts(pageId, token, limit) {
   const u = new URL(`https://graph.facebook.com/v19.0/${encodeURIComponent(pageId)}/posts`);
   u.searchParams.set(
     'fields',
-    'id,message,permalink_url,created_time,full_picture,attachments{media_type,media,subattachments{media}}'
+    'id,message,permalink_url,created_time,is_published,full_picture,attachments{media_type,media,subattachments{media}}'
   );
   u.searchParams.set('limit', String(limit));
   u.searchParams.set('access_token', token);
@@ -179,6 +179,7 @@ async function getFbPosts(pageId, token, limit) {
         message: post.message || '',
         permalink_url: post.permalink_url || '',
         created_time: post.created_time || '',
+        is_published: post.is_published !== false,
         media: collectPostMedia(post)
       }))
     : [];
