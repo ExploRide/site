@@ -187,8 +187,7 @@
       justify-content: center;
       gap: clamp(14px, 3vw, 26px);
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      width: min(1100px, 100%);
+ 
     }
     .top-nav .nav-link {
       display: inline-flex;
