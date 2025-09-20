@@ -116,7 +116,7 @@
     .brand:hover,
     .brand:focus-visible { color: #e50914; }
     .brand-name {
-      font-family: 'BebasNeue', Arial, Helvetica, sans-serif !important;
+      font-family: 'Base', Arial, Helvetica, sans-serif !important;
       font-weight: 400 !important;
       letter-spacing: clamp(4px, 0.9vw, 10px);
       font-size: clamp(2.6rem, 8vw, 4.6rem);
