@@ -257,6 +257,7 @@
         --top-nav-expanded-height: 75vh;
         position: relative;
         flex-direction: column;
+        flex-wrap: nowrap;
         align-items: stretch;
         width: 100%;
         gap: 10px;

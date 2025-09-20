@@ -21,7 +21,41 @@
         return;
       }
 
+      const wasOpen = header.classList.contains('is-nav-open');
+      const previousStyles = {
+        maxHeight: nav.style.maxHeight,
+        transition: nav.style.transition,
+        visibility: nav.style.visibility,
+        opacity: nav.style.opacity,
+        pointerEvents: nav.style.pointerEvents,
+        position: nav.style.position,
+        transform: nav.style.transform,
+        width: nav.style.width,
+      };
+
+      nav.style.transition = 'none';
+      nav.style.maxHeight = 'none';
+
+      if (!wasOpen) {
+        nav.style.visibility = 'hidden';
+        nav.style.opacity = '0';
+        nav.style.pointerEvents = 'none';
+        nav.style.position = 'absolute';
+        nav.style.transform = 'none';
+        nav.style.width = '100%';
+      }
+
       const navHeight = nav.scrollHeight;
+
+      nav.style.maxHeight = previousStyles.maxHeight;
+      nav.style.transition = previousStyles.transition;
+      nav.style.visibility = previousStyles.visibility;
+      nav.style.opacity = previousStyles.opacity;
+      nav.style.pointerEvents = previousStyles.pointerEvents;
+      nav.style.position = previousStyles.position;
+      nav.style.transform = previousStyles.transform;
+      nav.style.width = previousStyles.width;
+
       nav.style.setProperty('--top-nav-expanded-height', `${navHeight}px`);
     };
 
