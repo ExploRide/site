@@ -94,7 +94,7 @@
       font-family: 'Base02', Arial, Helvetica, sans-serif;
     }
     header {
-      background: #000;
+          background: #000000c2;
       color: #fff;
       padding: clamp(24px, 6vw, 40px) 16px clamp(32px, 8vw, 52px);
       display: flex;
@@ -108,18 +108,18 @@
       overflow: hidden;
     }
 
-    header::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: auto 75%;
-      opacity: 0.3;
-      pointer-events: none;
-      z-index: 0;
-    }
+  header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url(logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 155%;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+}
 
     header > * {
       position: relative;
@@ -133,6 +133,7 @@
       color: #fff;
       text-decoration: none;
       transition: color 0.2s ease;
+      left: -650px;
     }
     .brand:hover,
     .brand:focus-visible { color: #e50914; }
@@ -214,7 +215,7 @@
       padding: clamp(12px, 2.4vw, 18px) clamp(22px, 4vw, 32px);
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.1);
+          background: rgb(52, 52, 52);
       color: #fff;
       text-decoration: none;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
@@ -225,7 +226,7 @@
     .top-nav a.nav-link { text-decoration: none; }
     .top-nav button.nav-link {
       font: inherit;
-      background: rgba(255, 255, 255, 0.1);
+      background: #1a1a1a;
       color: inherit;
     }
     .top-nav .nav-link:hover,
