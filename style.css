@@ -96,45 +96,52 @@
     header {
       background: #000;
       color: #fff;
-      padding: 20px 16px;
+      padding: clamp(24px, 6vw, 40px) 16px clamp(32px, 8vw, 52px);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
-          margin-bottom: 50px;
- box-shadow: 0 0 20px 6px #000;
+      gap: clamp(18px, 5vw, 32px);
+      margin-bottom: 50px;
+      box-shadow: 0 0 20px 6px #000;
+      text-align: center;
     }
     .brand {
       display: inline-flex;
+      flex-direction: column;
       align-items: center;
-      gap: 12px;
-      font-size: 2em;
-      font-weight: bold;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      gap: clamp(12px, 3vw, 18px);
       color: #fff;
       text-decoration: none;
       transition: color 0.2s ease;
     }
     .brand:hover,
     .brand:focus-visible { color: #e50914; }
-  .brand-name {
-  font-family: 'BebasNeue', Arial, Helvetica, sans-serif !important;
-  font-weight: 400 !important;
-}
+    .brand-name {
+      font-family: 'BebasNeue', Arial, Helvetica, sans-serif !important;
+      font-weight: 400 !important;
+      letter-spacing: clamp(4px, 0.9vw, 10px);
+      font-size: clamp(2.6rem, 8vw, 4.6rem);
+      text-transform: uppercase;
+      line-height: 1;
+    }
 
-    header .logo { height: 48px; }
+    header .logo {
+      width: clamp(160px, 32vw, 280px);
+      height: auto;
+      max-width: 100%;
+    }
     .nav-toggle {
       display: none;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
+      gap: clamp(10px, 2vw, 14px);
+      padding: clamp(10px, 2.4vw, 16px) clamp(18px, 4vw, 28px);
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
-      letter-spacing: 2px;
+      font-size: clamp(1rem, 2.6vw, 1.2rem);
+      letter-spacing: clamp(2px, 0.6vw, 4px);
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
@@ -145,7 +152,7 @@
       gap: 5px;
     }
     .nav-toggle__bars span {
-      width: 22px;
+      width: clamp(22px, 6vw, 28px);
       height: 2px;
       background: currentColor;
       border-radius: 2px;
@@ -178,29 +185,30 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: clamp(14px, 3vw, 26px);
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
-      font-size: 0.95em;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      width: min(1100px, 100%);
     }
     .top-nav .nav-link {
       display: inline-flex;
       align-items: center;
-      padding: 8px 18px;
+      justify-content: center;
+      padding: clamp(12px, 2.4vw, 18px) clamp(22px, 4vw, 32px);
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.1);
       color: #fff;
       text-decoration: none;
-      font-size: 0.95em;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       cursor: pointer;
       white-space: nowrap;
-      letter-spacing: 2px;
+      letter-spacing: clamp(2px, 0.6vw, 4px);
     }
     .top-nav a.nav-link { text-decoration: none; }
     .top-nav button.nav-link {
       font: inherit;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.1);
       color: inherit;
     }
     .top-nav .nav-link:hover,
@@ -247,11 +255,11 @@
     }
     @media (max-width: 767px) {
       header {
-        align-items: stretch;
+        align-items: center;
       }
       .nav-toggle {
         display: inline-flex;
-        align-self: flex-end;
+        align-self: center;
       }
       .top-nav {
         --top-nav-expanded-height: 75vh;
@@ -259,8 +267,8 @@
         flex-direction: column;
         flex-wrap: nowrap;
         align-items: stretch;
-        width: 100%;
-        gap: 10px;
+        width: min(520px, 100%);
+        gap: 12px;
         padding-top: 12px;
         margin-top: 8px;
         border-top: 1px solid rgba(255, 255, 255, 0.12);
@@ -283,10 +291,7 @@
         pointer-events: auto;
         transform: translateY(0);
       }
-      .top-nav .nav-link {
-        justify-content: center;
-        width: 100%;
-      }
+      .top-nav .nav-link { width: 100%; }
     }
     @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
       .top-nav {
@@ -296,12 +301,11 @@
     }
     @media (min-width: 768px) {
       header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        padding-left: clamp(32px, 8vw, 80px);
+        padding-right: clamp(32px, 8vw, 80px);
       }
       .top-nav {
-        justify-content: flex-end;
+        justify-content: center;
       }
     }
     h2 {
