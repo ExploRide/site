@@ -43,57 +43,62 @@
 </div>
 
 <script>
-const FB_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/fb/oembed';
+(function(){
+  var FB_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/fb/oembed';
+  var DEFAULT_VIDEO = 'https://www.facebook.com/1189465589870011/videos/796100049443163';
+  var DEFAULT_POST  = 'https://www.facebook.com/ExploRideURBEX/posts/pfbid0BVAooFADTPMUC9mZLFt3Cj4wcEeeRjsUb71sbX7EjeWKyHnEdr2Y3BvjwUoM4s3Gl';
 
-// Public permalinks (choose via ?url=...). Default = video.
-const DEFAULTS = {
-  video: 'https://www.facebook.com/1189465589870011/videos/796100049443163',
-  post:  'https://www.facebook.com/ExploRideURBEX/posts/pfbid0BVAooFADTPMUC9mZLFt3Cj4wcEeeRjsUb71sbX7EjeWKyHnEdr2Y3BvjwUoM4s3Gl'
-};
-const PERMALINK = new URLSearchParams(location.search).get('url') || DEFAULTS.video;
+  function qs(name){
+    var m = location.search.match(new RegExp('[?&]'+name+'=([^&]+)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  var PERMALINK = qs('url') || DEFAULT_VIDEO;
 
-function logln(t){ const el = document.getElementById('debug'); el.textContent += '\\n' + t; }
-function setlog(t){ document.getElementById('debug').textContent = t; }
+  function setlog(t){ document.getElementById('debug').textContent = t; }
+  function logln(t){
+    var el = document.getElementById('debug');
+    el.textContent = (el.textContent ? el.textContent + '\n' : '') + t;
+  }
 
-function buildPlugin(permalink, maxwidth = 780) {
-  const isVideo = /\\/(videos|reel)\\//i.test(permalink);
-  const src = new URL(isVideo
-    ? 'https://www.facebook.com/plugins/video.php'
-    : 'https://www.facebook.com/plugins/post.php');
-  src.searchParams.set('href', permalink);
-  src.searchParams.set('width', String(maxwidth));
-  if (isVideo) src.searchParams.set('show_text','false');
-  const h = isVideo ? Math.round(maxwidth*9/16) : 600;
-  return `<iframe src="${src.toString()}" width="${maxwidth}" height="${h}"
-    style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-    allowfullscreen></iframe>`;
-}
+  function buildPlugin(permalink, maxwidth){
+    maxwidth = maxwidth || 780;
+    var isVideo = /\/(videos|reel)\//i.test(permalink);
+    var src = new URL(isVideo ? 'https://www.facebook.com/plugins/video.php'
+                              : 'https://www.facebook.com/plugins/post.php');
+    src.searchParams.set('href', permalink);
+    src.searchParams.set('width', String(maxwidth));
+    if (isVideo) src.searchParams.set('show_text', 'false');
+    var h = isVideo ? Math.round(maxwidth * 9 / 16) : 600;
+    return '<iframe src="' + src.toString() + '" width="' + maxwidth + '" height="' + h + '"' +
+           ' style="border:none;overflow:hidden" scrolling="no" frameborder="0"' +
+           ' allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"' +
+           ' allowfullscreen></iframe>';
+  }
 
-(async () => {
-  const host = document.getElementById('host');
-  setlog('Requesting oEmbed via Worker…');
-  const u = new URL(FB_OEMBED_API);
+  var host = document.getElementById('host');
+  setlog('Requesting oEmbed via Worker...');
+  var u = new URL(FB_OEMBED_API);
   u.searchParams.set('url', PERMALINK);
   u.searchParams.set('maxwidth', '780');
   u.searchParams.set('omitscript', 'true');
 
-  try {
-    const res = await fetch(u.toString(), { credentials: 'omit' });
-    logln('HTTP ' + res.status);
-    const data = await res.json().catch(()=> ({}));
-    logln('Response: ' + JSON.stringify(data));
-    if (data && data.html) {
-      host.innerHTML = data.html;           // official oEmbed HTML
-    } else {
-      host.innerHTML = buildPlugin(PERMALINK, 780); // fallback plugin
-      logln('Fallback rendered via Facebook Plugin (post.php/video.php).');
-    }
-  } catch (e) {
-    logln('Error: ' + (e && e.message || e));
-    host.innerHTML = buildPlugin(PERMALINK, 780);
-  }
+  fetch(u.toString(), { credentials: 'omit' })
+    .then(function(res){ logln('HTTP ' + res.status); return res.json().catch(function(){ return {}; }); })
+    .then(function(data){
+      logln('Response: ' + JSON.stringify(data));
+      if (data && data.html) {
+        host.innerHTML = data.html; // official oEmbed HTML
+      } else {
+        host.innerHTML = buildPlugin(PERMALINK, 780); // fallback plugin
+        logln('Fallback rendered via Facebook Plugin (post.php/video.php).');
+      }
+    })
+    .catch(function(e){
+      logln('Error: ' + (e && e.message ? e.message : e));
+      host.innerHTML = buildPlugin(PERMALINK, 780);
+    });
 })();
 </script>
+
 </body>
 </html>
