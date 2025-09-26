@@ -664,6 +664,33 @@
 
     .playlist-window:focus { outline: none; }
 
+    .page-videos .playlist-window {
+      overflow: visible;
+    }
+
+    .page-videos .playlist-list {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      grid-auto-columns: minmax(240px, 1fr);
+      column-gap: 18px;
+      row-gap: 18px;
+      padding-bottom: 8px;
+    }
+
+    .page-videos .playlist-list .video-tile {
+      width: 100%;
+      flex: initial;
+    }
+
+    @media (max-width: 640px) {
+      .page-videos .playlist-list {
+        grid-auto-flow: row;
+        grid-template-rows: none;
+        grid-template-columns: 1fr;
+      }
+    }
+
     .center { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
     .loader { margin: 16px auto 0; color: #bbb; font-size: 0.95em; }
     .fallback {
