@@ -894,6 +894,93 @@
       }
     }
 
+    /* Linki */
+    .links-main {
+      max-width: 900px;
+      margin: 36px auto 80px;
+      padding: 0 16px;
+    }
+
+    .links-card {
+      background: rgba(17, 17, 17, 0.85);
+      border: 1px solid #2a2a2a;
+      border-radius: 18px;
+      padding: clamp(28px, 6vw, 48px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(20px, 4vw, 32px);
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .links-card h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 3rem);
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .links-lead {
+      margin: 0;
+      max-width: 560px;
+      color: #ddd;
+      line-height: 1.6;
+      font-size: clamp(1rem, 2.4vw, 1.15rem);
+    }
+
+    .links-buttons {
+      width: 100%;
+    }
+
+    .links-buttons a {
+      flex-direction: column;
+      align-items: center;
+      min-width: min(220px, 100%);
+      padding: clamp(14px, 3vw, 20px) clamp(18px, 4vw, 26px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .links-buttons a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .links-button__title {
+      font-size: clamp(1.05rem, 2.8vw, 1.3rem);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .links-button__handle {
+      font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+      opacity: 0.85;
+    }
+
+    .links-buttons .yt { background: #ff0000; color: #fff; }
+    .links-buttons .fb { background: #1877f2; color: #fff; }
+    .links-buttons .ig { background: linear-gradient(135deg, #405de6 0%, #5851db 25%, #833ab4 50%, #c13584 75%, #e1306c 100%); color: #fff; }
+    .links-buttons .tt { background: #010101; color: #fff; }
+    .links-buttons .pinterest { background: #e60023; color: #fff; }
+    .links-buttons .ig-channel { background: linear-gradient(120deg, #bc2a8d, #8a3ab9, #4c68d7); color: #fff; }
+    .links-buttons .messenger { background: linear-gradient(135deg, #0084ff, #00c6ff); color: #fff; }
+
+    .links-buttons .yt .links-button__handle,
+    .links-buttons .fb .links-button__handle,
+    .links-buttons .ig .links-button__handle,
+    .links-buttons .tt .links-button__handle,
+    .links-buttons .pinterest .links-button__handle,
+    .links-buttons .ig-channel .links-button__handle,
+    .links-buttons .messenger .links-button__handle {
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    @media (max-width: 600px) {
+      .links-buttons a {
+        min-width: 100%;
+      }
+    }
+
     /* Ikony marek wykorzystywane w sekcjach wsparcia */
     .brand-icon {
       display: inline-flex;
