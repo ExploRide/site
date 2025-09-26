@@ -345,6 +345,43 @@
       margin: 10px auto 8px;
       padding: 0 16px;
     }
+    .youtube-subscribe-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px auto 0;
+      padding: 0.65em 1.8em;
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: #fff;
+      font-weight: 600;
+      font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      box-shadow: 0 10px 24px rgba(204, 0, 0, 0.45);
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+    .youtube-subscribe-button::before {
+      content: "";
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 12px solid #fff;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.35));
+    }
+    .youtube-subscribe-button:hover,
+    .youtube-subscribe-button:focus {
+      background: linear-gradient(135deg, #ff3b30, #d30000);
+      box-shadow: 0 12px 26px rgba(204, 0, 0, 0.6);
+      transform: translateY(-1px);
+    }
+    .youtube-subscribe-button:focus {
+      outline: 2px solid rgba(255, 255, 255, 0.6);
+      outline-offset: 4px;
+    }
     .video-switcher {
       position: relative;
       max-width: 1400px;
