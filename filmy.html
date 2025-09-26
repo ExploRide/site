@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Filmy – ExploRide</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+  <script>
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.2;
+      document.body.style.backgroundPosition = `center ${-y}px`;
+    });
+  </script>
+</head>
+<body class="page-videos">
+  <header>
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+      <span class="brand-name">EXPLORIDE.PL</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="top-nav" id="main-navigation" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--about" href="onas.html">O nas</a>
+      <a class="nav-link nav-link--home" href="filmy.html" aria-current="page">Filmy</a>
+      <a class="nav-link nav-link--gallery" href="galeria.html">Galeria</a>
+      <a class="nav-link" href="index.html#posty-fb">Posty na FB</a>
+      <a class="nav-link" href="index.html#posty-ig">Posty z IG</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <a class="nav-link nav-link--support" href="wesprzyj-nas.html">Wesprzyj nas</a>
+      <a class="nav-link nav-link--contact" href="kontakt.html">Kontakt</a>
+      <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+    </nav>
+  </header>
+
+  <main class="videos-main">
+    <section class="videos-header" aria-labelledby="videos-title">
+      <div class="center">
+        <h1 id="videos-title">Filmy</h1>
+        <p class="lead">Najświeższe produkcje ExploRide – wszystkie playlisty i wideo zebrane w jednym miejscu.</p>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <div class="video-switcher is-urbex" id="filmy">
+      <div class="player-wrap">
+        <h2>Najnowszy film</h2>
+        <div
+          class="video-switcher__controls"
+          id="video-switcher-controls"
+          role="tablist"
+          aria-label="Wybierz kategorię filmów"
+        >
+          <span class="video-switcher__highlight" aria-hidden="true"></span>
+          <button
+            class="video-toggle is-active"
+            type="button"
+            role="tab"
+            data-video-target="urbex"
+            aria-controls="urbex-section"
+            aria-selected="true"
+          >
+            <span class="video-toggle__label">URBEX</span>
+          </button>
+          <button
+            class="video-toggle"
+            type="button"
+            role="tab"
+            data-video-target="travel"
+            aria-controls="travel-section"
+            aria-selected="false"
+          >
+            <span class="video-toggle__label">PODRÓŻE</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="video-switcher__viewport video-switcher__viewport--player">
+        <div class="video-switcher__slider">
+          <section
+            class="video-panel video-panel--urbex"
+            id="urbex-section"
+            aria-label="Filmy urbex"
+            tabindex="-1"
+            data-video-panel="urbex"
+            data-panel-role="player"
+            aria-hidden="false"
+          >
+            <div class="video-panel__inner">
+              <div class="player-wrap">
+                <div class="ratio">
+                  <!-- Player playlisty (YouTube sam odtworzy najnowszy jako pierwszy) -->
+                  <iframe
+                    src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn"
+                    title="YouTube Playlist - ExploRide Opuszczone Miejsca"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section
+            class="video-panel video-panel--travel"
+            id="travel-section"
+            aria-label="Filmy z podróży"
+            tabindex="-1"
+            data-video-panel="travel"
+            data-panel-role="player"
+            hidden
+            aria-hidden="true"
+          >
+            <div class="video-panel__inner">
+              <div class="player-wrap">
+                <div class="ratio">
+                  <iframe
+                    src="https://www.youtube.com/embed/videoseries?list=PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq"
+                    title="YouTube Playlist - ExploRide Podróże"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <h2>Zobacz więcej filmów</h2>
+      <p class="lead"></p>
+
+      <div class="video-switcher__viewport video-switcher__viewport--playlist">
+        <div class="video-switcher__slider">
+          <section
+            class="video-panel video-panel--urbex"
+            aria-label="Lista filmów urbex"
+            data-video-panel="urbex"
+            data-panel-role="playlist"
+            aria-hidden="false"
+          >
+            <div class="video-panel__inner">
+              <div class="center">
+                <div id="urbex-loader" class="loader">Ładowanie listy filmów…</div>
+                <div id="urbex-fallback" class="fallback" style="display:none;">
+                  Nie udało się pobrać listy przez API. Pokazuję kafelki w trybie awaryjnym.
+                  <br />
+                  <a class="btn" target="_blank" href="https://www.youtube.com/playlist?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn">Otwórz playlistę na YouTube</a>
+                </div>
+              </div>
+
+              <div id="urbex-playlist-window" class="playlist-window" tabindex="0">
+                <button id="urbex-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+                <div id="urbex-playlist" class="playlist-list"></div>
+                <button id="urbex-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+              </div>
+            </div>
+          </section>
+          <section
+            class="video-panel video-panel--travel"
+            aria-label="Lista filmów z podróży"
+            data-video-panel="travel"
+            data-panel-role="playlist"
+            hidden
+            aria-hidden="true"
+          >
+            <div class="video-panel__inner">
+              <div class="center">
+                <div id="travel-loader" class="loader">Ładowanie listy filmów…</div>
+                <div id="travel-fallback" class="fallback" style="display:none;">
+                  Nie udało si pobrać listy przez API. Pokazuję kafelki w trybie awaryjnym.
+                  <br />
+                  <a class="btn" target="_blank" href="https://www.youtube.com/playlist?list=PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq">Otwórz playlistę na YouTube</a>
+                </div>
+              </div>
+
+              <div id="travel-playlist-window" class="playlist-window" tabindex="0">
+                <button id="travel-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+                <div id="travel-playlist" class="playlist-list"></div>
+                <button id="travel-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone. • <a href="https://exploride.pl/privacy-policy">Polityka prywatności</a>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    // --- USTAWIENIA ---
+    const API_KEY = "AIzaSyAWgh8sgcGfnEc26JAe5EA-1gNyJw9XZlA";
+    const STATIC_FALLBACK_VIDEO_IDS = [
+      "dQw4w9WgXcQ",
+      "o-YBDTqX_ZU",
+      "3JZ_D3ELwOQ"
+    ];
+    const PLAYLIST_SECTIONS = [
+      {
+        key: "urbex",
+        playlistId: "PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn",
+        loaderId: "urbex-loader",
+        fallbackId: "urbex-fallback",
+        windowId: "urbex-playlist-window",
+        listId: "urbex-playlist",
+        prevId: "urbex-btn-prev",
+        nextId: "urbex-btn-next"
+      },
+      {
+        key: "travel",
+        playlistId: "PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq",
+        loaderId: "travel-loader",
+        fallbackId: "travel-fallback",
+        windowId: "travel-playlist-window",
+        listId: "travel-playlist",
+        prevId: "travel-btn-prev",
+        nextId: "travel-btn-next"
+      }
+    ];
+
+    function toISOorNull(x) {
+      if (!x) return null;
+      const t = Date.parse(x);
+      return isNaN(t) ? null : new Date(t).toISOString();
+    }
+
+    function fmtDate(isoStr) {
+      if (!isoStr) return "";
+      const d = new Date(isoStr);
+      if (isNaN(d)) return "";
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${day}.${m}.${y}`;
+    }
+
+    async function fetchAllPlaylistItems(playlistId) {
+      const base = "https://www.googleapis.com/youtube/v3/playlistItems";
+      let pageToken = "";
+      const all = [];
+      do {
+        const url = new URL(base);
+        url.searchParams.set("part", "snippet,contentDetails");
+        url.searchParams.set("maxResults", "50");
+        url.searchParams.set("playlistId", playlistId);
+        url.searchParams.set("key", API_KEY);
+        if (pageToken) url.searchParams.set("pageToken", pageToken);
+
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        if (Array.isArray(data.items)) all.push(...data.items);
+        pageToken = data.nextPageToken || "";
+      } while (pageToken);
+
+      return all.map(item => {
+        const vid = item.snippet?.resourceId?.videoId || item.contentDetails?.videoId || "";
+        const iso = toISOorNull(item.contentDetails?.videoPublishedAt || item.snippet?.publishedAt);
+        return {
+          id: vid,
+          title: item.snippet?.title || "Bez tytułu",
+          publishedAtISO: iso,
+          thumb: item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.high?.url || ""
+        };
+      });
+    }
+
+    function setupPlaylistSection(config) {
+      const loader = document.getElementById(config.loaderId);
+      const fallback = document.getElementById(config.fallbackId);
+      const playlistWindow = document.getElementById(config.windowId);
+      const playlistEl = document.getElementById(config.listId);
+      const btnPrev = document.getElementById(config.prevId);
+      const btnNext = document.getElementById(config.nextId);
+      let videos = [];
+
+      function renderTiles(items) {
+        if (!playlistEl) return;
+        playlistEl.innerHTML = items.map(v => {
+          const vid = v.id;
+          const title = v.title || "Zobacz na YouTube";
+          const date = v.publishedAtISO ? fmtDate(v.publishedAtISO) : (v.date || "");
+          const thumb = v.thumb || `https://i.ytimg.com/vi/${vid}/hq720.jpg`;
+          return `
+            <a class=\"video-tile\" href=\"https://www.youtube.com/watch?v=${vid}\" target=\"_blank\" rel=\"noopener\">
+              <div class=\"thumb\">
+                <img src=\"${thumb}\" alt=\"${title}\" loading=\"lazy\" />
+              </div>
+              <div class=\"meta\">
+                <div class=\"title\">${title}</div>
+                <div class=\"date\">${date}</div>
+              </div>
+            </a>
+          `;
+        }).join("");
+        playlistEl.scrollLeft = 0;
+      }
+
+      function updateNav() {
+        if (!playlistEl || !btnPrev || !btnNext) return;
+        btnPrev.style.display = playlistEl.scrollLeft > 0 ? "flex" : "none";
+        btnNext.style.display =
+          playlistEl.scrollLeft + playlistEl.clientWidth < playlistEl.scrollWidth ? "flex" : "none";
+      }
+
+      function renderStaticFallback() {
+        const fallbackIds = config.fallbackVideoIds || STATIC_FALLBACK_VIDEO_IDS;
+        videos = fallbackIds.map(id => ({
+          id,
+          title: "ExploRide – wideo",
+          date: "",
+          thumb: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        }));
+        renderTiles(videos);
+        updateNav();
+      }
+
+      if (btnPrev && playlistEl) {
+        btnPrev.addEventListener("click", () => {
+          playlistEl.scrollBy({ left: -playlistEl.clientWidth, behavior: "smooth" });
+        });
+      }
+      if (btnNext && playlistEl) {
+        btnNext.addEventListener("click", () => {
+          playlistEl.scrollBy({ left: playlistEl.clientWidth, behavior: "smooth" });
+        });
+      }
+      if (playlistWindow) {
+        playlistWindow.addEventListener("keydown", e => {
+          if (e.key === "ArrowRight") {
+            e.preventDefault();
+            btnNext?.click();
+          }
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            btnPrev?.click();
+          }
+        });
+      }
+      if (playlistEl) {
+        playlistEl.addEventListener("scroll", updateNav);
+      }
+
+      async function initSection() {
+        if (!playlistEl) {
+          if (loader) loader.style.display = "none";
+          if (fallback) fallback.style.display = "block";
+          return;
+        }
+        try {
+          let list = await fetchAllPlaylistItems(config.playlistId);
+          list.sort((a, b) => {
+            const ta = a.publishedAtISO ? Date.parse(a.publishedAtISO) : 0;
+            const tb = b.publishedAtISO ? Date.parse(b.publishedAtISO) : 0;
+            return tb - ta;
+          });
+          if (list.length > 0) list = list.slice(1);
+          videos = list;
+          renderTiles(videos);
+          if (loader) loader.style.display = "none";
+          if (fallback) fallback.style.display = "none";
+          updateNav();
+        } catch (e) {
+          console.warn(`Playlist API error (${config.key}) -> tryb awaryjny`, e);
+          if (loader) loader.style.display = "none";
+          if (fallback) fallback.style.display = "block";
+          renderStaticFallback();
+        }
+      }
+
+      initSection();
+
+      return { updateNav };
+    }
+
+    function initPlaylists() {
+      const controllers = {};
+      PLAYLIST_SECTIONS.forEach(cfg => {
+        controllers[cfg.key] = setupPlaylistSection(cfg);
+      });
+
+      const switcher = document.querySelector(".video-switcher");
+      if (!switcher) return;
+
+      const sections = {
+        urbex: document.getElementById("urbex-section"),
+        travel: document.getElementById("travel-section"),
+      };
+
+      const panels = Array.from(switcher.querySelectorAll("[data-video-panel]"));
+      const panelsByTarget = panels.reduce((acc, panel) => {
+        const target = panel?.dataset?.videoPanel;
+        if (!target) {
+          return acc;
+        }
+        if (!acc[target]) {
+          acc[target] = [];
+        }
+        acc[target].push(panel);
+        return acc;
+      }, {});
+
+      const controls = document.getElementById("video-switcher-controls");
+      const toggleButtons = controls ? Array.from(controls.querySelectorAll("[data-video-target]")) : [];
+      const togglesByTarget = toggleButtons.reduce((acc, btn) => {
+        const target = btn?.dataset?.videoTarget;
+        if (!target) {
+          return acc;
+        }
+        if (!acc[target]) {
+          acc[target] = [];
+        }
+        acc[target].push(btn);
+        return acc;
+      }, {});
+
+      const sliders = Array.from(switcher.querySelectorAll(".video-switcher__slider"));
+
+      function updateUIForSection(name) {
+        const isTravel = name === "travel";
+        switcher.classList.toggle("is-travel", isTravel);
+        switcher.classList.toggle("is-urbex", !isTravel);
+
+        Object.entries(panelsByTarget).forEach(([targetName, panelList]) => {
+          const isActive = targetName === name;
+          panelList.forEach((panel) => {
+            if (!panel) return;
+            panel.removeAttribute("hidden");
+            panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+            panel.classList.toggle("is-active", isActive);
+            panel.classList.toggle("is-inactive", !isActive);
+          });
+        });
+
+        Object.entries(togglesByTarget).forEach(([targetName, buttons]) => {
+          const isActive = targetName === name;
+          buttons.forEach((btn) => {
+            if (!btn) return;
+            btn.classList.toggle("is-active", isActive);
+            btn.setAttribute("aria-selected", isActive ? "true" : "false");
+            btn.setAttribute("aria-hidden", "false");
+          });
+        });
+
+        const translateValue = isTravel ? "-100%" : "0%";
+        sliders.forEach((slider) => {
+          if (!slider) return;
+          slider.style.transform = `translateX(${translateValue})`;
+        });
+      }
+
+      function showSection(name, focusTarget) {
+        updateUIForSection(name);
+
+        const target = sections[name];
+        if (focusTarget && target) {
+          target.focus({ preventScroll: true });
+        }
+
+        if (controllers[name] && typeof controllers[name].updateNav === "function") {
+          controllers[name].updateNav();
+        }
+      }
+
+      toggleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.videoTarget === "travel" ? "travel" : "urbex";
+          showSection(target, true);
+        });
+      });
+
+      showSection("urbex", false);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initPlaylists);
+    } else {
+      initPlaylists();
+    }
+  </script>
+
+  <noscript>
+    <div style="max-width:900px;margin:20px auto;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;color:#ddd;">
+      Ta strona pokazuje kafelki playlist przez YouTube API. Włącz JavaScript, albo zobacz je na YouTube:
+      <br />
+      <a href="https://www.youtube.com/playlist?list=PL8VD37UX-sp0Ei-uxx4UEuXtP_5m-5oFn" target="_blank" style="color:#fff;text-decoration:underline;">Playlista Urbex</a>
+      &nbsp;|&nbsp;
+      <a href="https://www.youtube.com/playlist?list=PL8VD37UX-sp35R-3mMPkhh4V6k63tWzvq" target="_blank" style="color:#fff;text-decoration:underline;">Playlista Podróże</a>.
+    </div>
+  </noscript>
+</body>
+</html>
