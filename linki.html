@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Linki – ExploRide</title>
+  <meta name="description" content="Wszystkie oficjalne linki i kanały ExploRide w jednym miejscu: YouTube, Instagram, Facebook, TikTok oraz kanały nadawcze." />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+  <script>
+    document.addEventListener('scroll', () => {
+      const y = window.scrollY * 0.2;
+      document.body.style.backgroundPosition = `center ${-y}px`;
+    });
+  </script>
+</head>
+<body class="page-links">
+  <header>
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+      <span class="brand-name">EXPLORIDE.PL</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="top-nav" id="main-navigation" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--about" href="onas.html">O nas</a>
+      <a class="nav-link nav-link--gallery" href="galeria.html">Galeria</a>
+      <a class="nav-link nav-link--links" href="linki.html" aria-current="page">Linki</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <a class="nav-link nav-link--support" href="wesprzyj-nas.html">Wesprzyj nas</a>
+      <a class="nav-link nav-link--contact" href="kontakt.html">Kontakt</a>
+      <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+    </nav>
+  </header>
+
+  <main class="links-main">
+    <section class="links-card" aria-labelledby="links-title">
+      <h1 id="links-title">Linki</h1>
+      <p class="links-lead">Zebraliśmy w jednym miejscu wszystkie oficjalne profile i kanały ExploRide. Kliknij w przycisk, aby odwiedzić nas na ulubionej platformie.</p>
+      <div class="buttons links-buttons" role="list">
+        <a class="yt links-button" href="https://www.youtube.com/@ExploRideURBEX" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">YouTube</span>
+          <span class="links-button__handle">@ExploRideURBEX</span>
+        </a>
+        <a class="ig links-button" href="https://www.instagram.com/exploride.urbex" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">Instagram</span>
+          <span class="links-button__handle">@exploride.urbex</span>
+        </a>
+        <a class="fb links-button" href="https://www.facebook.com/ExploRideURBEX" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">Facebook</span>
+          <span class="links-button__handle">ExploRideURBEX</span>
+        </a>
+        <a class="tt links-button" href="https://www.tiktok.com/@exploride.urbex" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">TikTok</span>
+          <span class="links-button__handle">@exploride.urbex</span>
+        </a>
+        <a class="pinterest links-button" href="https://pin.it/7jtt0sZdS" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">Pinterest</span>
+          <span class="links-button__handle">Inspiracje ExploRide</span>
+        </a>
+        <a class="ig-channel links-button" href="https://www.instagram.com/channel/AbYlp0UgW0XJ3NTr/" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">Kanał nadawczy IG</span>
+          <span class="links-button__handle">Dołącz na Instagramie</span>
+        </a>
+        <a class="messenger links-button" href="https://www.messenger.com/channel/ExploRideURBEX" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="links-button__title">Kanał Messenger</span>
+          <span class="links-button__handle">ExploRideURBEX</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone. • <a href="https://exploride.pl/privacy-policy">Polityka prywatności</a>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
