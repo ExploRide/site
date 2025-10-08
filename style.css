@@ -17,7 +17,7 @@
    :root {
       --background-cycle-duration: 12000ms;
       --background-fade-duration: 1200ms;
-      --sidebar-width: clamp(240px, 24vw, 320px);
+      --sidebar-width: clamp(228px, 22vw, 300px);
     }
    body {
       height: 100%;
@@ -99,7 +99,7 @@
     header {
           background: #000000c2;
       color: #fff;
-      padding: clamp(28px, 6vw, 48px) clamp(18px, 4vw, 28px);
+      padding: clamp(24px, 5vw, 40px) clamp(16px, 3.6vw, 24px);
       width: var(--sidebar-width);
       height: 100vh;
       position: fixed;
@@ -108,12 +108,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      gap: clamp(18px, 5vw, 36px);
+      gap: clamp(12px, 4vw, 28px);
       margin: 0;
       box-shadow: 6px 0 30px rgba(0, 0, 0, 0.6);
       text-align: center;
       overflow: hidden;
-      overflow-y: auto;
       z-index: 10;
       scrollbar-gutter: stable;
     }
@@ -139,7 +138,7 @@
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      gap: clamp(12px, 3vw, 18px);
+      gap: clamp(10px, 2.6vw, 16px);
       color: #fff;
       text-decoration: none;
       transition: color 0.2s ease;
@@ -149,14 +148,21 @@
     .brand-name {
       font-family: 'BebasNeue', Arial, Helvetica, sans-serif !important;
       font-weight: 400 !important;
-      letter-spacing: clamp(4px, 0.9vw, 10px);
-      font-size: clamp(2.6rem, 8vw, 4.6rem);
+      letter-spacing: clamp(3px, 0.7vw, 8px);
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
       text-transform: uppercase;
       line-height: 1;
+      max-width: 100%;
+      word-break: break-word;
     }
 
     header .logo {
       display: none;
+    }
+    .page-home header .logo {
+      display: block;
+      width: clamp(88px, 12vw, 128px);
+      height: auto;
     }
     .nav-toggle {
       display: none;
@@ -173,6 +179,16 @@
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .page-home__title {
+      margin: clamp(24px, 6vw, 64px) clamp(16px, 5vw, 80px) clamp(24px, 5vw, 48px);
+      font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      letter-spacing: clamp(4px, 0.8vw, 10px);
+      font-size: clamp(2.6rem, 7vw, 4.6rem);
+      text-transform: uppercase;
+      text-align: center;
     }
     .nav-toggle__bars {
       display: inline-flex;
@@ -214,7 +230,7 @@
       flex-direction: column;
       align-items: stretch;
       justify-content: flex-start;
-      gap: clamp(10px, 2.2vw, 20px);
+      gap: clamp(8px, 2vw, 18px);
       width: 100%;
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
       margin-top: clamp(12px, 3vw, 28px);
@@ -223,7 +239,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: flex-start;
-      padding: clamp(10px, 1.6vw, 16px) clamp(18px, 3vw, 26px);
+      padding: clamp(8px, 1.4vw, 14px) clamp(16px, 2.6vw, 22px);
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgb(52, 52, 52);
@@ -232,7 +248,8 @@
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       cursor: pointer;
       white-space: nowrap;
-      letter-spacing: clamp(2px, 0.6vw, 4px);
+      letter-spacing: clamp(1.5px, 0.5vw, 3px);
+      font-size: clamp(1rem, 2.6vw, 1.4rem);
       width: 100%;
       text-align: left;
     }
