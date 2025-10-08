@@ -230,7 +230,7 @@
       flex-direction: column;
       align-items: stretch;
       justify-content: flex-start;
-      gap: clamp(8px, 2vw, 18px);
+      gap: clamp(6px, 1.6vw, 14px);
       width: 100%;
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
       margin-top: clamp(12px, 3vw, 28px);
@@ -239,7 +239,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: flex-start;
-      padding: clamp(8px, 1.4vw, 14px) clamp(16px, 2.6vw, 22px);
+      padding: clamp(6px, 1vw, 10px) clamp(14px, 2vw, 18px);
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgb(52, 52, 52);
@@ -248,8 +248,8 @@
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
       cursor: pointer;
       white-space: nowrap;
-      letter-spacing: clamp(1.5px, 0.5vw, 3px);
-      font-size: clamp(1rem, 2.6vw, 1.4rem);
+      letter-spacing: clamp(1px, 0.4vw, 2.2px);
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
       width: 100%;
       text-align: left;
     }
