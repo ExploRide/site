@@ -921,8 +921,9 @@
     }
 
     .fb-embed-wrapper {
-      display: grid;
-      place-items: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
       max-height: var(--fb-embed-max-height);
       overflow: hidden;
@@ -930,6 +931,21 @@
 
     .fb-embed-wrapper > * {
       width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fb-embed-wrapper .fb_iframe_widget,
+    .fb-embed-wrapper .fb_iframe_widget span {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+    }
+
+    .fb-embed-wrapper .fb_iframe_widget iframe {
+      margin: 0 auto !important;
     }
 
     .fb-embed-loading,
