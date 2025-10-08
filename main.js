@@ -1,7 +1,7 @@
 (function () {
   function initNavToggle() {
     const header = document.querySelector('header');
-    if (!header) {
+    if (!header || header.dataset.navLayout === 'sidebar') {
       return;
     }
 
