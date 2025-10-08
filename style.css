@@ -28,6 +28,7 @@
       padding-left: calc(var(--sidebar-width) + clamp(16px, 4vw, 40px));
       background: #111 url('backgrounds/background1.jpg') no-repeat center center;
       background-size: 130% auto;
+      background-attachment: fixed;
       color: #fff;
       font-family: 'Base02', Arial, Helvetica, sans-serif;
       text-align: center;
@@ -253,7 +254,7 @@
     .nav-links-section__title {
       font-size: clamp(0.7rem, 1.8vw, 1rem);
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.6);
+      color: #e50914;
       text-transform: uppercase;
       letter-spacing: clamp(1px, 0.35vw, 1.6px);
     }
@@ -686,7 +687,7 @@
     /* Social CTA */
     .social-cta {
       max-width: 1200px;
-      margin: 24px auto;
+      margin: 16px auto;
       padding: 0 16px;
       display: flex;
       justify-content: center;
@@ -697,6 +698,7 @@
       justify-content: center;
       gap: 8px;
       padding: 12px 24px;
+      margin-block: 12px;
       color: rgb(0 0 0);
       text-decoration: none;
       font-size: 1.05em;
