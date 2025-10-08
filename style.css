@@ -902,7 +902,6 @@
     }
 
     .fb-embed-card {
-      --fb-embed-max-height: 800px;
       background: rgba(17, 17, 17, 0.85);
       border: 1px solid #2a2a2a;
       border-radius: 14px;
@@ -912,8 +911,9 @@
       align-items: center;
       min-height: 180px;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-      overflow: hidden;
-      max-height: calc(var(--fb-embed-max-height) + 36px);
+      overflow: visible;
+      max-width: 720px;
+      width: 100%;
     }
 
     .fb-embed-card > * {
@@ -925,8 +925,6 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      max-height: var(--fb-embed-max-height);
-      overflow: hidden;
     }
 
     .fb-embed-wrapper > * {
