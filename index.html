@@ -693,7 +693,7 @@
       async function fetchOEmbedHtml(permalink) {
         const u = new URL(FB_OEMBED_API);
         u.searchParams.set("url", permalink);
-        u.searchParams.set("maxwidth", "780");
+        u.searchParams.set("maxwidth", "624");
         u.searchParams.set("omitscript", "true");
 
         const res = await fetch(u.toString(), { credentials: "omit" });
