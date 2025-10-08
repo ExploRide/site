@@ -251,7 +251,7 @@
       cursor: pointer;
       white-space: nowrap;
       letter-spacing: clamp(1px, 0.4vw, 2.2px);
-      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      /*font-size: clamp(0.9rem, 2vw, 1.2rem);*/
       width: 100%;
       text-align: left;
     }
