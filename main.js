@@ -1,7 +1,7 @@
 (function () {
   function initNavToggle() {
     const header = document.querySelector('header');
-    if (!header || header.dataset.navLayout === 'sidebar') {
+    if (!header) {
       return;
     }
 
@@ -9,6 +9,13 @@
     const nav = header.querySelector('.top-nav');
     if (!toggle || !nav) {
       return;
+    }
+
+    let navBackdrop = header.querySelector('.nav-backdrop');
+    if (!navBackdrop) {
+      navBackdrop = document.createElement('div');
+      navBackdrop.className = 'nav-backdrop';
+      header.appendChild(navBackdrop);
     }
 
     const mediaQuery = window.matchMedia('(min-width: 768px)');
@@ -73,6 +80,7 @@
       header.classList.remove('is-nav-open');
       toggle.setAttribute('aria-expanded', 'false');
       setNavAriaHidden(true);
+      document.body.classList.remove('has-open-nav');
     };
 
     const openNav = () => {
@@ -80,6 +88,7 @@
       header.classList.add('is-nav-open');
       toggle.setAttribute('aria-expanded', 'true');
       setNavAriaHidden(false);
+      document.body.classList.add('has-open-nav');
     };
 
     const toggleNav = () => {
@@ -91,6 +100,12 @@
     };
 
     toggle.addEventListener('click', toggleNav);
+
+    navBackdrop.addEventListener('click', () => {
+      if (!isDesktop()) {
+        closeNav();
+      }
+    });
 
     nav.addEventListener('click', (event) => {
       const target = event.target;
@@ -106,6 +121,21 @@
       if (event.key === 'Escape' && header.classList.contains('is-nav-open')) {
         closeNav();
         toggle.focus();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (isDesktop() || !header.classList.contains('is-nav-open')) {
+        return;
+      }
+
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      if (!target.closest('header')) {
+        closeNav();
       }
     });
 
