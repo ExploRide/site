@@ -234,6 +234,43 @@
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
       margin-top: 0px
     }
+    .nav-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.18);
+      border: none;
+      margin: clamp(4px, 1vw, 8px) 0 clamp(2px, 0.8vw, 6px);
+    }
+    .nav-links-section {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2px, 0.8vw, 6px);
+      padding: 0 clamp(2px, 0.8vw, 6px);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: clamp(0.7rem, 1.8vw, 0.95rem);
+      letter-spacing: clamp(0.5px, 0.25vw, 1.2px);
+    }
+    .nav-links-section__title {
+      font-size: clamp(0.7rem, 1.8vw, 1rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: clamp(1px, 0.35vw, 1.6px);
+    }
+    .nav-social-link {
+      display: block;
+      padding: 0;
+      background: none;
+      border: 0;
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-social-link:hover,
+    .nav-social-link:focus-visible {
+      color: #fff;
+      text-decoration: underline;
+    }
     .nav-link {
       display: inline-flex;
       align-items: center;
