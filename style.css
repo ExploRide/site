@@ -245,7 +245,7 @@
       gap: clamp(6px, 1.6vw, 14px);
       width: 100%;
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
-      margin-top: clamp(12px, 3vw, 28px);
+      /*margin-top: clamp(12px, 3vw, 28px);*/
     }
     .nav-link {
       display: inline-flex;
