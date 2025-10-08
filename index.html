@@ -745,7 +745,7 @@
           }
 
           const html = await fetchOEmbedHtml(permalink);
-          setHostContent(host, html);
+          setHostContent(host, `<div class="fb-embed-wrapper">${html}</div>`);
 
           const FBSDK = await waitForFacebookSDK();
           if (!FBSDK || typeof FBSDK.XFBML?.parse !== "function") {
