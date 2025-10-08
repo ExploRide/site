@@ -168,9 +168,79 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNavToggle);
-  } else {
+  function initComingSoonTooltip() {
+    const header = document.querySelector('header');
+    if (!header) {
+      return;
+    }
+
+    const buttons = header.querySelectorAll('.nav-link--disabled');
+    const targets = Array.from(buttons).filter((button) => {
+      const label = button.textContent.trim().toLowerCase();
+      return label === 'blog' || label === 'sklep';
+    });
+
+    if (!targets.length) {
+      return;
+    }
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'cursor-tooltip';
+    tooltip.setAttribute('role', 'status');
+    tooltip.textContent = 'Coming soon...';
+    document.body.appendChild(tooltip);
+
+    let isVisible = false;
+
+    const showTooltip = () => {
+      if (!isVisible) {
+        tooltip.classList.add('is-visible');
+        isVisible = true;
+      }
+    };
+
+    const hideTooltip = () => {
+      if (!isVisible) {
+        return;
+      }
+
+      tooltip.classList.remove('is-visible');
+      tooltip.style.removeProperty('--tooltip-x');
+      tooltip.style.removeProperty('--tooltip-y');
+      isVisible = false;
+    };
+
+    const updateTooltipPosition = (event) => {
+      tooltip.style.setProperty('--tooltip-x', `${Math.round(event.clientX + 16)}px`);
+      tooltip.style.setProperty('--tooltip-y', `${Math.round(event.clientY + 16)}px`);
+    };
+
+    targets.forEach((button) => {
+      button.addEventListener('mouseenter', (event) => {
+        showTooltip();
+        updateTooltipPosition(event);
+      });
+
+      button.addEventListener('mouseleave', () => {
+        hideTooltip();
+      });
+
+      button.addEventListener('mousemove', (event) => {
+        if (isVisible) {
+          updateTooltipPosition(event);
+        }
+      });
+    });
+  }
+
+  function init() {
     initNavToggle();
+    initComingSoonTooltip();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();
