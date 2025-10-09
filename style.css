@@ -746,13 +746,14 @@
     .social-cta__link::after {
       content: "";
       position: absolute;
-      top: 50%;
+      top: 5%;
       left: 50%;
       width: clamp(32px, 5vw, 48px);
       aspect-ratio: 1;
       background: url("./curved-arrow.png") no-repeat center / contain;
       transform: translate(35%, -65%);
       pointer-events: none;
+          filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 1));
     }
     .social-cta__link:hover,
     .social-cta__link:focus-visible {
