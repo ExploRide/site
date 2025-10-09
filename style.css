@@ -1251,6 +1251,13 @@
       height: 24px;
       display: block;
     }
+    .brand-icon img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: inherit;
+    }
     .brand-icon--lg {
       width: 48px;
       height: 48px;
@@ -1261,9 +1268,10 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
-    .brand-icon--buycoffee {
-      background: linear-gradient(135deg, #ffe08a, #f5b63f);
-      color: #2c1600;
+    .brand-icon--buycoffee,
+    .brand-icon--paypal {
+      background: #fff;
+      color: inherit;
     }
     .brand-icon--youtube {
       background: #ff0000;
@@ -1271,10 +1279,6 @@
     }
     .brand-icon--facebook {
       background: #1877f2;
-    }
-    .brand-icon--paypal {
-      background: linear-gradient(135deg, #003087, #009cde);
-      color: #fff;
     }
     .brand-icon--bank {
       background: rgba(255, 255, 255, 0.12);
