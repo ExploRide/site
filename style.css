@@ -1178,49 +1178,142 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: clamp(14px, 3vw, 24px);
+      gap: clamp(16px, 3.6vw, 28px);
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
     }
 
     .links-buttons .links-button {
+      --brand-color: #2d2d2d;
+      --brand-accent: #1c1c1c;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(14px, 3vw, 20px);
+      padding: clamp(16px, 3.2vw, 22px) clamp(20px, 4.6vw, 32px);
+      flex: 1 1 clamp(220px, 32vw, 280px);
       min-width: clamp(220px, 32vw, 260px);
-      color: rgb(0 0 0);
+      max-width: min(100%, 360px);
+      color: #fff;
+      text-decoration: none;
       text-transform: none;
       line-height: 1.2;
+      border-radius: clamp(18px, 4vw, 26px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 45%),
+        linear-gradient(135deg, var(--brand-color), var(--brand-accent));
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      overflow: hidden;
+    }
+
+    .links-buttons .links-button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35), transparent 55%);
+      opacity: 0.65;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .links-buttons .links-button:hover,
+    .links-buttons .links-button:focus-visible {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.32);
+    }
+
+    .links-buttons .links-button:hover::before,
+    .links-buttons .links-button:focus-visible::before {
+      opacity: 0.85;
+    }
+
+    .links-buttons .links-button:focus-visible {
+      outline: none;
     }
 
     .links-button__icon {
       flex-shrink: 0;
-      width: 1.3em;
-      height: 1.3em;
+      width: 1.35em;
+      height: 1.35em;
+      color: inherit;
+    }
+
+    .links-button__icon path,
+    .links-button__icon rect,
+    .links-button__icon circle {
+      fill: currentColor;
     }
 
     .links-button__text {
+      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
       align-items: flex-start;
       text-align: left;
       line-height: 1.1;
     }
 
     .links-button__title {
-      font-size: clamp(1.05rem, 2.6vw, 1.28rem);
+      font-size: clamp(1.05rem, 2.6vw, 1.32rem);
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .links-button__handle {
       font-family: 'Base02', Arial, Helvetica, sans-serif;
-      font-size: clamp(0.78rem, 2.2vw, 0.95rem);
+      font-size: clamp(0.8rem, 2.2vw, 0.98rem);
       letter-spacing: normal;
-      opacity: 0.7;
+      color: rgba(255, 255, 255, 0.78);
     }
 
-    .links-button--pinterest,
-    .links-button--ig-channel,
+    .links-button--yt {
+      --brand-color: #ff2d55;
+      --brand-accent: #c40631;
+    }
+
+    .links-button--ig,
+    .links-button--ig-channel {
+      --brand-color: #f58529;
+      --brand-accent: #833ab4;
+    }
+
+    .links-button--fb {
+      --brand-color: #1877f2;
+      --brand-accent: #0f5ad0;
+    }
+
+    .links-button--tt {
+      --brand-color: #25f4ee;
+      --brand-accent: #fe2c55;
+    }
+
+    .links-button--pinterest {
+      --brand-color: #e60023;
+      --brand-accent: #b0001a;
+    }
+
     .links-button--messenger {
-      background: #d9d9d9;
+      --brand-color: #0099ff;
+      --brand-accent: #0066ff;
+    }
+
+    @media (max-width: 720px) {
+      .links-buttons {
+        gap: clamp(14px, 4vw, 22px);
+      }
+
+      .links-buttons .links-button {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+
+      .links-button__text {
+        align-items: center;
+        text-align: center;
+      }
     }
 
     @media (max-width: 520px) {
@@ -1228,9 +1321,8 @@
         justify-content: center;
       }
 
-      .links-button__text {
-        align-items: center;
-        text-align: center;
+      .links-buttons .links-button {
+        padding: clamp(14px, 6vw, 20px) clamp(18px, 8vw, 28px);
       }
     }
 
