@@ -740,6 +740,19 @@
       transition: background 0.25s, transform 0.2s;
       line-height: 1.2;
       background: #d9d9d9;
+      position: relative;
+      overflow: visible;
+    }
+    .social-cta__link::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: clamp(32px, 5vw, 48px);
+      aspect-ratio: 1;
+      background: url("./curved-arrow.png") no-repeat center / contain;
+      transform: translate(35%, -65%);
+      pointer-events: none;
     }
     .social-cta__link:hover,
     .social-cta__link:focus-visible {
@@ -775,6 +788,10 @@
         font-size: clamp(0.56rem, 2.8vw, 0.8rem);
         padding: clamp(6px, 1.6vw + 2px, 10px) clamp(4px, 1.4vw + 2px, 12px);
         gap: clamp(6px, 1.5vw + 2px, 10px);
+      }
+      .social-cta__link::after {
+        width: clamp(26px, 10vw, 40px);
+        transform: translate(30%, -70%);
       }
       .social-cta__link svg {
         width: 1.35em;
