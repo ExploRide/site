@@ -236,7 +236,49 @@
       gap: clamp(6px, 1.6vw, 14px);
       width: 100%;
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
-      margin-top: 0px
+      margin-top: 0px;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable both-edges;
+      scrollbar-width: none;
+      scrollbar-color: rgba(140, 140, 140, 0.65) transparent;
+      transition: scrollbar-color 0.3s ease;
+    }
+
+    .top-nav:hover {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(140, 140, 140, 0.65) rgba(255, 255, 255, 0.08);
+    }
+
+    .top-nav::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
+      transition: width 0.25s ease;
+    }
+
+    .top-nav::-webkit-scrollbar-thumb {
+      background-color: rgba(140, 140, 140, 0);
+      border-radius: 999px;
+      transition: background-color 0.25s ease;
+    }
+
+    .top-nav::-webkit-scrollbar-track {
+      background: transparent;
+      transition: background 0.25s ease;
+    }
+
+    .top-nav:hover::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .top-nav:hover::-webkit-scrollbar-thumb {
+      background-color: rgba(140, 140, 140, 0.7);
+    }
+
+    .top-nav:hover::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.08);
     }
     .nav-divider {
       width: 100%;
@@ -424,16 +466,6 @@
         transform: translateX(0);
         opacity: 1;
         pointer-events: auto;
-      }
-      .top-nav::-webkit-scrollbar {
-        width: 6px;
-      }
-      .top-nav::-webkit-scrollbar-thumb {
-        background: rgba(229, 9, 20, 0.5);
-        border-radius: 999px;
-      }
-      .top-nav::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.08);
       }
       .nav-link {
         justify-content: flex-start;
