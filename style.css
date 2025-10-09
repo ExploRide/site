@@ -127,7 +127,7 @@
     header {
           background: #000000c2;
       color: #fff;
-      padding: clamp(24px, 5vw, 40px) clamp(16px, 3.6vw, 24px);
+      padding: clamp(24px, 5vw, 1px) clamp(16px, 3.6vw, 24px);
       width: var(--sidebar-width);
       height: 100vh;
       position: fixed;
@@ -210,6 +210,7 @@
       display: block;
       width: clamp(88px, 12vw, 128px);
       height: auto;
+      margin-bottom: 20px;
     }
     .nav-toggle {
       display: none;
