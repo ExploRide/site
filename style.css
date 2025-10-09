@@ -140,9 +140,52 @@
       margin: 0;
       box-shadow: 6px 0 30px rgba(0, 0, 0, 0.6);
       text-align: center;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       z-index: 10;
-      scrollbar-gutter: stable;
+      scrollbar-gutter: stable both-edges;
+      scrollbar-width: none;
+      scrollbar-color: rgba(140, 140, 140, 0.65) transparent;
+      transition: scrollbar-color 0.35s ease;
+    }
+
+    header:hover,
+    header:focus-within {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(140, 140, 140, 0.75) rgba(255, 255, 255, 0.1);
+    }
+
+    header::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
+      transition: width 0.35s ease, background 0.35s ease;
+    }
+
+    header::-webkit-scrollbar-thumb {
+      background-color: rgba(140, 140, 140, 0);
+      border-radius: 999px;
+      transition: background-color 0.35s ease;
+    }
+
+    header::-webkit-scrollbar-track {
+      background: transparent;
+      transition: background 0.35s ease;
+    }
+
+    header:hover::-webkit-scrollbar,
+    header:focus-within::-webkit-scrollbar {
+      width: 10px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    header:hover::-webkit-scrollbar-thumb,
+    header:focus-within::-webkit-scrollbar-thumb {
+      background-color: rgba(140, 140, 140, 0.75);
+    }
+
+    header:hover::-webkit-scrollbar-track,
+    header:focus-within::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.08);
     }
 
     header > :not(.nav-backdrop) {
@@ -157,6 +200,9 @@
       color: #fff;
       text-decoration: none;
       transition: color 0.2s ease;
+      position: sticky;
+      top: clamp(24px, 5vw, 40px);
+      z-index: 2;
     }
     .brand:hover,
     .brand:focus-visible { color: #e50914; }
@@ -239,7 +285,7 @@
       margin-top: 0px;
       flex: 1 1 auto;
       min-height: 0;
-      overflow-y: auto;
+      overflow-y: visible;
       overscroll-behavior: contain;
       scrollbar-gutter: stable both-edges;
       scrollbar-width: none;
@@ -426,6 +472,8 @@
         text-align: left;
         gap: clamp(10px, 4vw, 16px);
         width: auto;
+        position: relative;
+        top: auto;
       }
       .page-home header .logo {
         width: clamp(52px, 16vw, 82px);
