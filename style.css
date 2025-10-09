@@ -494,7 +494,7 @@
     }
     .youtube-subscribe-button {
       /*display: inline-flex;*/
-      display: none
+      display: none;
       align-items: center;
       gap: 10px;
       margin: 18px auto 0;
