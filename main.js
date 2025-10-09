@@ -186,6 +186,12 @@
 
   function init() {
     initNavToggle();
+
+    if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo(0, 0);
   }
 
   if (document.readyState === 'loading') {
