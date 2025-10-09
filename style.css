@@ -438,6 +438,7 @@
       .nav-link {
         justify-content: flex-start;
         width: 100%;
+        font-size: clamp(1rem, 4.8vw, 1.2rem);
       }
       .nav-backdrop {
         display: block;
@@ -455,6 +456,11 @@
       header.is-nav-open .nav-backdrop {
         opacity: 1;
         pointer-events: auto;
+      }
+      header .top-nav .nav-links-section,
+      header .top-nav .nav-links-section .nav-social-link {
+        font-size: clamp(1rem, 4.8vw, 1.2rem);
+        letter-spacing: clamp(1px, 0.4vw, 2.2px);
       }
     }
     @media (min-width: 768px) {
