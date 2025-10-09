@@ -21,12 +21,13 @@
       --mobile-header-height: clamp(68px, 18vw, 92px);
       --mobile-header-offset: var(--mobile-header-height);
       --mobile-nav-width: min(320px, 78vw);
+      --nav-scrollbar-reserve: 12px;
     }
    body {
       height: 100%;
       min-height: 100vh;
       margin: 0;
-      padding-left: calc(var(--sidebar-width) + clamp(16px, 4vw, 40px));
+      padding-left: calc(var(--sidebar-width) + clamp(16px, 4vw, 40px) + var(--nav-scrollbar-reserve));
       background: #111 url('backgrounds/background1.jpg') no-repeat center center;
       background-size: 130% auto;
       background-attachment: fixed;
@@ -128,7 +129,8 @@
           background: #000000c2;
       color: #fff;
       padding: clamp(24px, 5vw, 1px) clamp(16px, 3.6vw, 24px);
-      width: var(--sidebar-width);
+      padding-block-start: 20px;
+      width: calc(var(--sidebar-width) + var(--nav-scrollbar-reserve));
       height: 100vh;
       position: fixed;
       inset: 0 auto 0 0;
@@ -156,7 +158,7 @@
     }
 
     header::-webkit-scrollbar {
-      width: 0;
+      width: var(--nav-scrollbar-reserve);
       background: transparent;
       transition: width 0.35s ease, background 0.35s ease;
     }
@@ -174,7 +176,7 @@
 
     header:hover::-webkit-scrollbar,
     header:focus-within::-webkit-scrollbar {
-      width: 10px;
+      width: var(--nav-scrollbar-reserve);
       background: rgba(255, 255, 255, 0.08);
     }
 
@@ -201,7 +203,7 @@
       text-decoration: none;
       transition: color 0.2s ease;
       position: sticky;
-      top: clamp(24px, 5vw, 40px);
+      top: 20px;
       z-index: 2;
     }
     .brand:hover,
