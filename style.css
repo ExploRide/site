@@ -493,7 +493,8 @@
       padding: 0 16px;
     }
     .youtube-subscribe-button {
-      display: inline-flex;
+      /*display: inline-flex;*/
+      display: none
       align-items: center;
       gap: 10px;
       margin: 18px auto 0;
@@ -742,6 +743,7 @@
       background: #d9d9d9;
       position: relative;
       overflow: visible;
+      font-weight: 900;
     }
     .social-cta__link::after {
       content: "";
