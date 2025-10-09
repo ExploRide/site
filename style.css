@@ -621,6 +621,20 @@
       cursor: pointer;
       transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
     }
+    .video-toggle__emoji {
+      position: absolute;
+      font-size: clamp(1.4rem, 3.4vw, 2.1rem);
+      pointer-events: none;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+    }
+    .video-toggle__emoji--urbex {
+      top: -0.6em;
+      left: -0.65em;
+    }
+    .video-toggle__emoji--travel {
+      top: -0.6em;
+      right: -0.65em;
+    }
     .video-toggle__label { pointer-events: none; }
     .video-toggle:hover {
       color: #ffffff;
