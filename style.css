@@ -202,9 +202,11 @@
       border-radius: 2px;
       transition: transform 0.25s ease, opacity 0.25s ease;
     }
+/*
     .nav-toggle__label {
       font-size: 0.9em;
     }
+*/
     .nav-toggle:hover,
     .nav-toggle:focus-visible {
       background: #e50914;
@@ -357,7 +359,7 @@
         inset: 0 0 auto 0;
         width: 100%;
         min-height: var(--mobile-header-height);
-        height: auto;
+        height: 100px;
         padding: clamp(14px, 5vw, 22px) clamp(16px, 7vw, 26px);
         flex-direction: row;
         align-items: center;
