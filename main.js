@@ -22,11 +22,23 @@
 
     const isDesktop = () => mediaQuery.matches;
 
+    const updateMobileHeaderOffset = () => {
+      if (isDesktop()) {
+        document.documentElement.style.removeProperty('--mobile-header-offset');
+        return;
+      }
+
+      const headerHeight = Math.round(header.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--mobile-header-offset', `${headerHeight}px`);
+    };
+
     const updateNavHeight = () => {
       if (isDesktop()) {
         nav.style.removeProperty('--top-nav-expanded-height');
         return;
       }
+
+      updateMobileHeaderOffset();
 
       const wasOpen = header.classList.contains('is-nav-open');
       const previousStyles = {
@@ -141,6 +153,7 @@
 
     const handleMediaChange = (event) => {
       updateNavHeight();
+      updateMobileHeaderOffset();
 
       if (event.matches) {
         closeNav();
@@ -150,6 +163,8 @@
     };
 
     const handleResize = () => {
+      updateMobileHeaderOffset();
+
       if (!isDesktop()) {
         updateNavHeight();
       }
@@ -163,6 +178,7 @@
     window.addEventListener('resize', handleResize);
 
     updateNavHeight();
+    updateMobileHeaderOffset();
     if (!isDesktop()) {
       setNavAriaHidden(header.classList.contains('is-nav-open') ? false : true);
     }

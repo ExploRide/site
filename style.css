@@ -19,6 +19,7 @@
       --background-fade-duration: 1200ms;
       --sidebar-width: clamp(228px, 22vw, 300px);
       --mobile-header-height: clamp(68px, 18vw, 92px);
+      --mobile-header-offset: var(--mobile-header-height);
       --mobile-nav-width: min(320px, 78vw);
     }
    body {
@@ -399,7 +400,7 @@
       }
       header .top-nav {
         position: fixed;
-        top: 0;
+        top: var(--mobile-header-offset);
         bottom: 0;
         left: 0;
         right: auto;
@@ -415,7 +416,7 @@
         pointer-events: none;
         z-index: 3;
         overflow-y: auto;
-        max-height: 100vh;
+        max-height: calc(100vh - var(--mobile-header-offset));
         scrollbar-gutter: stable;
         -webkit-overflow-scrolling: touch;
       }
@@ -441,7 +442,10 @@
       .nav-backdrop {
         display: block;
         position: fixed;
-        inset: 0;
+        top: var(--mobile-header-offset);
+        right: 0;
+        bottom: 0;
+        left: 0;
         background: rgba(0, 0, 0, 0.55);
         opacity: 0;
         pointer-events: none;
