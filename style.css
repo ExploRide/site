@@ -363,7 +363,7 @@
         padding: clamp(14px, 5vw, 22px) clamp(16px, 7vw, 26px);
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: clamp(12px, 5vw, 20px);
         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
         z-index: 30;
@@ -392,6 +392,9 @@
       }
       .nav-toggle {
         display: inline-flex;
+        margin-left: auto;
+        position: relative;
+        z-index: 4;
       }
       .top-nav {
         position: fixed;
