@@ -411,6 +411,10 @@
   <!-- ======== Instagram: Najnowsze ======== -->
   <h2 id="posty-ig">Najnowsze z Instagrama</h2>
 
+<!-- Kontener na oEmbed Instagrama -->
+<div id="ig-latest-embed" style="max-width:780px;margin:0 auto 24px;"></div>
+
+
 
   <div class="center">
     <div id="ig-loader" class="loader">Ładowanie postów z Instagrama…</div>
@@ -533,22 +537,44 @@ function buildIgFallback(permalink) {
 async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
   const host = document.getElementById(hostId);
   if (!host) return;
+
   try {
     const permalink = await fetchLatestIgPermalink();
     if (!permalink) throw new Error('No public IG media');
 
-    // 1) oEmbed (oficjalny)
+    // wyczyść URL z parametrów (utm itp.)
+    const u = new URL(permalink);
+    const cleanPermalink = u.origin + u.pathname;
+
+    // 1) spróbuj oEmbed przez Workera
     try {
-      const html = await fetchIgOEmbedHtml(permalink);
-      host.innerHTML = html;
+      const o = await fetchIgOEmbedHtml(cleanPermalink);
+      host.innerHTML = o;
+
+      // >>> to jest kluczowe: przetworzenie emebda przez Instagram
+      const ensureEmbedScript = () =>
+        new Promise(res => {
+          if (window.instgrm && window.instgrm.Embeds) return res();
+          const s = document.createElement('script');
+          s.src = 'https://www.instagram.com/embed.js';
+          s.onload = () => res();
+          document.body.appendChild(s);
+        });
+
+      await ensureEmbedScript();
+      window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
     } catch (e) {
-      // 2) fallback
+      // 2) fallback: bez oEmbed, oficjalny blockquote
       console.warn('IG oEmbed fallback:', e?.message || e);
-      host.innerHTML = buildIgFallback(permalink);
+      host.innerHTML =
+        '<blockquote class="instagram-media" data-instgrm-permalink="' + cleanPermalink + '" data-instgrm-version="14">' +
+        '<a href="' + cleanPermalink + '" target="_blank" rel="noopener"></a></blockquote>' +
+        '<script async src="https://www.instagram.com/embed.js"></' + 'script>';
     }
   } catch (e) {
     console.error('IG embed error:', e);
-    host.innerHTML = '<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/exploride_urbex/">Zobacz nas na Instagramie</a>';
+    host.innerHTML =
+      '<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/exploride.urbex/">Zobacz nas na Instagramie</a>';
   }
 }
 
