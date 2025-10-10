@@ -496,73 +496,66 @@
   </style>
 
   <script>
-    {
-      // ---- KONFIG ----
-      const IG_API = "https://fb-feed.eksplorajder.workers.dev/api/ig/media";
-      const IG_PAGEID = "145171925888318"; // FB Page ID; worker sam znajdzie IG account
-      const IG_LIMIT = 9; // ile kafelków
+// API
+const IG_MEDIA_API   = 'https://fb-feed.eksplorajder.workers.dev/api/ig/media';
+const IG_OEMBED_API  = 'https://fb-feed.eksplorajder.workers.dev/api/ig/oembed';
+const FB_PAGE_ID     = '145171925888318'; // ta sama strona, z którą połączone jest konto IG
 
-      const esc = (s = "") => s.replaceAll("<", "&lt;");
-      const fmt = iso => {
-        const d = new Date(iso);
-        if (isNaN(d)) return "";
-        return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
-      };
+async function fetchLatestIgPermalink() {
+  const u = new URL(IG_MEDIA_API);
+  u.searchParams.set('page_id', FB_PAGE_ID);
+  u.searchParams.set('limit', '5');
+  const r = await fetch(u.toString(), { credentials: 'omit' });
+  if (!r.ok) throw new Error('IG media HTTP ' + r.status);
+  const d = await r.json();
+  const first = (d.items || []).find(x => x.permalink_url);
+  return first ? first.permalink_url : null;
+}
 
-      const card = m => `
-        <a class="ig-tile" href="${m.permalink}" target="_blank" rel="noopener">
-          <div class="ig-media">
-            <img src="${m.src}" alt="Instagram ExploRide" loading="lazy"
-                 onerror="this.closest('.ig-tile')?.remove()">
-          </div>
-          ${m.caption ? `<div class="ig-caption">${esc(m.caption)}</div>` : ""}
-          <div class="ig-date">${fmt(m.timestamp)}</div>
-        </a>
-      `;
+async function fetchIgOEmbedHtml(permalink) {
+  const u = new URL(IG_OEMBED_API);
+  u.searchParams.set('url', permalink);
+  u.searchParams.set('maxwidth', '780');
+  const r = await fetch(u.toString(), { credentials: 'omit' });
+  const d = await r.json().catch(()=> ({}));
+  if (!r.ok || d?.error) throw new Error(d?.error || ('IG oEmbed HTTP ' + r.status));
+  if (!d?.html) throw new Error('IG oEmbed: empty html');
+  return d.html;
+}
 
-      async function loadIG() {
-        const loader = document.getElementById("ig-loader");
-        const fallback = document.getElementById("ig-fallback");
-        const grid = document.getElementById("ig-grid");
-        try {
-          const u = new URL(IG_API);
-          u.searchParams.set("page_id", IG_PAGEID);
-          u.searchParams.set("limit", String(IG_LIMIT));
-          const res = await fetch(u.toString(), { credentials: "omit" });
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          const data = await res.json();
-          // 🔧 Ujednolicenie: wspiera IG (src/permalink/timestamp/caption) oraz FB (media[0].src/permalink_url/created_time/message)
-          const items = (data.items || []).map(x => {
-            const src = x.src || (Array.isArray(x.media) && x.media[0]?.src) || null;
-            const permalink = x.permalink || x.permalink_url || "#";
-            const timestamp = x.timestamp || x.created_time || "";
-            const caption = x.caption || x.message || "";
-            return { src, permalink, timestamp, caption };
-          }).filter(i => !!i.src);
+function buildIgFallback(permalink) {
+  // Oficjalny fallback Instagrama (działa bez oEmbed)
+  return '<blockquote class="instagram-media" data-instgrm-permalink="' + permalink + '" data-instgrm-version="14">' +
+         '<a href="' + permalink + '" target="_blank" rel="noopener"></a></blockquote>' +
+         '<script async src="https://www.instagram.com/embed.js"></' + 'script>';
+}
 
-          items.sort((a, b) => {
-            const ta = a.timestamp ? Date.parse(a.timestamp) : 0;
-            const tb = b.timestamp ? Date.parse(b.timestamp) : 0;
-            return (tb || 0) - (ta || 0);
-          });
+async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
+  const host = document.getElementById(hostId);
+  if (!host) return;
+  try {
+    const permalink = await fetchLatestIgPermalink();
+    if (!permalink) throw new Error('No public IG media');
 
-          if (!items.length) throw new Error("Brak postów IG");
-          grid.innerHTML = items.map(card).join("");
-          loader.style.display = "none";
-        } catch (e) {
-          console.warn("IG feed error", e);
-          loader.style.display = "none";
-          fallback.style.display = "block";
-        }
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", loadIG);
-      } else {
-        loadIG();
-      }
+    // 1) oEmbed (oficjalny)
+    try {
+      const html = await fetchIgOEmbedHtml(permalink);
+      host.innerHTML = html;
+    } catch (e) {
+      // 2) fallback
+      console.warn('IG oEmbed fallback:', e?.message || e);
+      host.innerHTML = buildIgFallback(permalink);
     }
-  </script>
+  } catch (e) {
+    console.error('IG embed error:', e);
+    host.innerHTML = '<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/exploride_urbex/">Zobacz nas na Instagramie</a>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderLatestIgEmbed('ig-latest-embed');
+});
+</script>
   <!-- ======== /Instagram: Najnowsze ======== -->
 
   <hr class="divider" />
