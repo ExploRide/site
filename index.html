@@ -533,35 +533,52 @@
 // API
 const IG_MEDIA_API   = 'https://fb-feed.eksplorajder.workers.dev/api/ig/media';
 const IG_OEMBED_API  = 'https://fb-feed.eksplorajder.workers.dev/api/ig/oembed';
-const FB_PAGE_ID     = '145171925888318'; // ta sama strona, z którą połączone jest konto IG
+const FB_PAGE_ID     = '145171925888318';
 
+// utils
 async function fetchLatestIgPermalink() {
   const u = new URL(IG_MEDIA_API);
   u.searchParams.set('page_id', FB_PAGE_ID);
-  u.searchParams.set('limit', '5');
-  const r = await fetch(u.toString(), { credentials: 'omit' });
-  if (!r.ok) throw new Error('IG media HTTP ' + r.status);
+  u.searchParams.set('limit', '10');
+  u.searchParams.set('bust', String(Date.now()));
+  const r = await fetch(u).catch(()=>null);
+  if (!r || !r.ok) throw new Error('IG media HTTP ' + (r && r.status));
   const d = await r.json();
-  const first = (d.items || []).find(x => x.permalink_url);
+  // wybierz pierwszy nie-REEL; jeśli brak, bierz pierwszy
+  const first = (d.items || []).find(x => x.permalink_url && !/\/reel\//i.test(x.permalink_url))
+             || (d.items || [])[0];
   return first ? first.permalink_url : null;
 }
-
 async function fetchIgOEmbedHtml(permalink) {
+  const clean = new URL(permalink); // usuń query
+  const cleanPermalink = clean.origin + clean.pathname;
   const u = new URL(IG_OEMBED_API);
-  u.searchParams.set('url', permalink);
+  u.searchParams.set('url', cleanPermalink);
   u.searchParams.set('maxwidth', '780');
-  const r = await fetch(u.toString(), { credentials: 'omit' });
+  const r = await fetch(u).catch(()=>null);
+  if (!r || !r.ok) throw new Error('IG oEmbed HTTP ' + (r && r.status));
   const d = await r.json().catch(()=> ({}));
-  if (!r.ok || d?.error) throw new Error(d?.error || ('IG oEmbed HTTP ' + r.status));
-  if (!d?.html) throw new Error('IG oEmbed: empty html');
+  if (!d || !d.html) throw new Error('IG oEmbed: empty html');
   return d.html;
 }
-
-function buildIgFallback(permalink) {
-  // Oficjalny fallback Instagrama (działa bez oEmbed)
-  return '<blockquote class="instagram-media" data-instgrm-permalink="' + permalink + '" data-instgrm-version="14">' +
-         '<a href="' + permalink + '" target="_blank" rel="noopener"></a></blockquote>' +
-         '<script async src="https://www.instagram.com/embed.js"></' + 'script>';
+function loadIgScriptOnce() {
+  return new Promise(res => {
+    if (window.instgrm && window.instgrm.Embeds) return res();
+    const s = document.createElement('script');
+    s.src = 'https://www.instagram.com/embed.js';
+    s.onload = () => res();
+    document.body.appendChild(s);
+  });
+}
+function toIframeHtml(permalink) {
+  const url = new URL(permalink);
+  const parts = url.pathname.split('/').filter(Boolean); // ["p","ABC123"]
+  const type = parts[0];           // "p" | "reel" | "tv"
+  const code = parts[1];           // shortcode
+  const path = (type === 'p' || type === 'reel' || type === 'tv') ? `/${type}/${code}/embed/` : `/p/${code}/embed/`;
+  const src = `https://www.instagram.com${path}`;
+  return `<iframe src="${src}" allowtransparency="true" frameborder="0" scrolling="no"
+           style="width:100%;max-width:780px;border:none;overflow:hidden;height:780px"></iframe>`;
 }
 
 async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
@@ -572,39 +589,33 @@ async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
     const permalink = await fetchLatestIgPermalink();
     if (!permalink) throw new Error('No public IG media');
 
-    // wyczyść URL z parametrów (utm itp.)
-    const u = new URL(permalink);
-    const cleanPermalink = u.origin + u.pathname;
-
-    // 1) spróbuj oEmbed przez Workera
+    // 1) oEmbed
     try {
-      const o = await fetchIgOEmbedHtml(cleanPermalink);
-      host.innerHTML = o;
+      const html = await fetchIgOEmbedHtml(permalink);
+      host.innerHTML = html;
 
-      // >>> to jest kluczowe: przetworzenie emebda przez Instagram
-      const ensureEmbedScript = () =>
-        new Promise(res => {
-          if (window.instgrm && window.instgrm.Embeds) return res();
-          const s = document.createElement('script');
-          s.src = 'https://www.instagram.com/embed.js';
-          s.onload = () => res();
-          document.body.appendChild(s);
-        });
-
-      await ensureEmbedScript();
+      // 2) przetworzenie przez IG
+      await loadIgScriptOnce();
+      // dwustopniowe „pobudzenie” rendera
       window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
+      await new Promise(r => setTimeout(r, 400));
+      window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
+
+      // 3) jeśli po chwili wciąż nie ma iframu → fallback do iframe
+      const hasIframe = !!host.querySelector('iframe');
+      if (!hasIframe) {
+        console.warn('IG: oEmbed nie wyrenderował iframu — fallback na iframe');
+        host.innerHTML = toIframeHtml(permalink);
+      }
     } catch (e) {
-      // 2) fallback: bez oEmbed, oficjalny blockquote
-      console.warn('IG oEmbed fallback:', e?.message || e);
-      host.innerHTML =
-        '<blockquote class="instagram-media" data-instgrm-permalink="' + cleanPermalink + '" data-instgrm-version="14">' +
-        '<a href="' + cleanPermalink + '" target="_blank" rel="noopener"></a></blockquote>' +
-        '<script async src="https://www.instagram.com/embed.js"></' + 'script>';
+      console.warn('IG oEmbed error:', e?.message || e);
+      // fallback do iframe
+      host.innerHTML = toIframeHtml(permalink);
     }
   } catch (e) {
-    console.error('IG embed error:', e);
+    console.error('IG embed fatal:', e);
     host.innerHTML =
-      '<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/exploride.urbex/">Zobacz nas na Instagramie</a>';
+      '<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/exploride.urbex/">Zobacz post na Instagramie</a>';
   }
 }
 
