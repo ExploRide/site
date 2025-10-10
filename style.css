@@ -460,6 +460,7 @@
         gap: clamp(12px, 5vw, 20px);
         box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
         z-index: 30;
+        max-height: 50px;
       }
       header::before {
         display: none;
@@ -480,6 +481,7 @@
       }
       .page-home header .logo {
         width: clamp(52px, 16vw, 82px);
+        margin-bottom: 1px;
       }
       header .logo {
         display: block;
