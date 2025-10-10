@@ -442,7 +442,7 @@
 <h2 id="posty-ig">Najnowsze z Instagrama</h2>
 
 <!-- Kontener na oEmbed/iframe Instagrama -->
-<div id="ig-latest-embed" style="max-width:780px;margin:0 auto 24px;"></div>
+<div id="ig-latest-embed" class="ig-embed-card"></div>
 
 <div class="center">
   <div id="ig-loader" class="loader" style="display:none;">Ładowanie postów z Instagrama…</div>
@@ -480,7 +480,7 @@
   }
 
   /* Twarde zabezpieczenie widoczności osadzenia IG */
-  #ig-latest-embed iframe,
+  .ig-embed-card iframe,
   .instagram-media {
     display: block !important;
     visibility: visible !important;
@@ -515,7 +515,7 @@ async function fetchIgOEmbedHtml(permalink) {
   const cleanPermalink = clean.origin + clean.pathname; // usuń parametry
   const u = new URL(IG_OEMBED_API);
   u.searchParams.set('url', cleanPermalink);
-  u.searchParams.set('maxwidth', '780');
+  u.searchParams.set('maxwidth', '500');
   const r = await fetch(u).catch(() => null);
   if (!r || !r.ok) throw new Error('IG oEmbed HTTP ' + (r && r.status));
   const d = await r.json().catch(() => ({}));
