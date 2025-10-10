@@ -283,7 +283,7 @@
       align-items: stretch;
       justify-content: flex-start;
       gap: clamp(6px, 1.6vw, 14px);
-      width: 100%;
+      /*width: 100%;*/
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
       margin-top: 0px;
       flex: 1 1 auto;
@@ -304,7 +304,7 @@
     .top-nav::-webkit-scrollbar {
       width: 0;
       background: transparent;
-      transition: width 0.25s ease;
+      transition: width 1.0s ease;
     }
 
     .top-nav::-webkit-scrollbar-thumb {
@@ -323,7 +323,7 @@
     }
 
     .top-nav:hover::-webkit-scrollbar-thumb {
-      background-color: rgba(140, 140, 140, 0.7);
+      background-color: rgba(140, 140, 140, 0);
     }
 
     .top-nav:hover::-webkit-scrollbar-track {
