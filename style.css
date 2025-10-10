@@ -18,7 +18,7 @@
       --background-cycle-duration: 12000ms;
       --background-fade-duration: 1200ms;
       --sidebar-width: clamp(228px, 22vw, 300px);
-      --mobile-header-height: clamp(68px, 18vw, 92px);
+      --mobile-header-height: clamp(58px, 16vw, 80px);
       --mobile-header-offset: var(--mobile-header-height);
       --mobile-nav-width: min(320px, 78vw);
       --nav-scrollbar-reserve: 12px;
@@ -452,8 +452,8 @@
         inset: 0 0 auto 0;
         width: 100%;
         min-height: var(--mobile-header-height);
-        height: 100px;
-        padding: clamp(14px, 5vw, 22px) clamp(16px, 7vw, 26px);
+        height: auto;
+        padding: clamp(8px, 4vw, 14px) clamp(16px, 7vw, 26px);
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
@@ -920,18 +920,22 @@
       height: 36px;
       border-radius: 999px;
       border: 0;
-    background: #d9d9d9;
-    color: rgb(15, 15, 15);
+      background: #d9d9d9;
+      color: rgb(15, 15, 15);
       cursor: pointer;
       font-size: 1.2em;
       line-height: 1;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
       user-select: none;
     }
-    .nav-btn:hover {
-      background: rgba(0, 0, 0, 0.8);
+    .nav-btn:hover,
+    .nav-btn:focus,
+    .nav-btn:focus-visible,
+    .nav-btn:active {
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
     }
     .nav-btn:focus-visible {
       outline: 2px solid #e50914;
