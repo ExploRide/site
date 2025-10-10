@@ -489,7 +489,7 @@
   }
 </style>
 
-<script>
+<<script>
 /* ================== KONFIG ================== */
 const IG_MEDIA_API  = 'https://fb-feed.eksplorajder.workers.dev/api/ig/media';
 const IG_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/ig/oembed';
@@ -533,18 +533,34 @@ function loadIgScriptOnce() {
   });
 }
 
+/* iframe z podpisem (caption) */
 function toIframeHtml(permalink) {
   const url = new URL(permalink);
   const parts = url.pathname.split('/').filter(Boolean); // ["p","SHORTCODE"] | ["reel","SHORTCODE"] | ["tv","SHORTCODE"]
   const type = parts[0];
   const code = parts[1];
-  const path = (type === 'p' || type === 'reel' || type === 'tv') ? `/${type}/${code}/embed/` : `/p/${code}/embed/`;
+  const path = (type === 'p' || type === 'reel' || type === 'tv') ? `/${type}/${code}/embed/captioned/`
+                                                                   : `/p/${code}/embed/captioned/`;
   const src = `https://www.instagram.com${path}`;
   return `<iframe src="${src}" allowtransparency="true" frameborder="0" scrolling="no"
             style="width:100%;max-width:780px;border:none;overflow:hidden;height:780px"></iframe>`;
 }
 
-/* ============== RENDER: oEmbed -> fallback iframe ============== */
+/* blockquote z captionem – przetwarzany przez embed.js */
+function toCaptionedBlockquote(permalink) {
+  const u = new URL(permalink);
+  const cleanPermalink = u.origin + u.pathname;
+  return `
+    <blockquote class="instagram-media"
+                data-instgrm-permalink="${cleanPermalink}"
+                data-instgrm-version="14"
+                data-instgrm-captioned>
+      <a href="${cleanPermalink}" target="_blank" rel="noopener"></a>
+    </blockquote>
+  `;
+}
+
+/* ============== RENDER: oEmbed -> caption -> iframe fallback ============== */
 async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
   const host = document.getElementById(hostId);
   if (!host) return;
@@ -553,26 +569,33 @@ async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
     const permalink = await fetchLatestIgPermalink();
     if (!permalink) throw new Error('No public IG media');
 
-    // 1) Spróbuj oEmbed (ładniejszy UI IG)
+    // 1) Spróbuj oEmbed
+    let usedOEmbed = false;
     try {
       const html = await fetchIgOEmbedHtml(permalink);
       host.innerHTML = html;
+      usedOEmbed = true;
+
+      // Jeśli oEmbed nie zawiera captionu – podmień na blockquote z captionem
+      if (!/data-instgrm-captioned/i.test(html)) {
+        host.innerHTML = toCaptionedBlockquote(permalink);
+      }
 
       // 2) Przetwórz przez skrypt Instagrama
       await loadIgScriptOnce();
-      // Czasem embed.js potrzebuje „pobudzenia”:
       window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
       await new Promise(r => setTimeout(r, 400));
       window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
 
-      // 3) Jeśli nadal brak iframu – twardy fallback do iframe
+      // 3) Jeżeli wciąż brak iframu → twardy fallback na iframe (captioned)
       const hasIframe = !!host.querySelector('iframe');
       if (!hasIframe) {
-        console.warn('IG: oEmbed nie wyrenderował iframu — fallback na iframe');
+        console.warn('IG: brak iframu po oEmbed – fallback do iframe captioned');
         host.innerHTML = toIframeHtml(permalink);
       }
     } catch (e) {
       console.warn('IG oEmbed error:', e?.message || e);
+      // 4) Fallback bezpośrednio do iframe captioned
       host.innerHTML = toIframeHtml(permalink);
     }
   } catch (e) {
