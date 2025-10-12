@@ -897,7 +897,7 @@
 
     /* Siatka kafelków */
     .playlist-window {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 18px auto 40px;
       padding: 0 16px;
       position: relative;
