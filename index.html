@@ -46,32 +46,47 @@
 <meta name="twitter:description" content="ExploRide to projekt tworzony z pasji do odkrywania miejsc, o których większość już zapomniała. Łączymy urbex, podróże i historię w jedną opowieść – pokazujemy opuszczone budynki, dawne fabryki, schrony czy zapomniane wille, a także piękne zakątki natury, które spotykamy w drodze.">
 <meta name="twitter:image" content="https://exploride.pl/Photos/og-image-1200x630.jpg">
   <!-- WKLEJ W <head> ZAMIAST POPRZEDNIEGO META-CSP -->
-<meta http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline'
-                   https://*.facebook.com https://*.fbcdn.net https://connect.facebook.net https://staticxx.facebook.com
-                   https://*.instagram.com https://*.cdninstagram.com
-                   https://*.youtube.com https://*.ytimg.com https://s.ytimg.com
-                   https://*.google.com https://www.gstatic.com;
-        style-src  'self' 'unsafe-inline';
-        img-src    'self' data: blob: https:
-                   https://*.fbcdn.net
-                   https://*.cdninstagram.com
-                   https://*.ytimg.com https://i.ytimg.com
-                   https://www.paypalobjects.com;
-        frame-src  'self'
-                   https://*.facebook.com
-                   https://*.instagram.com
-                   https://*.youtube.com https://*.google.com;
-        connect-src 'self'
-                   https://fb-feed.eksplorajder.workers.dev
-                   https://*.facebook.com https://graph.facebook.com
-                   https://*.instagram.com https://i.instagram.com
-                   https://*.youtube.com https://*.google.com
-                   https://www.googleapis.com;
-        font-src   'self' data:;
-      ">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  base-uri 'self';
+  object-src 'none';
+  form-action 'self';
+
+  script-src 'self' 'unsafe-inline'
+             https://connect.facebook.net
+             https://www.facebook.com
+             https://staticxx.facebook.com
+             https://www.instagram.com
+             https://www.tiktok.com https://*.tiktok.com
+             https://www.youtube.com;
+
+  style-src  'self' 'unsafe-inline';
+
+  img-src    'self' data: blob:
+             https://*.fbcdn.net
+             https://*.cdninstagram.com
+             https://*.tiktokcdn.com
+             https://i.ytimg.com;
+
+  frame-src  https://www.facebook.com
+             https://www.instagram.com
+             https://www.tiktok.com https://*.tiktok.com
+             https://www.youtube.com;
+
+  connect-src 'self'
+              https://fb-feed.eksplorajder.workers.dev
+              https://graph.facebook.com
+              https://www.facebook.com
+              https://www.instagram.com
+              https://i.instagram.com
+              https://www.tiktok.com https://*.tiktok.com
+              https://r.jina.ai
+              https://www.googleapis.com;
+
+  media-src 'self' blob:;
+  upgrade-insecure-requests;
+">
+
 
 
 
@@ -614,82 +629,93 @@ document.addEventListener('DOMContentLoaded', () => {
   <hr class="divider" />
 
  <!-- ======== TikTok: Najnowszy ======== -->
-<h2 id="posty-tiktok">Najnowszy z TikToka</h2>
-<div id="tiktok-embed" style="max-width:780px;margin:0 auto 24px;"></div>
+<h2 id="posty-tiktok">Najnowszy TikTok</h2>
+<div id="tk-embed" style="max-width:780px;margin:0 auto 24px;"></div>
+<div id="tk-fallback" class="fallback" style="display:none;text-align:center;">
+  Nie udało się wczytać TikToka.
+  <br>
+  <a class="btn" target="_blank" rel="noopener" href="https://www.tiktok.com/@exploride.urbex">Zobacz nas na TikToku</a>
+</div>
 
 <script>
-const TT_LATEST_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/latest';
-const TT_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/oembed';
-const TIKTOK_USERNAME = 'exploride.urbex'; // <— Twoja nazwa profilu (bez @)
+const TK_LATEST_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/latest';
+const TK_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/oembed';
+const TIKTOK_USERNAME = 'exploride.urbex';
 
 function loadTiktokScriptOnce() {
-  return new Promise(res => {
-    if (window.__tiktokEmbedLoaded) return res();
+  return new Promise((resolve) => {
+    if (window.tiktokEmbedLoaded) return resolve();
     const s = document.createElement('script');
     s.src = 'https://www.tiktok.com/embed.js';
-    s.onload = () => { window.__tiktokEmbedLoaded = true; res(); };
+    s.onload = () => { window.tiktokEmbedLoaded = true; resolve(); };
     document.body.appendChild(s);
   });
 }
 
-// Fallback: ręczny blockquote
-function toTiktokBlockquoteHtml(tiktokUrl) {
-  let videoId = '';
-  try {
-    const u = new URL(tiktokUrl);
-    const parts = u.pathname.split('/').filter(Boolean);
-    const idx = parts.indexOf('video');
-    if (idx > -1 && parts[idx+1]) videoId = parts[idx+1];
-  } catch {}
-  return `
-    <blockquote class="tiktok-embed" cite="${tiktokUrl}" data-video-id="${videoId}" style="max-width: 780px; min-width: 320px;">
-      <section><a target="_blank" href="${tiktokUrl}">Zobacz na TikToku</a></section>
-    </blockquote>
-  `;
+async function fetchLatestTikTokUrl() {
+  const u = new URL(TK_LATEST_API);
+  u.searchParams.set('username', TIKTOK_USERNAME);
+  u.searchParams.set('bust', String(Date.now()));
+  const r = await fetch(u.toString(), { credentials: 'omit' });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok || !d || !d.url) throw new Error('tk/latest: ' + (d.reason || r.status));
+  return d.url; // np. https://www.tiktok.com/@exploride.urbex/video/123...
 }
 
-async function renderLatestTikTok() {
-  const host = document.getElementById('tiktok-embed');
+async function fetchTikTokOEmbedHtml(videoUrl) {
+  const u = new URL(TK_OEMBED_API);
+  u.searchParams.set('url', videoUrl);
+  u.searchParams.set('maxwidth', '780');
+  const r = await fetch(u.toString(), { credentials: 'omit' });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok || d?.error) throw new Error(d?.error || ('tk/oembed HTTP ' + r.status));
+  if (!d?.html) throw new Error('tk/oembed: empty html');
+  return d.html; // <blockquote class="tiktok-embed" ...>...</blockquote><script ...>
+}
+
+function buildTikTokIframe(videoUrl) {
+  // Fallback: ręczny iframe z atrybutami polecanymi przez TikTok
+  return `<blockquote class="tiktok-embed" cite="${videoUrl}" data-video-id="" style="max-width: 780px; min-width: 325px;">
+            <a href="${videoUrl}" target="_blank" rel="noopener"></a>
+          </blockquote>`;
+}
+
+async function renderLatestTikTok(hostId = 'tk-embed') {
+  const host = document.getElementById(hostId);
+  const fb = document.getElementById('tk-fallback');
   if (!host) return;
-
   try {
-    // 1) weź najnowszy link z profilu
-    const u = new URL(TT_LATEST_API);
-    u.searchParams.set('username', TIKTOK_USERNAME);
-    u.searchParams.set('bust', String(Date.now()));
-    const latest = await fetch(u).then(r => r.json());
-
-    if (!latest?.url) {
-      host.innerHTML = '<a class="btn" target="_blank" rel="noopener" href="https://www.tiktok.com/@' + TIKTOK_USERNAME + '">Zobacz nas na TikToku</a>';
-      return;
-    }
-    const tiktokUrl = latest.url;
-
-    // 2) oEmbed (ładny UI)
+    const url = await fetchLatestTikTokUrl();
+    // 1) spróbuj oEmbed (nasz Worker doda html)
     try {
-      const o = new URL(TT_OEMBED_API);
-      o.searchParams.set('url', tiktokUrl);
-      o.searchParams.set('maxwidth', '780');
-      const d = await fetch(o).then(r => r.json());
-      if (d?.html) {
-        host.innerHTML = d.html;
+      const html = await fetchTikTokOEmbedHtml(url);
+      host.innerHTML = html;
+      await loadTiktokScriptOnce();
+
+      // „pobudź” render jeszcze raz po krótkiej pauzie
+      await new Promise(r => setTimeout(r, 300));
+      if (!host.querySelector('iframe')) {
+        // 2) fallback: ręczne blockquote + później embed.js zrobi resztę
+        host.innerHTML = buildTikTokIframe(url);
         await loadTiktokScriptOnce();
-        return;
       }
-      throw new Error('Empty oEmbed HTML');
     } catch (e) {
-      console.warn('TikTok oEmbed fallback:', e?.message || e);
-      host.innerHTML = toTiktokBlockquoteHtml(tiktokUrl);
+      console.warn('TikTok oEmbed error:', e?.message || e);
+      host.innerHTML = buildTikTokIframe(url);
       await loadTiktokScriptOnce();
     }
   } catch (e) {
-    console.error('TikTok embed error:', e);
-    host.innerHTML = '<a class="btn" target="_blank" rel="noopener" href="https://www.tiktok.com/@' + TIKTOK_USERNAME + '">Zobacz nas na TikToku</a>';
+    console.error('TikTok embed fatal:', e);
+    host.innerHTML = '';
+    if (fb) fb.style.display = 'block';
   }
 }
 
-document.addEventListener('DOMContentLoaded', renderLatestTikTok);
+document.addEventListener('DOMContentLoaded', () => {
+  renderLatestTikTok('tk-embed');
+});
 </script>
+
 <!-- ======== /TikTok ======== -->
 
 
