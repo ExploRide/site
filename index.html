@@ -500,7 +500,7 @@
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    min-height: 520px !important;
+    min-height: 624px !important;
   }
 </style>
 
@@ -530,7 +530,7 @@ async function fetchIgOEmbedHtml(permalink) {
   const cleanPermalink = clean.origin + clean.pathname; // usuń parametry
   const u = new URL(IG_OEMBED_API);
   u.searchParams.set('url', cleanPermalink);
-  u.searchParams.set('maxwidth', '500');
+  u.searchParams.set('maxwidth', '600');
   const r = await fetch(u).catch(() => null);
   if (!r || !r.ok) throw new Error('IG oEmbed HTTP ' + (r && r.status));
   const d = await r.json().catch(() => ({}));
@@ -558,7 +558,7 @@ function toIframeHtml(permalink) {
                                                                    : `/p/${code}/embed/captioned/`;
   const src = `https://www.instagram.com${path}`;
   return `<iframe src="${src}" allowtransparency="true" frameborder="0" scrolling="no"
-            style="width:100%;max-width:780px;border:none;overflow:hidden;height:780px"></iframe>`;
+            style="width:100%;max-width:936px;border:none;overflow:hidden;height:936px"></iframe>`;
 }
 
 /* blockquote z captionem – przetwarzany przez embed.js */
@@ -854,7 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
       async function fetchOEmbedHtml(permalink) {
         const u = new URL(FB_OEMBED_API);
         u.searchParams.set("url", permalink);
-        u.searchParams.set("maxwidth", "624");
+        u.searchParams.set("maxwidth", "750");
         u.searchParams.set("omitscript", "true");
 
         const res = await fetch(u.toString(), { credentials: "omit" });
