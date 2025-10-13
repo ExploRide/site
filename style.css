@@ -903,6 +903,25 @@
       position: relative;
       overflow: hidden;
     }
+    .playlist-window::before,
+    .playlist-window::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(24px, 7vw, 60px);
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+    .playlist-window::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(17, 17, 17, 1), rgba(17, 17, 17, 0));
+    }
+    .playlist-window::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(17, 17, 17, 1), rgba(17, 17, 17, 0));
+    }
     .playlist-list {
       display: flex;
       gap: 18px;
