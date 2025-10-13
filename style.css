@@ -1087,21 +1087,21 @@
     }
 
     .fb-embed-card,
-    .ig-embed-card {
+    .ig-embed-card,
+    .tk-embed-card {
       background: rgba(17, 17, 17, 0.85);
       border: 1px solid #2a2a2a;
       border-radius: 14px;
-      padding: 18px;
+      padding: clamp(16px, 2.2vw, 22px);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 180px;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
       overflow: visible;
-      max-width: 600px;
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
+      width: min(100%, 780px);
+      min-width: min(100%, 325px);
+      margin: 0 auto 24px;
     }
 
     .ig-embed-card {
@@ -1109,7 +1109,8 @@
     }
 
     .fb-embed-card > *,
-    .ig-embed-card > * {
+    .ig-embed-card > *,
+    .tk-embed-card > * {
       width: 100%;
     }
 
@@ -1155,7 +1156,8 @@
 
     @media (max-width: 600px) {
       .fb-embed-card,
-      .ig-embed-card {
+      .ig-embed-card,
+      .tk-embed-card {
         padding: 14px;
       }
     }
@@ -1176,6 +1178,39 @@
       font-size: 1rem;
       line-height: 1.5;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .tk-embed-card blockquote.tiktok-embed,
+    .tk-embed-card iframe {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: min(100%, 325px) !important;
+      margin: 0 auto !important;
+    }
+
+    .tk-embed-card blockquote.tiktok-embed {
+      background: transparent;
+    }
+
+    .tk-embed-card .tk-embed-frame {
+      border: 0;
+      display: block;
+      aspect-ratio: 9 / 16;
+      background: #000;
+      height: auto;
+    }
+
+    #tk-fallback {
+      max-width: 780px;
+      margin: 0 auto 24px;
+      padding: clamp(16px, 2.2vw, 22px);
+      background: rgba(17, 17, 17, 0.85);
+      border: 1px solid #2a2a2a;
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+      text-align: center;
+      color: #ddd;
+      line-height: 1.5;
     }
     /* O nas */
     .about-main {

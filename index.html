@@ -599,8 +599,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
  <!-- ======== TikTok: Najnowszy ======== -->
 <h2 id="posty-tiktok">Najnowszy TikTok</h2>
-<div id="tk-embed" style="max-width:780px;margin:0 auto 24px;"></div>
-<div id="tk-fallback" class="fallback" style="display:none;text-align:center;">
+<div id="tk-embed" class="tk-embed-card"></div>
+<div id="tk-fallback" class="fallback tk-embed-fallback" style="display:none;">
   Nie udało się wczytać TikToka.
   <br>
   <a class="btn" target="_blank" rel="noopener" href="https://www.tiktok.com/@exploride.urbex">Zobacz nas na TikToku</a>
@@ -631,10 +631,11 @@ function iframeFallback(videoUrl) {
   if (!vid) return `<a class="btn" target="_blank" rel="noopener" href="${videoUrl}">Zobacz nas na TikToku</a>`;
   const src = `https://www.tiktok.com/embed/v2/${vid}`;
   return `<iframe
+    class="tk-embed-frame"
     src="${src}"
     allowfullscreen
     scrolling="no"
-    style="width:100%;max-width:780px;border:none;overflow:hidden;height:780px"
+    loading="lazy"
   ></iframe>`;
 }
 
@@ -663,6 +664,7 @@ async function renderLatestTikTok(hostId = 'tk-embed') {
   const host = document.getElementById(hostId);
   const fb = document.getElementById('tk-fallback');
   if (!host) return;
+  host.style.display = '';
 
   try {
     const url = await fetchLatestTikTokUrl();
@@ -680,7 +682,7 @@ async function renderLatestTikTok(hostId = 'tk-embed') {
     // 2) Jeśli oEmbed nie wstawił iframu – ustaw ręczny blockquote
     if (!host.querySelector('blockquote.tiktok-embed')) {
       host.innerHTML = `
-        <blockquote class="tiktok-embed" cite="${url}" style="max-width:780px;min-width:325px;">
+        <blockquote class="tiktok-embed" cite="${url}">
           <a href="${url}" target="_blank" rel="noopener"></a>
         </blockquote>
       `;
@@ -700,6 +702,7 @@ async function renderLatestTikTok(hostId = 'tk-embed') {
   } catch (e) {
     console.error('TikTok embed fatal:', e);
     host.innerHTML = '';
+    host.style.display = 'none';
     if (fb) fb.style.display = 'block';
   }
 }
