@@ -383,9 +383,13 @@
             </div>
 
             <div id="urbex-playlist-window" class="playlist-window" tabindex="0">
-              <button id="urbex-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+              <button id="urbex-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
               <div id="urbex-playlist" class="playlist-list"></div>
-              <button id="urbex-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+              <button id="urbex-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
             </div>
           </div>
         </section>
@@ -408,9 +412,13 @@
             </div>
 
             <div id="travel-playlist-window" class="playlist-window" tabindex="0">
-              <button id="travel-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+              <button id="travel-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
               <div id="travel-playlist" class="playlist-list"></div>
-              <button id="travel-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+              <button id="travel-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
             </div>
           </div>
         </section>
@@ -1049,6 +1057,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const btnPrev = document.getElementById(config.prevId);
       const btnNext = document.getElementById(config.nextId);
       let videos = [];
+      let resizeObserver = null;
 
       function renderTiles(items) {
         if (!playlistEl) return;
@@ -1073,10 +1082,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       function updateNav() {
-        if (!playlistEl || !btnPrev || !btnNext) return;
-        btnPrev.style.display = playlistEl.scrollLeft > 0 ? "flex" : "none";
-        btnNext.style.display =
-          playlistEl.scrollLeft + playlistEl.clientWidth < playlistEl.scrollWidth ? "flex" : "none";
+        if (!playlistEl) return;
+
+        const maxScrollLeft = Math.max(playlistEl.scrollWidth - playlistEl.clientWidth, 0);
+        const hasPrev = playlistEl.scrollLeft > 1;
+        const hasNext = playlistEl.scrollLeft < maxScrollLeft - 1;
+
+        if (btnPrev) {
+          btnPrev.style.display = hasPrev ? "flex" : "none";
+        }
+        if (btnNext) {
+          btnNext.style.display = hasNext ? "flex" : "none";
+        }
+        if (playlistWindow) {
+          playlistWindow.classList.toggle("show-left-shadow", hasPrev);
+          playlistWindow.classList.toggle("show-right-shadow", hasNext);
+        }
       }
 
       function renderStaticFallback() {
@@ -1115,6 +1136,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (playlistEl) {
         playlistEl.addEventListener("scroll", updateNav);
+        if (typeof ResizeObserver === "function") {
+          resizeObserver = new ResizeObserver(() => updateNav());
+          resizeObserver.observe(playlistEl);
+          if (playlistWindow) {
+            resizeObserver.observe(playlistWindow);
+          }
+        }
       }
 
       async function initSection() {
@@ -1146,7 +1174,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       initSection();
 
-      return { updateNav };
+      return {
+        updateNav,
+        destroy() {
+          if (resizeObserver) {
+            resizeObserver.disconnect();
+            resizeObserver = null;
+          }
+        }
+      };
     }
 
     function initPlaylists() {
