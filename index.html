@@ -642,14 +642,31 @@ const TK_LATEST_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/latest';
 const TK_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/oembed';
 const TIKTOK_USERNAME = 'exploride.urbex';
 
-function loadTiktokScriptOnce() {
+function loadTiktokScriptOnce(force = false) {
   return new Promise((resolve) => {
-    if (window.tiktokEmbedLoaded) return resolve();
+    if (!force && window.__tiktokEmbedLoaded) return resolve();
     const s = document.createElement('script');
-    s.src = 'https://www.tiktok.com/embed.js';
-    s.onload = () => { window.tiktokEmbedLoaded = true; resolve(); };
+    s.src = 'https://www.tiktok.com/embed.js' + (force ? ('?ts=' + Date.now()) : '');
+    s.onload = () => { window.__tiktokEmbedLoaded = true; resolve(); };
     document.body.appendChild(s);
   });
+}
+
+function videoIdFromUrl(url) {
+  const m = String(url).match(/\/video\/(\d+)/);
+  return m ? m[1] : null;
+}
+
+function iframeFallback(videoUrl) {
+  const vid = videoIdFromUrl(videoUrl);
+  if (!vid) return `<a class="btn" target="_blank" rel="noopener" href="${videoUrl}">Zobacz nas na TikToku</a>`;
+  const src = `https://www.tiktok.com/embed/v2/${vid}`;
+  return `<iframe
+    src="${src}"
+    allowfullscreen
+    scrolling="no"
+    style="width:100%;max-width:780px;border:none;overflow:hidden;height:780px"
+  ></iframe>`;
 }
 
 async function fetchLatestTikTokUrl() {
@@ -657,9 +674,9 @@ async function fetchLatestTikTokUrl() {
   u.searchParams.set('username', TIKTOK_USERNAME);
   u.searchParams.set('bust', String(Date.now()));
   const r = await fetch(u.toString(), { credentials: 'omit' });
-  const d = await r.json().catch(() => ({}));
-  if (!r.ok || !d || !d.url) throw new Error('tk/latest: ' + (d.reason || r.status));
-  return d.url; // np. https://www.tiktok.com/@exploride.urbex/video/123...
+  const d = await r.json().catch(()=> ({}));
+  if (!r.ok || !d?.url) throw new Error('tk/latest: ' + (d?.reason || r.status));
+  return d.url;
 }
 
 async function fetchTikTokOEmbedHtml(videoUrl) {
@@ -667,42 +684,49 @@ async function fetchTikTokOEmbedHtml(videoUrl) {
   u.searchParams.set('url', videoUrl);
   u.searchParams.set('maxwidth', '780');
   const r = await fetch(u.toString(), { credentials: 'omit' });
-  const d = await r.json().catch(() => ({}));
+  const d = await r.json().catch(()=> ({}));
   if (!r.ok || d?.error) throw new Error(d?.error || ('tk/oembed HTTP ' + r.status));
   if (!d?.html) throw new Error('tk/oembed: empty html');
-  return d.html; // <blockquote class="tiktok-embed" ...>...</blockquote><script ...>
-}
-
-function buildTikTokIframe(videoUrl) {
-  // Fallback: ręczny iframe z atrybutami polecanymi przez TikTok
-  return `<blockquote class="tiktok-embed" cite="${videoUrl}" data-video-id="" style="max-width: 780px; min-width: 325px;">
-            <a href="${videoUrl}" target="_blank" rel="noopener"></a>
-          </blockquote>`;
+  return d.html;
 }
 
 async function renderLatestTikTok(hostId = 'tk-embed') {
   const host = document.getElementById(hostId);
   const fb = document.getElementById('tk-fallback');
   if (!host) return;
+
   try {
     const url = await fetchLatestTikTokUrl();
-    // 1) spróbuj oEmbed (nasz Worker doda html)
+
+    // 1) Spróbuj oEmbed z Workera
+    let usedOembed = false;
     try {
       const html = await fetchTikTokOEmbedHtml(url);
       host.innerHTML = html;
-      await loadTiktokScriptOnce();
-
-      // „pobudź” render jeszcze raz po krótkiej pauzie
-      await new Promise(r => setTimeout(r, 300));
-      if (!host.querySelector('iframe')) {
-        // 2) fallback: ręczne blockquote + później embed.js zrobi resztę
-        host.innerHTML = buildTikTokIframe(url);
-        await loadTiktokScriptOnce();
-      }
+      usedOembed = true;
     } catch (e) {
       console.warn('TikTok oEmbed error:', e?.message || e);
-      host.innerHTML = buildTikTokIframe(url);
-      await loadTiktokScriptOnce();
+    }
+
+    // 2) Jeśli oEmbed nie wstawił iframu – ustaw ręczny blockquote
+    if (!host.querySelector('blockquote.tiktok-embed')) {
+      host.innerHTML = `
+        <blockquote class="tiktok-embed" cite="${url}" style="max-width:780px;min-width:325px;">
+          <a href="${url}" target="_blank" rel="noopener"></a>
+        </blockquote>
+      `;
+    }
+
+    // 3) Załaduj/odśwież embed.js i „pobudź” skanowanie dwa razy
+    await loadTiktokScriptOnce(!usedOembed);
+    await new Promise(r => setTimeout(r, 300));
+    // wymuś ponowne skanowanie, dociągając drugi raz (cache-busting)
+    await loadTiktokScriptOnce(true);
+
+    // 4) Jeśli wciąż nie ma iframu – twardy fallback na /embed/v2/{id}
+    if (!host.querySelector('iframe')) {
+      console.warn('TikTok: fallback to iframe /embed/v2');
+      host.innerHTML = iframeFallback(url);
     }
   } catch (e) {
     console.error('TikTok embed fatal:', e);
