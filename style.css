@@ -1099,7 +1099,7 @@
       min-height: 180px;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
       overflow: visible;
-      width: min(100%, 780px);
+      width: min(100%, 900px);
       min-width: min(100%, 325px);
       margin: 0 auto 24px;
     }
@@ -1112,6 +1112,7 @@
     .ig-embed-card > *,
     .tk-embed-card > * {
       width: 100%;
+      max-width: 900px;
     }
 
     .fb-embed-wrapper {
@@ -1135,6 +1136,7 @@
       align-items: center !important;
       justify-content: center !important;
       width: 100% !important;
+      max-width: 900px !important;
     }
 
     .fb-embed-wrapper .fb_iframe_widget iframe {
@@ -1183,7 +1185,7 @@
     .tk-embed-card blockquote.tiktok-embed,
     .tk-embed-card iframe {
       width: 100% !important;
-      max-width: 100% !important;
+      max-width: 900px !important;
       min-width: min(100%, 325px) !important;
       margin: 0 auto !important;
     }
