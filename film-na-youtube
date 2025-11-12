@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Otwieranie w YouTube...</title>
+  <script>
+    // Najpierw spróbuj otworzyć aplikację YouTube
+    window.location.href = "youtube://youtu.be/13wIRnuZ1tg";
+    // Po 1 sekundzie fallback do normalnego linku (na wypadek braku aplikacji)
+    setTimeout(() => {
+      window.location.href = "https://youtu.be/13wIRnuZ1tg";
+    }, 1000);
+  </script>
+</head>
+<body>
+  <p>Otwieranie filmu w YouTube...</p>
+  <p>Jeśli nie przekierowało Cię automatycznie, kliknij tutaj: 
+    <a href="https://youtu.be/13wIRnuZ1tg">Otwórz film</a>
+  </p>
+</body>
+</html>
