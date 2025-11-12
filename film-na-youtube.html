@@ -1,22 +1,102 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Otwieranie w YouTube...</title>
-  <script>
-    // Najpierw spróbuj otworzyć aplikację YouTube
-    window.location.href = "youtube://youtu.be/13wIRnuZ1tg";
-    // Po 1 sekundzie fallback do normalnego linku (na wypadek braku aplikacji)
-    setTimeout(() => {
-      window.location.href = "https://youtu.be/13wIRnuZ1tg";
-    }, 1000);
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Otwieranie filmu w YouTube…</title>
+<style>
+  :root { --brand:#af0101; }
+  body{margin:0;min-height:100svh;display:grid;place-items:center;background:#0a0a0a;color:#fff;font:16px/1.5 system-ui,sans-serif;padding:24px}
+  .card{max-width:640px;width:100%;text-align:center;background:#111;border:1px solid #222;padding:28px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .btn{display:inline-block;margin:8px 6px;padding:12px 18px;border-radius:12px;border:2px solid var(--brand);color:#fff;text-decoration:none;font-weight:700}
+  .btn.primary{background:var(--brand)}
+  .muted{opacity:.8;font-size:.95em}
+  .tips{margin-top:12px;text-align:left;opacity:.85}
+  .tips li{margin:6px 0}
+  .hidden{display:none}
+</style>
 </head>
 <body>
-  <p>Otwieranie filmu w YouTube...</p>
-  <p>Jeśli nie przekierowało Cię automatycznie, kliknij tutaj: 
-    <a href="https://youtu.be/13wIRnuZ1tg">Otwórz film</a>
-  </p>
+<div class="card">
+  <h2>Próba otwarcia w aplikacji YouTube…</h2>
+  <p id="status" class="muted">Jeśli nic się nie dzieje, użyj przycisków poniżej.</p>
+  <div>
+    <a id="btn-open-app" class="btn primary" href="#">Otwórz w YouTube</a>
+    <a id="btn-open-web" class="btn" href="#">Otwórz w przeglądarce</a>
+  </div>
+  <div id="fb-help" class="tips hidden">
+    <hr style="border:0;border-top:1px solid #222;margin:16px 0">
+    <strong>Klikasz z Facebooka/Instagrama?</strong>
+    <ol>
+      <li>Dotknij <b>⋮</b> (prawy górny róg).</li>
+      <li>Wybierz <b>„Otwórz w przeglądarce”</b>.</li>
+      <li>Potem kliknij „Otwórz w YouTube”.</li>
+    </ol>
+  </div>
+</div>
+
+<script>
+(function () {
+  // --- helpers ---
+  const qs = new URLSearchParams(location.search);
+  const v = qs.get('v') || '13wIRnuZ1tg'; // fallback: Twój film
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const ua = navigator.userAgent;
+  const isFacebookWebView =
+    ua.includes('FBAN') || ua.includes('FBAV') || ua.includes('FB_IAB') || ua.includes('Instagram');
+
+  const ytHttps = `https://www.youtube.com/watch?v=${v}`;
+  const ytShort = `https://youtu.be/${v}`;
+  const ytScheme = `youtube://www.youtube.com/watch?v=${v}`;
+  const ytIntent = `intent://www.youtube.com/watch?v=${v}#Intent;scheme=https;package=com.google.android.youtube;end`;
+
+  const $openApp = document.getElementById('btn-open-app');
+  const $openWeb = document.getElementById('btn-open-web');
+  const $fbHelp = document.getElementById('fb-help');
+  const $status = document.getElementById('status');
+
+  // ustaw link "web"
+  $openWeb.href = ytShort;
+
+  // akcja "open in app"
+  $openApp.addEventListener('click', (e) => {
+    e.preventDefault();
+    tryOpenApp(true);
+  });
+
+  function tryOpenApp(fromClick=false){
+    if (isFacebookWebView) {
+      // FB/IG blokują deep linki – pokaż instrukcję
+      $fbHelp.classList.remove('hidden');
+      $status.textContent = 'Wygląda na to, że jesteś w przeglądarce Facebooka/Instagrama, która blokuje otwarcie aplikacji.';
+      return;
+    }
+
+    if (isAndroid) {
+      // Android: najlepsze są intent:// (działa w Chrome, SMS, WhatsApp)
+      window.location.href = ytIntent;
+      // fallback po 900ms
+      setTimeout(() => { window.location.href = ytHttps; }, 900);
+    } else if (isIOS) {
+      // iOS: spróbuj schematu aplikacji, potem https
+      window.location.href = ytScheme;
+      setTimeout(() => { window.location.href = ytHttps; }, 900);
+    } else {
+      // desktop: po prostu https (apka i tak nie wystartuje)
+      window.location.href = ytHttps;
+    }
+  }
+
+  // auto-proba przy wejściu (tylko jeśli nie FB/IG)
+  if (!isFacebookWebView) {
+    // małe opóźnienie aby UI się narysował
+    setTimeout(() => tryOpenApp(false), 150);
+  } else {
+    $fbHelp.classList.remove('hidden');
+    $status.textContent = 'Otwórz w zewnętrznej przeglądarce, aby uruchomić aplikację YouTube.';
+  }
+})();
+</script>
 </body>
 </html>
