@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kalendarz ExploRide Urbex 2026</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+  <script src="shop.js" defer></script>
+</head>
+<body class="page-shop">
+  <header data-nav-layout="sidebar">
+    <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
+      <img src="logo.png" alt="ExploRide logo" class="logo">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="top-nav" id="main-navigation" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--home" href="index.html">Strona główna</a>
+      <a class="nav-link nav-link--about" href="onas.html">O nas</a>
+      <a class="nav-link nav-link--gallery" href="galeria.html">Galeria</a>
+      <a class="nav-link nav-link--links" href="linki.html">Linki</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
+      <a class="nav-link nav-link--support" href="wesprzyj-nas.html">Wesprzyj nas</a>
+      <a class="nav-link nav-link--contact" href="kontakt.html">Kontakt</a>
+      <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+      <div class="nav-divider" role="presentation"></div>
+      <div class="nav-links-section" aria-label="Linki społecznościowe">
+        <span class="nav-links-section__title">Linki</span>
+        <a class="nav-social-link" href="https://www.youtube.com/@ExploRideURBEX" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a class="nav-social-link" href="https://www.facebook.com/ExploRideURBEX" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="nav-social-link" href="https://www.instagram.com/exploride.urbex" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a class="nav-social-link" href="https://www.tiktok.com/@exploride.urbex" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="shop-hero shop-hero--compact">
+    <div class="shop-cart-banner">
+      <div class="shop-cart-banner__info">
+        <p class="shop-cart-banner__label">Koszyk</p>
+        <p class="shop-cart-banner__value"><span data-cart-count>0</span> produktów · <span data-cart-total>0,00 zł</span></p>
+      </div>
+      <button class="button button--primary" type="button" data-open-cart>Otwórz koszyk</button>
+    </div>
+    <div class="shop-hero__text">
+      <p class="eyebrow">ExploRide</p>
+      <h1>Kalendarz ExploRide Urbex 2026</h1>
+      <p>12 miesięcy wypełnionych kadrami z eksploracji – minimalistyczny projekt inspirowany wyprawami.</p>
+    </div>
+  </div>
+
+  <main class="product-main">
+    <section class="product-grid">
+      <figure class="product-media">
+        <div class="product-photo" aria-hidden="true">Okładka placeholder</div>
+        <figcaption>Wizualizacja okładki i przykładowych kart kalendarza pojawi się w tej sekcji.</figcaption>
+      </figure>
+      <div class="product-info">
+        <div class="product-price">69,00 zł</div>
+        <p class="product-description">Opis kalendarza dodamy po zatwierdzeniu finalnych druków – tu znajdą się informacje o formacie, papierze i kolorystyce.</p>
+        <form class="product-form" data-add-to-cart data-product-id="calendar-2026">
+          <label class="product-field">
+            <span>Ilość</span>
+            <input type="number" name="quantity" min="1" max="20" value="1" inputmode="numeric">
+          </label>
+          <button class="button button--primary" type="submit">Dodaj do koszyka</button>
+        </form>
+        <p class="product-note">Po złożeniu zamówienia przez formularz potwierdzimy dostępność i termin wysyłki.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone. • <a href="https://exploride.pl/privacy-policy">Polityka prywatności</a>
+  </footer>
+
+  <div class="shop-modal" data-cart-modal hidden>
+    <div class="shop-modal__overlay" aria-hidden="true"></div>
+    <div class="shop-modal__panel" role="dialog" aria-modal="true" aria-labelledby="cart-modal-title">
+      <div class="shop-modal__header">
+        <div class="shop-steps">
+          <span class="shop-step" data-step-indicator="cart">Koszyk</span>
+          <span class="shop-step" data-step-indicator="details">Dane zamówienia</span>
+          <span class="shop-step" data-step-indicator="payment">Płatność</span>
+        </div>
+        <button class="shop-modal__close" type="button" data-close-cart aria-label="Zamknij koszyk">×</button>
+      </div>
+      <div class="shop-modal__content">
+        <section data-cart-step-panel="cart" aria-labelledby="cart-modal-title">
+          <div class="shop-modal__intro">
+            <div>
+              <p class="eyebrow">Podsumowanie</p>
+              <h2 id="cart-modal-title">Twoje produkty</h2>
+            </div>
+            <div class="shop-modal__total">
+              <span>Suma</span>
+              <strong data-cart-total-footer>0,00 zł</strong>
+            </div>
+          </div>
+          <div class="cart-list" data-cart-items></div>
+          <div class="shop-modal__actions">
+            <button class="button button--secondary" type="button" data-close-cart>Kontynuuj zakupy</button>
+            <button class="button button--primary" type="button" data-cart-confirm>Potwierdź i przejdź dalej</button>
+          </div>
+        </section>
+
+        <section data-cart-step-panel="details" hidden>
+          <div class="shop-modal__intro">
+            <div>
+              <p class="eyebrow">Dane do zamówienia</p>
+              <h2>Uzupełnij formularz</h2>
+            </div>
+            <button class="button button--ghost" type="button" data-step-back="cart">← Wróć</button>
+          </div>
+          <div class="form-embed">
+            <iframe title="Formularz zamówienia" src="https://docs.google.com/forms/d/e/1FAIpQLSchrDf1w9wuA-92sdK02fenQZ1C4OMrmEQKWEIKcN4Rjha4Hg/viewform?embedded=true" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="shop-modal__actions">
+            <button class="button button--primary" type="button" data-cart-to-payment>Przejdź do płatności</button>
+          </div>
+        </section>
+
+        <section data-cart-step-panel="payment" hidden>
+          <div class="shop-modal__intro">
+            <div>
+              <p class="eyebrow">Płatność</p>
+              <h2>Wybierz metodę</h2>
+            </div>
+            <button class="button button--ghost" type="button" data-step-back="details">← Wróć</button>
+          </div>
+          <div class="payment-placeholder">
+            <div class="payment-option">
+              <div class="payment-icon" aria-hidden="true">💳</div>
+              <div>
+                <h3>Płatność kartą</h3>
+                <p>Interfejs płatności pojawi się tutaj po podpięciu bramki.</p>
+              </div>
+            </div>
+            <div class="payment-option">
+              <div class="payment-icon" aria-hidden="true">🏦</div>
+              <div>
+                <h3>BLIK / Przelew online</h3>
+                <p>Placeholder na bramkę BLIK oraz szybkie przelewy.</p>
+              </div>
+            </div>
+            <div class="payment-option">
+              <div class="payment-icon" aria-hidden="true">📦</div>
+              <div>
+                <h3>Płatność przy odbiorze</h3>
+                <p>Możliwość dodania szczegółów po wyborze dostawy.</p>
+              </div>
+            </div>
+          </div>
+          <div class="shop-modal__actions">
+            <button class="button button--primary" type="button">Zapisz wybór (placeholder)</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
