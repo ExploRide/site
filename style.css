@@ -2373,8 +2373,8 @@
 }
 
 .button--primary {
-  background: linear-gradient(135deg, #1ddb9c, #13b38a);
-  color: #0a0d10;
+  background: linear-gradient(135deg, #ff3b30, #c30010);
+  color: #fff;
   border: none;
   font-weight: 700;
 }
@@ -2427,7 +2427,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.82rem;
-  color: #62f0c2;
+  color: #ff7a7a;
   margin: 0;
 }
 
@@ -2457,7 +2457,7 @@
   margin: 0;
   text-transform: uppercase;
   font-size: 0.82rem;
-  color: #95ffe0;
+  color: #ffc3c3;
   letter-spacing: 0.1em;
 }
 
@@ -2495,11 +2495,11 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 14px;
-  background: radial-gradient(circle at 30% 30%, rgba(98, 240, 194, 0.25), rgba(0, 0, 0, 0.85));
+  background: radial-gradient(circle at 30% 30%, rgba(255, 112, 112, 0.25), rgba(0, 0, 0, 0.85));
   border: 1px dashed rgba(255, 255, 255, 0.18);
   display: grid;
   place-items: center;
-  color: #cbeee2;
+  color: #ffc3c3;
   font-size: 0.9rem;
   text-align: center;
   padding: 10px;
@@ -2519,7 +2519,7 @@
 
 .shop-item__title:hover,
 .shop-item__title:focus-visible {
-  color: #62f0c2;
+  color: #ff7a7a;
 }
 
 .shop-item__meta {
@@ -2530,7 +2530,7 @@
 
 .shop-item__price {
   margin: 0;
-  color: #62f0c2;
+  color: #ff7a7a;
   font-weight: 700;
 }
 
@@ -2557,12 +2557,12 @@
 }
 
 .product-photo {
-  background: linear-gradient(135deg, rgba(98, 240, 194, 0.15), rgba(0, 0, 0, 0.92));
+  background: linear-gradient(135deg, rgba(255, 112, 112, 0.15), rgba(0, 0, 0, 0.92));
   border-radius: 12px;
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
-  color: #f1f5f8;
+  color: #ffe0e0;
   font-weight: 700;
   letter-spacing: 0.03em;
 }
@@ -2577,7 +2577,7 @@
 .product-price {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #62f0c2;
+  color: #ff7a7a;
 }
 
 .product-description,
@@ -2682,9 +2682,9 @@
 }
 
 .shop-step.is-active {
-  background: rgba(98, 240, 194, 0.14);
-  border-color: rgba(98, 240, 194, 0.35);
-  color: #9ffadf;
+  background: rgba(255, 112, 112, 0.14);
+  border-color: rgba(255, 112, 112, 0.35);
+  color: #ffc3c3;
 }
 
 .shop-modal__close {
@@ -2713,7 +2713,7 @@
 
 .shop-modal__total {
   text-align: right;
-  color: #9ffadf;
+  color: #ffc3c3;
 }
 
 .cart-list {
@@ -2778,7 +2778,7 @@
 .cart-line__total {
   font-weight: 700;
   text-align: right;
-  color: #9ffadf;
+  color: #ffc3c3;
 }
 
 .cart-empty {
@@ -2822,7 +2822,7 @@
   height: 44px;
   display: grid;
   place-items: center;
-  background: rgba(98, 240, 194, 0.18);
+  background: rgba(255, 112, 112, 0.18);
   border-radius: 12px;
 }
 

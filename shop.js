@@ -1,29 +1,15 @@
 (function () {
-  const PRODUCTS = {
-    'tshirt-men': {
-      id: 'tshirt-men',
-      name: 'T-shirt klasyczny ExploRide męski',
-      price: 89,
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      image: 'placeholder-men',
-    },
-    'tshirt-women': {
-      id: 'tshirt-women',
-      name: 'T-shirt klasyczny ExploRide damski',
-      price: 89,
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      image: 'placeholder-women',
-    },
-    'calendar-2026': {
-      id: 'calendar-2026',
-      name: 'Kalendarz ExploRide Urbex 2026',
-      price: 69,
-      image: 'placeholder-calendar',
-    },
-  };
+  const productList = Array.isArray(window.SHOP_PRODUCTS)
+    ? window.SHOP_PRODUCTS
+    : Object.values(window.SHOP_PRODUCTS || {});
+
+  const PRODUCTS = Object.fromEntries(productList.map((product) => [product.id, product]));
+  const productsBySlug = new Map(productList.map((product) => [product.slug, product]));
 
   const storageKey = 'explorideShopCart';
   const currency = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
+
+  const formatPrice = (value) => currency.format(Number(value) || 0);
 
   const loadCart = () => {
     try {
@@ -48,7 +34,7 @@
     const totalItems = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
     const totalPrice = cart.reduce((sum, item) => {
       const product = PRODUCTS[item.id];
-      return sum + (product ? product.price * item.quantity : 0);
+      return sum + (product ? Number(product.price || 0) * item.quantity : 0);
     }, 0);
 
     return { totalItems, totalPrice };
@@ -313,8 +299,134 @@
     });
   };
 
+  const buildProductUrl = (product) => `./${product.slug}.html`;
+
+  const renderProductList = () => {
+    const container = document.querySelector('[data-product-list]');
+    if (!container) return;
+
+    const emptyTemplate = container.querySelector('[data-empty-catalog]');
+    const emptyNode = emptyTemplate ? emptyTemplate.cloneNode(true) : null;
+    container.innerHTML = '';
+
+    if (!productList.length) {
+      if (emptyNode) {
+        container.appendChild(emptyNode);
+      }
+      return;
+    }
+
+    productList.forEach((product) => {
+      const item = document.createElement('article');
+      item.className = 'shop-item';
+
+      const image = document.createElement('div');
+      image.className = 'shop-item__image';
+      if (product.image) {
+        const img = document.createElement('img');
+        img.src = product.image;
+        img.alt = product.imageAlt || product.name;
+        img.loading = 'lazy';
+        image.appendChild(img);
+      } else {
+        image.textContent = product.imagePlaceholder || 'Zdjęcie produktu';
+      }
+
+      const body = document.createElement('div');
+      body.className = 'shop-item__body';
+
+      const title = document.createElement('a');
+      title.className = 'shop-item__title';
+      title.href = buildProductUrl(product);
+      title.textContent = product.name;
+
+      const meta = document.createElement('p');
+      meta.className = 'shop-item__meta';
+      meta.textContent = product.summary || product.description || '';
+
+      const price = document.createElement('p');
+      price.className = 'shop-item__price';
+      price.textContent = formatPrice(product.price);
+
+      body.appendChild(title);
+      body.appendChild(meta);
+      body.appendChild(price);
+
+      item.appendChild(image);
+      item.appendChild(body);
+      container.appendChild(item);
+    });
+  };
+
+  const hydrateProductPage = () => {
+    const pageSlug = document.body?.dataset.productSlug;
+    const slugFromPath = (window.location.pathname.split('/').pop() || '').replace(/\.html?$/, '');
+    const slug = pageSlug || slugFromPath;
+    const product = productsBySlug.get(slug);
+    if (!product) return;
+
+    document.title = product.name;
+
+    const title = document.querySelector('[data-product-title]');
+    if (title) title.textContent = product.name;
+
+    const summary = document.querySelector('[data-product-summary]');
+    if (summary) summary.textContent = product.summary || product.description || '';
+
+    document.querySelectorAll('[data-product-price]').forEach((node) => {
+      node.textContent = formatPrice(product.price);
+    });
+
+    const description = document.querySelector('[data-product-description]');
+    if (description) description.textContent = product.description || '';
+
+    const note = document.querySelector('[data-product-note]');
+    if (note && product.note) note.textContent = product.note;
+
+    const image = document.querySelector('[data-product-image]');
+    if (image) {
+      image.innerHTML = '';
+      if (product.image) {
+        const img = document.createElement('img');
+        img.src = product.image;
+        img.alt = product.imageAlt || product.name;
+        img.loading = 'lazy';
+        image.appendChild(img);
+      } else {
+        image.textContent = product.imagePlaceholder || 'Zdjęcie produktu';
+      }
+    }
+
+    const caption = document.querySelector('[data-product-image-caption]');
+    if (caption && product.imageCaption) {
+      caption.textContent = product.imageCaption;
+    }
+
+    document.querySelectorAll('[data-add-to-cart]').forEach((form) => {
+      form.dataset.productId = product.id;
+      const sizeField = form.querySelector('[data-size-field]');
+      const select = sizeField?.querySelector('select');
+
+      if (product.sizes && product.sizes.length) {
+        if (select) {
+          select.innerHTML = '';
+          product.sizes.forEach((size) => {
+            const option = document.createElement('option');
+            option.value = size;
+            option.textContent = size;
+            select.appendChild(option);
+          });
+        }
+      } else if (sizeField) {
+        sizeField.remove();
+      }
+    });
+  };
+
   const init = () => {
     updateSummaryUI();
+    renderProductList();
+    hydrateProductPage();
     setupForms();
     setupTriggers();
   };
