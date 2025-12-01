@@ -2372,6 +2372,31 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
 }
 
+.button:disabled,
+.button[disabled],
+.button[aria-disabled="true"] {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
+}
+
+.button:disabled:hover,
+.button[disabled]:hover,
+.button[aria-disabled="true"]:hover,
+.button:disabled:focus-visible,
+.button[disabled]:focus-visible,
+.button[aria-disabled="true"]:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.75);
+  box-shadow: none;
+  transform: none;
+}
+
 .button--primary {
   background: linear-gradient(135deg, #ff3b30, #c30010);
   color: #fff;
