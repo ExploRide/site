@@ -62,7 +62,16 @@
   <main class="product-main">
     <section class="product-grid">
       <figure class="product-media">
-        <div class="product-photo" aria-hidden="true" data-product-image>Placeholder zdjęcia</div>
+        <div class="product-photo-wrapper">
+          <div class="product-photo" aria-hidden="true" data-product-image>Placeholder zdjęcia</div>
+        </div>
+        <div class="product-gallery" data-product-gallery hidden>
+          <button class="gallery-nav" type="button" data-gallery-prev aria-label="Poprzednie zdjęcie">←</button>
+          <div class="product-thumbnails" data-gallery-viewport>
+            <div class="product-thumbnails__track" data-gallery-track></div>
+          </div>
+          <button class="gallery-nav" type="button" data-gallery-next aria-label="Następne zdjęcie">→</button>
+        </div>
         <figcaption data-product-image-caption>Przykładowa wizualizacja koszulki – finalne zdjęcia pojawią się po dostawie.</figcaption>
       </figure>
       <div class="product-info">

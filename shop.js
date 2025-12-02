@@ -11,6 +11,28 @@
 
   const formatPrice = (value) => currency.format(Number(value) || 0);
 
+  const normalizeImages = (product) => {
+    const images = Array.isArray(product.images) ? product.images : [];
+    const normalized = images
+      .map((entry) =>
+        typeof entry === 'string'
+          ? { src: entry, alt: product.imageAlt || product.name }
+          : { src: entry?.src, alt: entry?.alt || product.imageAlt || product.name }
+      )
+      .filter((entry) => entry.src);
+
+    if (!normalized.length && product.image) {
+      normalized.push({ src: product.image, alt: product.imageAlt || product.name });
+    }
+
+    return normalized;
+  };
+
+  const getPrimaryImage = (product) => {
+    const [first] = normalizeImages(product);
+    return first ? first.src : null;
+  };
+
   const loadCart = () => {
     try {
       const raw = localStorage.getItem(storageKey);
@@ -322,9 +344,10 @@
 
       const image = document.createElement('div');
       image.className = 'shop-item__image';
-      if (product.image) {
+      const primaryImage = getPrimaryImage(product);
+      if (primaryImage) {
         const img = document.createElement('img');
-        img.src = product.image;
+        img.src = primaryImage;
         img.alt = product.imageAlt || product.name;
         img.loading = 'lazy';
         image.appendChild(img);
@@ -405,23 +428,119 @@
     const note = document.querySelector('[data-product-note]');
     if (note && product.note) note.textContent = product.note;
 
+    const galleryContainer = document.querySelector('[data-product-gallery]');
     const image = document.querySelector('[data-product-image]');
-    if (image) {
+    const caption = document.querySelector('[data-product-image-caption]');
+    const track = galleryContainer?.querySelector('[data-gallery-track]');
+    const viewport = galleryContainer?.querySelector('[data-gallery-viewport]');
+    const prevBtn = galleryContainer?.querySelector('[data-gallery-prev]');
+    const nextBtn = galleryContainer?.querySelector('[data-gallery-next]');
+    const images = normalizeImages(product);
+    const placeholder = product.imagePlaceholder || 'Zdjęcie produktu';
+    let activeIndex = 0;
+
+    const renderMainImage = (entry) => {
+      if (!image) return;
       image.innerHTML = '';
-      if (product.image) {
+
+      if (entry) {
         const img = document.createElement('img');
-        img.src = product.image;
-        img.alt = product.imageAlt || product.name;
+        img.src = entry.src;
+        img.alt = entry.alt || product.name;
         img.loading = 'lazy';
         image.appendChild(img);
       } else {
-        image.textContent = product.imagePlaceholder || 'Zdjęcie produktu';
+        image.textContent = placeholder;
       }
+    };
+
+    const updateActiveThumb = () => {
+      if (!track) return;
+      Array.from(track.children).forEach((button, index) => {
+        button.classList.toggle('is-active', index === activeIndex);
+      });
+    };
+
+    const ensureActiveVisible = () => {
+      if (!viewport || !track) return;
+      const thumb = track.children[activeIndex];
+      if (!thumb) return;
+      const thumbLeft = thumb.offsetLeft;
+      const thumbRight = thumbLeft + thumb.offsetWidth;
+      const viewLeft = viewport.scrollLeft;
+      const viewRight = viewLeft + viewport.clientWidth;
+
+      if (thumbLeft < viewLeft) {
+        viewport.scrollTo({ left: thumbLeft, behavior: 'smooth' });
+      } else if (thumbRight > viewRight) {
+        viewport.scrollTo({ left: thumbRight - viewport.clientWidth, behavior: 'smooth' });
+      }
+    };
+
+    const setActiveImage = (index) => {
+      activeIndex = index;
+      renderMainImage(images[index]);
+      updateActiveThumb();
+      ensureActiveVisible();
+    };
+
+    const renderThumbnails = () => {
+      if (!track) return;
+      track.innerHTML = '';
+
+      images.forEach((entry, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'product-thumbnail';
+        button.dataset.galleryIndex = String(index);
+
+        const img = document.createElement('img');
+        img.src = entry.src;
+        img.alt = entry.alt || product.name;
+        img.loading = 'lazy';
+
+        button.appendChild(img);
+        button.addEventListener('click', () => setActiveImage(index));
+        track.appendChild(button);
+      });
+    };
+
+    const updateNavigation = () => {
+      if (!prevBtn || !nextBtn) return;
+      const shouldShowNav = images.length > 4;
+      prevBtn.hidden = !shouldShowNav;
+      nextBtn.hidden = !shouldShowNav;
+    };
+
+    if (prevBtn && viewport) {
+      prevBtn.addEventListener('click', () => {
+        viewport.scrollBy({ left: -viewport.clientWidth * 0.8, behavior: 'smooth' });
+      });
     }
 
-    const caption = document.querySelector('[data-product-image-caption]');
+    if (nextBtn && viewport) {
+      nextBtn.addEventListener('click', () => {
+        viewport.scrollBy({ left: viewport.clientWidth * 0.8, behavior: 'smooth' });
+      });
+    }
+
     if (caption && product.imageCaption) {
       caption.textContent = product.imageCaption;
+    }
+
+    if (images.length) {
+      renderMainImage(images[0]);
+      if (galleryContainer) {
+        galleryContainer.hidden = false;
+        renderThumbnails();
+        updateNavigation();
+        setActiveImage(0);
+      }
+    } else {
+      renderMainImage(null);
+      if (galleryContainer) {
+        galleryContainer.hidden = true;
+      }
     }
 
     document.querySelectorAll('[data-add-to-cart]').forEach((form) => {
