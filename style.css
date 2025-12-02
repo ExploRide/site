@@ -2628,6 +2628,39 @@
   margin: 0;
 }
 
+.product-details {
+  margin-top: 32px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-details h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.product-long-description__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #d5d5d5;
+  line-height: 1.5;
+}
+
+.product-long-description p {
+  margin: 0;
+  color: #d5d5d5;
+}
+
 .product-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

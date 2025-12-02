@@ -7,6 +7,22 @@ window.SHOP_PRODUCTS = [
     summary: 'Wygodny krój, nadruk ExploRide i dostępne rozmiary S–XXL.',
     description:
       'Wygodny krój, logo na froncie oraz z tyłu i kod QR na prawym rękawie',
+    longDescription: [
+      'Nadruk: DTF',
+      'Gramatura: 150 g/m²',
+      'Rozmiary: XS, S, M, L, XL, XXL',
+      'Skład materiału: bawełna (100%)',
+      'Rodzaj materiału: jersey',
+      'Processing: szwy boczne',
+      'Pielęgnacja: pranie do 40°C',
+      'Certyfikaty: Fair Working Conditions',
+      'OEKO-TEX® STANDARD 100',
+      'Vegan',
+      'Kolorystyka: czarna',
+      'Krój: slim',
+      'Dekolt: taśma wzmacniająca, okrągły',
+      'Rękawy: krótki, wszyty (set in)',
+    ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
@@ -22,6 +38,22 @@ window.SHOP_PRODUCTS = [
     price: 89,
     summary: 'Dopasowana koszulka z logotypem – idealna na wyjazdy i eksploracje.',
     description: 'Dopasowany krój, lekka bawełna i logo ExploRide – wygoda w kobiecym wydaniu.',
+    longDescription: [
+      'Nadruk: DTF',
+      'Gramatura: 150 g/m²',
+      'Rozmiary: XS, S, M, L, XL, XXL',
+      'Skład materiału: bawełna (100%)',
+      'Rodzaj materiału: jersey',
+      'Processing: szwy boczne',
+      'Pielęgnacja: pranie do 40°C',
+      'Certyfikaty: Fair Working Conditions',
+      'OEKO-TEX® STANDARD 100',
+      'Vegan',
+      'Kolorystyka: czarna',
+      'Krój: slim',
+      'Dekolt: taśma wzmacniająca, okrągły',
+      'Rękawy: krótki, wszyty (set in)',
+    ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
@@ -50,5 +82,6 @@ window.SHOP_PRODUCTS = [
 // Jak dodać nowy produkt?
 // 1. Skopiuj jeden z powyższych obiektów i nadaj mu unikalne id oraz slug.
 // 2. Uzupełnij nazwę, cenę, opis i ewentualne rozmiary.
-// 3. (Opcjonalnie) podaj ścieżkę do zdjęcia w polu "image" lub zostaw puste, aby wyświetlić placeholder.
-// 4. Zapisz plik i dodaj stronę produktu jako kopię istniejącej (np. t-shirt-meski-classic.html) z nowym slugiem.
+// 3. (Opcjonalnie) Dodaj tablicę longDescription ze szczegółowym opisem – każdy element to nowa linia na stronie produktu.
+// 4. (Opcjonalnie) podaj ścieżkę do zdjęcia w polu "image" lub zostaw puste, aby wyświetlić placeholder.
+// 5. Zapisz plik i dodaj stronę produktu jako kopię istniejącej (np. t-shirt-meski-classic.html) z nowym slugiem.
