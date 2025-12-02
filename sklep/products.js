@@ -8,7 +8,7 @@ window.SHOP_PRODUCTS = [
     description:
       'Minimalistyczny krój, logo na froncie i wygodna bawełna – idealny towarzysz miejskich eksploracji.',
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    image: '',
+    image: 'sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.pdf',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
     imageCaption:
