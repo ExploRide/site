@@ -380,6 +380,28 @@
     const description = document.querySelector('[data-product-description]');
     if (description) description.textContent = product.description || '';
 
+    const longDescription = document.querySelector('[data-product-long-description]');
+    if (longDescription) {
+      longDescription.innerHTML = '';
+
+      if (Array.isArray(product.longDescription) && product.longDescription.length) {
+        const list = document.createElement('ul');
+        list.className = 'product-long-description__list';
+
+        product.longDescription.forEach((line) => {
+          const item = document.createElement('li');
+          item.textContent = line;
+          list.appendChild(item);
+        });
+
+        longDescription.appendChild(list);
+      } else {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = product.description || 'Szczegółowy opis produktu pojawi się wkrótce.';
+        longDescription.appendChild(paragraph);
+      }
+    }
+
     const note = document.querySelector('[data-product-note]');
     if (note && product.note) note.textContent = product.note;
 
