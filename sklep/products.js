@@ -24,11 +24,17 @@ window.SHOP_PRODUCTS = [
       'Rękawy: krótki, wszyty (set in)',
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    images: [
+      'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
+      '../Photos/banner.jpg',
+      '../Photos/onas2.jpg',
+      '../backgrounds/background1.jpg',
+      '../backgrounds/background4.jpg',
+    ],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
-    imageCaption:
-      '',
+    imageCaption: '',
     note: 'Dostępność i terminy wysyłki zostaną potwierdzone po złożeniu zamówienia przez formularz.',
   },
   {
@@ -55,11 +61,17 @@ window.SHOP_PRODUCTS = [
       'Rękawy: krótki, wszyty (set in)',
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    images: [
+      'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
+      '../Photos/og-image-1200x630.jpg',
+      '../Photos/onas.jpg',
+      '../backgrounds/background2.jpg',
+      '../backgrounds/background6.jpg',
+    ],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
-    imageCaption:
-      'Przykładowa wizualizacja koszulki – finalne zdjęcia pojawią się po dostawie.',
+    imageCaption: 'Przykładowa wizualizacja koszulki – finalne zdjęcia pojawią się po dostawie.',
     note: 'Dostępność i terminy wysyłki zostaną potwierdzone po złożeniu zamówienia przez formularz.',
   },
   {
@@ -71,6 +83,12 @@ window.SHOP_PRODUCTS = [
     description:
       'Kalendarz ścienny z fotografiami z eksploracji. Każdy miesiąc to inny klimat i nowa historia.',
     sizes: [],
+    images: [
+      '../Photos/og-image-1200x630.jpg',
+      '../Photos/banner.jpg',
+      '../Photos/onas.jpg',
+      '../backgrounds/background3.jpg',
+    ],
     image: '',
     imageAlt: 'Okładka kalendarza ExploRide Urbex 2026',
     imagePlaceholder: 'Okładka kalendarza',

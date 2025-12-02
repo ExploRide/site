@@ -2589,6 +2589,12 @@
   color: #cfd2d5;
 }
 
+.product-photo-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 .product-photo {
   background: linear-gradient(135deg, rgba(255, 112, 112, 0.15), rgba(0, 0, 0, 0.92));
   border-radius: 12px;
@@ -2606,6 +2612,91 @@
   object-fit: contain;
   border-radius: inherit;
   display: block;
+}
+
+.product-gallery {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-thumbnails {
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.product-thumbnails__track {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  min-width: max-content;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.product-thumbnails__track::-webkit-scrollbar {
+  display: none;
+}
+
+.product-thumbnail {
+  width: 88px;
+  height: 88px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.product-thumbnail:hover {
+  border-color: rgba(255, 122, 122, 0.7);
+  transform: translateY(-1px);
+}
+
+.product-thumbnail.is-active {
+  border-color: #ff7a7a;
+  box-shadow: 0 0 0 1px rgba(255, 122, 122, 0.35);
+}
+
+.product-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+.gallery-nav {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-nav:hover {
+  background: rgba(255, 122, 122, 0.15);
+  border-color: rgba(255, 122, 122, 0.4);
+  transform: translateY(-1px);
+}
+
+.gallery-nav:disabled,
+.gallery-nav[hidden] {
+  display: none;
 }
 
 .product-info {
