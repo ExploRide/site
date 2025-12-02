@@ -6,13 +6,13 @@ window.SHOP_PRODUCTS = [
     price: 89,
     summary: 'Wygodny krój, nadruk ExploRide i dostępne rozmiary S–XXL.',
     description:
-      'Minimalistyczny krój, logo na froncie i wygodna bawełna – idealny towarzysz miejskich eksploracji.',
+      'Wygodny krój, logo na froncie oraz z tyłu i kod QR na prawym rękawie',
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
     imageCaption:
-      'Przykładowa wizualizacja koszulki – finalne zdjęcia pojawią się po dostawie.',
+      '',
     note: 'Dostępność i terminy wysyłki zostaną potwierdzone po złożeniu zamówienia przez formularz.',
   },
   {
