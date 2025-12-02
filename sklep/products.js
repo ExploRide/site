@@ -8,7 +8,7 @@ window.SHOP_PRODUCTS = [
     description:
       'Minimalistyczny krój, logo na froncie i wygodna bawełna – idealny towarzysz miejskich eksploracji.',
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic',
+    image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
     imageCaption:
@@ -23,7 +23,7 @@ window.SHOP_PRODUCTS = [
     summary: 'Dopasowana koszulka z logotypem – idealna na wyjazdy i eksploracje.',
     description: 'Dopasowany krój, lekka bawełna i logo ExploRide – wygoda w kobiecym wydaniu.',
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic',
+    image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
     imageCaption:
