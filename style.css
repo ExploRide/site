@@ -1175,6 +1175,16 @@
     }
 
     .fb-embed-wrapper .fb_iframe_widget iframe {
+      width: 100% !important;
+      max-width: 900px !important;
+      min-width: min(100%, 320px) !important;
+      margin: 0 auto !important;
+    }
+
+    .ig-embed-card .instagram-media,
+    .ig-embed-card iframe {
+      width: 100% !important;
+      max-width: 900px !important;
       margin: 0 auto !important;
     }
 
