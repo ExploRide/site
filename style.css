@@ -771,6 +771,18 @@
       box-shadow: 0 0 20px rgba(255,255,255,0.14);
       background: #000;
     }
+    .player-app-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: none;
+      cursor: pointer;
+      background: transparent;
+    }
+    .player-app-overlay:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 4px;
+    }
     .ratio::before {
       content: "";
       display: block;
@@ -801,6 +813,11 @@
         bottom: auto;
         left: auto;
         height: 100%;
+      }
+    }
+    @media (max-width: 880px) {
+      .player-app-overlay {
+        display: block;
       }
     }
 
