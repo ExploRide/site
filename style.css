@@ -1117,8 +1117,12 @@
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
       overflow: visible;
       width: min(100%, 900px);
-      min-width: min(100%, 325px);
+      min-width: 0;
       margin: 0 auto 24px;
+    }
+
+    .tk-embed-card {
+      min-width: min(100%, 325px);
     }
 
     .ig-embed-card {
@@ -1177,7 +1181,7 @@
     .fb-embed-wrapper .fb_iframe_widget iframe {
       width: 100% !important;
       max-width: 900px !important;
-      min-width: min(100%, 320px) !important;
+      min-width: 0 !important;
       margin: 0 auto !important;
     }
 
