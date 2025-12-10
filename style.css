@@ -1430,8 +1430,8 @@
     }
 
     .links-buttons .links-button {
-      --brand-color: #2d2d2d;
-      --brand-accent: #1c1c1c;
+     /* --brand-color: #2d2d2d;
+      --brand-accent: #1c1c1c; */
       position: relative;
       display: inline-flex;
       align-items: center;
