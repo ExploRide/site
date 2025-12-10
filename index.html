@@ -485,6 +485,27 @@
     opacity: 1 !important;
     min-height: 624px !important;
   }
+
+  .video-switcher__viewport--player .ratio {
+    position: relative;
+  }
+  .video-switcher__viewport--player .ratio iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .player-app-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: block;
+    background: transparent;
+  }
+  .player-app-overlay:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
 </style>
 
 <<script>
@@ -1221,9 +1242,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setPlayerOverlay(target, videoId) {
       if (!videoId || !PLAYER_OVERLAYS[target]) return;
-      const url = `film-na-youtube.html?v=${encodeURIComponent(videoId)}`;
-      PLAYER_OVERLAYS[target].href = url;
-      PLAYER_OVERLAYS[target].dataset.videoId = videoId;
+      const url = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
+      const a = PLAYER_OVERLAYS[target];
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.dataset.videoId = videoId;
     }
 
     function initPlaylists() {
