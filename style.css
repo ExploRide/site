@@ -1469,7 +1469,7 @@
       transform: translateY(-2px);
       border-color: #e50914;
       box-shadow: 0 12px 24px rgba(229, 9, 20, 0.22);
-      background: rgba(229, 9, 20, 0.14);
+     /* background: rgba(229, 9, 20, 0.14); */
     }
 
     .links-buttons .links-button:hover::before,
