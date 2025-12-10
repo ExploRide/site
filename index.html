@@ -280,6 +280,13 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
                 ></iframe>
+                <a
+                  class="player-app-overlay"
+                  data-player-target="urbex"
+                  href="film-na-youtube.html"
+                >
+                  <span class="sr-only">Otwórz najnowszy film w aplikacji YouTube</span>
+                </a>
               </div>
               <a
                 class="youtube-subscribe-button"
@@ -312,6 +319,13 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
                 ></iframe>
+                <a
+                  class="player-app-overlay"
+                  data-player-target="travel"
+                  href="film-na-youtube.html"
+                >
+                  <span class="sr-only">Otwórz najnowszy film w aplikacji YouTube</span>
+                </a>
               </div>
             </div>
           </div>
@@ -1052,6 +1066,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupPlaylistSection(config) {
+      const onLatestVideo = typeof config.onLatestVideo === "function" ? config.onLatestVideo : null;
+      const onFallback = typeof config.onFallback === "function" ? config.onFallback : null;
+      const fallbackIds = config.fallbackVideoIds || STATIC_FALLBACK_VIDEO_IDS;
+
+      if (onFallback && Array.isArray(fallbackIds) && fallbackIds.length > 0) {
+        onFallback(fallbackIds);
+      }
+
       const loader = document.getElementById(config.loaderId);
       const fallback = document.getElementById(config.fallbackId);
       const playlistWindow = document.getElementById(config.windowId);
@@ -1103,7 +1125,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       function renderStaticFallback() {
-        const fallbackIds = config.fallbackVideoIds || STATIC_FALLBACK_VIDEO_IDS;
         videos = fallbackIds.map(id => ({
           id,
           title: "ExploRide – wideo",
@@ -1112,6 +1133,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
         renderTiles(videos);
         updateNav();
+        if (onFallback) {
+          onFallback(fallbackIds);
+        }
       }
 
       if (btnPrev && playlistEl) {
@@ -1160,6 +1184,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const tb = b.publishedAtISO ? Date.parse(b.publishedAtISO) : 0;
             return tb - ta;
           });
+          if (list.length > 0 && onLatestVideo) {
+            onLatestVideo(list[0].id);
+          }
           if (list.length > 0) list = list.slice(1);
           videos = list;
           renderTiles(videos);
@@ -1187,10 +1214,31 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
 
+    const PLAYER_OVERLAYS = {
+      urbex: document.querySelector('.player-app-overlay[data-player-target="urbex"]'),
+      travel: document.querySelector('.player-app-overlay[data-player-target="travel"]'),
+    };
+
+    function setPlayerOverlay(target, videoId) {
+      if (!videoId || !PLAYER_OVERLAYS[target]) return;
+      const url = `film-na-youtube.html?v=${encodeURIComponent(videoId)}`;
+      PLAYER_OVERLAYS[target].href = url;
+      PLAYER_OVERLAYS[target].dataset.videoId = videoId;
+    }
+
     function initPlaylists() {
       const controllers = {};
       PLAYLIST_SECTIONS.forEach(cfg => {
-        controllers[cfg.key] = setupPlaylistSection(cfg);
+        controllers[cfg.key] = setupPlaylistSection({
+          ...cfg,
+          onLatestVideo(videoId) {
+            setPlayerOverlay(cfg.key, videoId);
+          },
+          onFallback(fallbackIds) {
+            const id = Array.isArray(fallbackIds) && fallbackIds.length > 0 ? fallbackIds[0] : null;
+            setPlayerOverlay(cfg.key, id);
+          }
+        });
       });
 
       const switcher = document.querySelector(".video-switcher");
