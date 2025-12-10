@@ -1508,14 +1508,14 @@
     }
 
     .links-button--yt {
-      --brand-color: #ff2d55;
-      --brand-accent: #c40631;
+      --brand-color: #ff0000;
+      --brand-accent: #cc0000;
     }
 
     .links-button--ig,
     .links-button--ig-channel {
       --brand-color: #f58529;
-      --brand-accent: #833ab4;
+      --brand-accent: #dd2a7b;
     }
 
     .links-button--fb {
@@ -1524,8 +1524,8 @@
     }
 
     .links-button--tt {
-      --brand-color: #25f4ee;
-      --brand-accent: #fe2c55;
+      --brand-color: #000000;
+      --brand-accent: #25f4ee;
     }
 
     .links-button--pinterest {
@@ -1630,10 +1630,10 @@
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
     }
     .home-links__title {
-      margin: 0 0 12px;
+      margin: 0 0 16px;
       font-size: clamp(1.4rem, 3.8vw, 1.8rem);
       letter-spacing: 0.04em;
-      color: #fff;
+      color: #e50914;
     }
     .home-links__buttons {
       margin: 0;
