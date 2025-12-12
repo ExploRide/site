@@ -1,20 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
   <link rel="stylesheet" href="style.css">
   <script src="main.js" defer></script>
-
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ExploRide",
+  "url": "https://exploride.pl",
+  "logo": "https://exploride.pl/logo.png",
+  "sameAs": [
+    "https://www.youtube.com/@ExploRideURBEX",
+    "https://www.instagram.com/exploride.urbex",
+    "https://www.facebook.com/ExploRideURBEX"
+  ],
+  "description": "ExploRide – Urbex i podróże."
+}
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Podstawowy opis strony -->
 <title>ExploRide.pl</title>
 <meta name="description" content="ExploRide to projekt tworzony z pasji do odkrywania miejsc, o których większość już zapomniała. Łączymy urbex, podróże i historię w jedną opowieść – pokazujemy opuszczone budynki, dawne fabryki, schrony czy zapomniane wille, a także piękne zakątki natury, które spotykamy w drodze.">
-
+<meta name="keywords" content="urbex, eksploracja, opuszczone miejsca, urbex Polska, podróże, eksploride, urbex filmy, mapa urbex, abandoned places Poland, urban exploration">
 <!-- Canonical -->
 <link rel="canonical" href="https://exploride.pl/">
 
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
-<meta property="og:title" content="ExploRide.pl">
+<meta property="og:title" content="ExploRide - Urbex i Podróże">
 <meta property="og:description" content="ExploRide to projekt tworzony z pasji do odkrywania miejsc, o których większość już zapomniała. Łączymy urbex, podróże i historię w jedną opowieść – pokazujemy opuszczone budynki, dawne fabryki, schrony czy zapomniane wille, a także piękne zakątki natury, które spotykamy w drodze.">
 <meta property="og:image" content="https://exploride.pl/Photos/og-image-1200x630.jpg">
 <meta property="og:image:width" content="1200">
@@ -30,9 +45,20 @@
 <meta name="twitter:title" content="ExploRide.pl">
 <meta name="twitter:description" content="ExploRide to projekt tworzony z pasji do odkrywania miejsc, o których większość już zapomniała. Łączymy urbex, podróże i historię w jedną opowieść – pokazujemy opuszczone budynki, dawne fabryki, schrony czy zapomniane wille, a także piękne zakątki natury, które spotykamy w drodze.">
 <meta name="twitter:image" content="https://exploride.pl/Photos/og-image-1200x630.jpg">
+  
 
-   <link rel="icon" type="image/png" sizes="1080x1080" href="fav1080.png">
-<link rel="apple-touch-icon" sizes="1080x1080" href="fav1080.png">
+
+
+
+
+
+   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png">
+<link rel="icon" href="/favicon-512.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="/favicon-512.png">
+<link rel="manifest" href="/manifest.json">
+
+
   
 
   <!-- Pinterest weryfikacja -->
@@ -161,10 +187,9 @@
     </script>
   </head>
 <body class="page-home">
-  <header>
+  <header data-nav-layout="sidebar">
     <a class="brand" href="index.html" aria-label="Strona główna ExploRide">
       <img src="logo.png" alt="ExploRide logo" class="logo">
-      <span class="brand-name">EXPLORIDE.PL</span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
       <span class="nav-toggle__bars" aria-hidden="true">
@@ -175,41 +200,27 @@
       <span class="nav-toggle__label">Menu</span>
     </button>
     <nav class="top-nav" id="main-navigation" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--home" href="index.html" aria-current="page">Strona główna</a>
       <a class="nav-link nav-link--about" href="onas.html">O nas</a>
-      <a class="nav-link nav-link--home" href="#filmy">Filmy</a>
       <a class="nav-link nav-link--gallery" href="galeria.html">Galeria</a>
-      <a class="nav-link" href="#posty-fb">Posty na FB</a>
-      <a class="nav-link" href="#posty-ig">Posty z IG</a>
+      <a class="nav-link nav-link--links" href="linki.html">Linki</a>
       <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
       <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Sklep</button>
       <a class="nav-link nav-link--support" href="wesprzyj-nas.html">Wesprzyj nas</a>
       <a class="nav-link nav-link--contact" href="kontakt.html">Kontakt</a>
       <a class="nav-link nav-link--downloads" href="materialy.html">Materiały do pobrania</a>
+      <div class="nav-divider" role="presentation"></div>
+      <div class="nav-links-section" aria-label="Linki społecznościowe">
+        <span class="nav-links-section__title">Linki</span>
+        <a class="nav-social-link" href="https://www.youtube.com/@ExploRideURBEX" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a class="nav-social-link" href="https://www.facebook.com/ExploRideURBEX" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="nav-social-link" href="https://www.instagram.com/exploride.urbex" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a class="nav-social-link" href="https://www.tiktok.com/@exploride.urbex" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </div>
     </nav>
   </header>
 
-  <div class="social-section">
-    <!-- SOCIAL -->
-    <p class="lead">Odwiedź nas na:</p>
-    <div class="buttons">
-      <a class="yt" href="https://www.youtube.com/@ExploRideURBEX" target="_blank">
-        <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        YouTube
-      </a>
-      <a class="fb" href="https://www.facebook.com/ExploRideURBEX" target="_blank">
-        <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
-        Facebook
-      </a>
-      <a class="ig" href="https://www.instagram.com/exploride.urbex" target="_blank">
-        <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>
-        Instagram
-      </a>
-      <a class="tt" href="https://www.tiktok.com/@exploride.urbex" target="_blank">
-        <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-        TikTok
-      </a>
-    </div>
-    </div>
+  <h1 class="site-title">ExploRide.pl</h1>
 
     <hr class="divider" />
 
@@ -231,6 +242,7 @@
           aria-controls="urbex-section"
           aria-selected="true"
         >
+          <span class="video-toggle__emoji video-toggle__emoji--urbex" aria-hidden="true">🏚️</span>
           <span class="video-toggle__label">URBEX</span>
         </button>
         <button
@@ -241,6 +253,7 @@
           aria-controls="travel-section"
           aria-selected="false"
         >
+          <span class="video-toggle__emoji video-toggle__emoji--travel" aria-hidden="true">🌍</span>
           <span class="video-toggle__label">PODRÓŻE</span>
         </button>
       </div>
@@ -267,7 +280,23 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
                 ></iframe>
+                <a
+                  class="player-app-overlay"
+                  data-player-target="urbex"
+                  href="film-na-youtube.html"
+                >
+                  <span class="sr-only">Otwórz najnowszy film w aplikacji YouTube</span>
+                </a>
               </div>
+              <a
+                class="youtube-subscribe-button"
+                href="https://www.youtube.com/channel/UCDDh55aHt6hRAjIu5BIkrUQ?sub_confirmation=1"
+                target="_blank"
+                rel="noopener"
+                aria-label="Subskrybuj kanał ExploRide na YouTube"
+              >
+                Subskrybuj
+              </a>
             </div>
           </div>
         </section>
@@ -290,6 +319,13 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
                 ></iframe>
+                <a
+                  class="player-app-overlay"
+                  data-player-target="travel"
+                  href="film-na-youtube.html"
+                >
+                  <span class="sr-only">Otwórz najnowszy film w aplikacji YouTube</span>
+                </a>
               </div>
             </div>
           </div>
@@ -297,7 +333,7 @@
       </div>
     </div>
 
-    <hr class="divider" />
+ 
 
     <h2>Zobacz więcej filmów</h2>
     <p class="lead"></p>
@@ -322,9 +358,13 @@
             </div>
 
             <div id="urbex-playlist-window" class="playlist-window" tabindex="0">
-              <button id="urbex-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+              <button id="urbex-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
               <div id="urbex-playlist" class="playlist-list"></div>
-              <button id="urbex-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+              <button id="urbex-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
             </div>
           </div>
         </section>
@@ -347,14 +387,30 @@
             </div>
 
             <div id="travel-playlist-window" class="playlist-window" tabindex="0">
-              <button id="travel-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">&#9664;</button>
+              <button id="travel-btn-prev" class="nav-btn left" aria-label="Pokaż wcześniejsze filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
               <div id="travel-playlist" class="playlist-list"></div>
-              <button id="travel-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">&#9654;</button>
+              <button id="travel-btn-next" class="nav-btn right" aria-label="Pokaż kolejne filmy">
+                <span aria-hidden="true" class="nav-btn__icon"></span>
+              </button>
             </div>
           </div>
         </section>
       </div>
     </div>
+  </div>
+
+  <div class="social-cta">
+    <a
+      class="social-cta__link yt"
+      href="https://www.youtube.com/@ExploRideURBEX"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      Odwiedź nasz kanał YouTube
+    </a>
   </div>
 
     <hr class="divider" />
@@ -366,152 +422,384 @@
   </section>
   <!-- ======== /Facebook: Najnowszy post ======== -->
 
-  <hr class="divider" />
-
-  <!-- ======== Instagram: Najnowsze ======== -->
-  <h2 id="posty-ig">Najnowsze z Instagrama</h2>
-
-
-  <div class="center">
-    <div id="ig-loader" class="loader">Ładowanie postów z Instagrama…</div>
-    <div id="ig-fallback" class="fallback" style="display:none;">
-      Nie udało się pobrać postów. Zobacz nasz profil:
-      <br />
-      <a class="btn" target="_blank" href="https://www.instagram.com/exploride.urbex/">Otwórz Instagram</a>
-    </div>
+  <div class="social-cta">
+    <a
+      class="social-cta__link fb"
+      href="https://www.facebook.com/ExploRideURBEX"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
+      Odwiedź naszą stronę na Facebooku
+    </a>
   </div>
 
-  <div id="ig-grid" class="ig-grid"></div>
+    <hr class="divider" />
 
-  <style>
-    /* Siatka i kafelki IG */
-    .ig-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      max-width: 1200px;
-      margin: 18px auto 40px;
-      padding: 0 16px;
+  <!-- ======== Instagram: Najnowsze ======== -->
+<h2 id="posty-ig">Najnowsze z Instagrama</h2>
+
+<!-- Kontener na oEmbed/iframe Instagrama -->
+<div id="ig-latest-embed" class="ig-embed-card"></div>
+
+<div class="center">
+  <div id="ig-loader" class="loader" style="display:none;">Ładowanie postów z Instagrama…</div>
+  <div id="ig-fallback" class="fallback" style="display:none;">
+    Nie udało się pobrać postów. Zobacz nasz profil:
+    <br />
+    <a class="btn" target="_blank" href="https://www.instagram.com/exploride.urbex/">Otwórz Instagram</a>
+  </div>
+</div>
+
+<!-- (opcjonalna) siatka miniaturek na przyszłość -->
+<div id="ig-grid" class="ig-grid" style="display:none;"></div>
+
+<div class="social-cta">
+  <a
+    class="social-cta__link ig"
+    href="https://www.instagram.com/exploride.urbex"
+    target="_blank"
+    rel="noopener"
+  
+    <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.05641.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>
+    Odwiedź nasz profil na Instagramie
+  </a>
+</div>
+
+<style>
+  /* Siatka i kafelki IG (na przyszłość) */
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    max-width: 1200px;
+    margin: 18px auto 40px;
+    padding: 0 16px;
+  }
+
+  /* Twarde zabezpieczenie widoczności osadzenia IG */
+  .ig-embed-card iframe,
+  .instagram-media {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 550px !important;
+    max-height: 610px;
+  }
+
+  .video-switcher__viewport--player .ratio {
+    position: relative;
+  }
+  .video-switcher__viewport--player .ratio iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .player-app-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: block;
+    background: transparent;
+  }
+  .player-app-overlay:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+</style>
+
+<<script>
+/* ================== KONFIG ================== */
+const IG_MEDIA_API  = 'https://fb-feed.eksplorajder.workers.dev/api/ig/media';
+const IG_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/ig/oembed';
+const FB_PAGE_ID    = '145171925888318'; // FB Page połączona z kontem IG
+
+/* ================== UTILS ================== */
+async function fetchLatestIgPermalink() {
+  const u = new URL(IG_MEDIA_API);
+  u.searchParams.set('page_id', FB_PAGE_ID);
+  u.searchParams.set('limit', '10');
+  u.searchParams.set('bust', String(Date.now())); // omija cache
+  const r = await fetch(u).catch(() => null);
+  if (!r || !r.ok) throw new Error('IG media HTTP ' + (r && r.status));
+  const d = await r.json();
+  // Preferuj zwykły post (nie Reels); jeśli brak – bierz pierwszy
+  const first = (d.items || []).find(x => x.permalink_url && !/\/reel\//i.test(x.permalink_url))
+             || (d.items || [])[0];
+  return first ? first.permalink_url : null;
+}
+
+async function fetchIgOEmbedHtml(permalink) {
+  const clean = new URL(permalink);
+  const cleanPermalink = clean.origin + clean.pathname; // usuń parametry
+  const u = new URL(IG_OEMBED_API);
+  u.searchParams.set('url', cleanPermalink);
+  u.searchParams.set('maxwidth', '600');
+  const r = await fetch(u).catch(() => null);
+  if (!r || !r.ok) throw new Error('IG oEmbed HTTP ' + (r && r.status));
+  const d = await r.json().catch(() => ({}));
+  if (!d || !d.html) throw new Error('IG oEmbed: empty html');
+  return d.html;
+}
+
+function loadIgScriptOnce() {
+  return new Promise(res => {
+    if (window.instgrm && window.instgrm.Embeds) return res();
+    const s = document.createElement('script');
+    s.src = 'https://www.instagram.com/embed.js';
+    s.onload = () => res();
+    document.body.appendChild(s);
+  });
+}
+
+/* iframe z podpisem (caption) */
+function toIframeHtml(permalink) {
+  const url = new URL(permalink);
+  const parts = url.pathname.split('/').filter(Boolean); // ["p","SHORTCODE"] | ["reel","SHORTCODE"] | ["tv","SHORTCODE"]
+  const type = parts[0];
+  const code = parts[1];
+  const path = (type === 'p' || type === 'reel' || type === 'tv') ? `/${type}/${code}/embed/captioned/`
+                                                                   : `/p/${code}/embed/captioned/`;
+  const src = `https://www.instagram.com${path}`;
+  return `<iframe src="${src}" allowtransparency="true" frameborder="0" scrolling="no"
+            style="width:100%;max-width:936px;border:none;overflow:hidden;height:736px"></iframe>`;
+}
+
+/* blockquote z captionem – przetwarzany przez embed.js */
+function toCaptionedBlockquote(permalink) {
+  const u = new URL(permalink);
+  const cleanPermalink = u.origin + u.pathname;
+  return `
+    <blockquote class="instagram-media"
+                data-instgrm-permalink="${cleanPermalink}"
+                data-instgrm-version="14"
+                data-instgrm-captioned>
+      <a href="${cleanPermalink}" target="_blank" rel="noopener"></a>
+    </blockquote>
+  `;
+}
+
+/* ============== RENDER: oEmbed -> caption -> iframe fallback ============== */
+async function renderLatestIgEmbed(hostId = 'ig-latest-embed') {
+  const host = document.getElementById(hostId);
+  if (!host) return;
+
+  try {
+    const permalink = await fetchLatestIgPermalink();
+    if (!permalink) throw new Error('No public IG media');
+
+    // 1) Spróbuj oEmbed
+    let usedOEmbed = false;
+    try {
+      const html = await fetchIgOEmbedHtml(permalink);
+      host.innerHTML = html;
+      usedOEmbed = true;
+
+      // Jeśli oEmbed nie zawiera captionu – podmień na blockquote z captionem
+      if (!/data-instgrm-captioned/i.test(html)) {
+        host.innerHTML = toCaptionedBlockquote(permalink);
+      }
+
+      // 2) Przetwórz przez skrypt Instagrama
+      await loadIgScriptOnce();
+      window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
+      await new Promise(r => setTimeout(r, 400));
+      window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process();
+
+      // 3) Jeżeli wciąż brak iframu → twardy fallback na iframe (captioned)
+      const hasIframe = !!host.querySelector('iframe');
+      if (!hasIframe) {
+        console.warn('IG: brak iframu po oEmbed – fallback do iframe captioned');
+        host.innerHTML = toIframeHtml(permalink);
+      }
+    } catch (e) {
+      console.warn('IG oEmbed error:', e?.message || e);
+      // 4) Fallback bezpośrednio do iframe captioned
+      host.innerHTML = toIframeHtml(permalink);
+    }
+  } catch (e) {
+    console.error('IG embed fatal:', e);
+    host.innerHTML =
+      '<a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/exploride.urbex/">Zobacz post na Instagramie</a>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderLatestIgEmbed('ig-latest-embed');
+});
+</script>
+<!-- ======== /Instagram: Najnowsze ======== -->
+
+  <hr class="divider" />
+
+ <!-- ======== TikTok: Najnowszy ======== -->
+<h2 id="posty-tiktok">Najnowszy TikTok</h2>
+<div id="tk-embed" class="tk-embed-card"></div>
+<div id="tk-fallback" class="fallback tk-embed-fallback" style="display:none;">
+  Nie udało się wczytać TikToka.
+  <br>
+  <a class="btn" target="_blank" rel="noopener" href="https://www.tiktok.com/@exploride.urbex">Zobacz nas na TikToku</a>
+</div>
+
+<script>
+const TK_LATEST_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/latest';
+const TK_OEMBED_API = 'https://fb-feed.eksplorajder.workers.dev/api/tk/oembed';
+const TIKTOK_USERNAME = 'exploride.urbex';
+
+function loadTiktokScriptOnce(force = false) {
+  return new Promise((resolve) => {
+    if (!force && window.__tiktokEmbedLoaded) return resolve();
+    const s = document.createElement('script');
+    s.src = 'https://www.tiktok.com/embed.js' + (force ? ('?ts=' + Date.now()) : '');
+    s.onload = () => { window.__tiktokEmbedLoaded = true; resolve(); };
+    document.body.appendChild(s);
+  });
+}
+
+function videoIdFromUrl(url) {
+  const m = String(url).match(/\/video\/(\d+)/);
+  return m ? m[1] : null;
+}
+
+function iframeFallback(videoUrl) {
+  const vid = videoIdFromUrl(videoUrl);
+  if (!vid) return `<a class="btn" target="_blank" rel="noopener" href="${videoUrl}">Zobacz nas na TikToku</a>`;
+  const src = `https://www.tiktok.com/embed/v2/${vid}`;
+  return `<iframe
+    class="tk-embed-frame"
+    src="${src}"
+    allowfullscreen
+    scrolling="no"
+    loading="lazy"
+  ></iframe>`;
+}
+
+async function fetchLatestTikTokUrl() {
+  const u = new URL(TK_LATEST_API);
+  u.searchParams.set('username', TIKTOK_USERNAME);
+  u.searchParams.set('bust', String(Date.now()));
+  const r = await fetch(u.toString(), { credentials: 'omit' });
+  const d = await r.json().catch(()=> ({}));
+  if (!r.ok || !d?.url) throw new Error('tk/latest: ' + (d?.reason || r.status));
+  return d.url;
+}
+
+async function fetchTikTokOEmbedHtml(videoUrl) {
+  const u = new URL(TK_OEMBED_API);
+  u.searchParams.set('url', videoUrl);
+  u.searchParams.set('maxwidth', '780');
+  const r = await fetch(u.toString(), { credentials: 'omit' });
+  const d = await r.json().catch(()=> ({}));
+  if (!r.ok || d?.error) throw new Error(d?.error || ('tk/oembed HTTP ' + r.status));
+  if (!d?.html) throw new Error('tk/oembed: empty html');
+  return d.html;
+}
+
+async function renderLatestTikTok(hostId = 'tk-embed') {
+  const host = document.getElementById(hostId);
+  const fb = document.getElementById('tk-fallback');
+  if (!host) return;
+  host.style.display = '';
+
+  try {
+    const url = await fetchLatestTikTokUrl();
+
+    // 1) Spróbuj oEmbed z Workera
+    let usedOembed = false;
+    try {
+      const html = await fetchTikTokOEmbedHtml(url);
+      host.innerHTML = html;
+      usedOembed = true;
+    } catch (e) {
+      console.warn('TikTok oEmbed error:', e?.message || e);
     }
 
-    .ig-tile {
-      background: #1e1e1e;
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      overflow: hidden;
-      display: block;
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
-
-    .ig-tile:hover {
-      transform: translateY(-3px);
-    }
-
-    .ig-media {
-      position: relative;
-      width: 100%;
-      padding-top: 100%;
-      background: #000;
-      overflow: hidden;
-    }
-
-    .ig-media img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .ig-caption {
-      padding: 10px 12px;
-      text-align: left;
-      color: #fff;
-      font-size: 0.95em;
-      max-height: 4.4em;
-      overflow: hidden;
-      white-space: pre-wrap;
-    }
-
-    .ig-date {
-      padding: 0 12px 10px;
-      color: #bbb;
-      font-size: 0.85em;
-      text-align: left;
-    }
-  </style>
-
-  <script>
-    {
-      // ---- KONFIG ----
-      const IG_API = "https://fb-feed.eksplorajder.workers.dev/api/ig/media";
-      const IG_PAGEID = "145171925888318"; // FB Page ID; worker sam znajdzie IG account
-      const IG_LIMIT = 9; // ile kafelków
-
-      const esc = (s = "") => s.replaceAll("<", "&lt;");
-      const fmt = iso => {
-        const d = new Date(iso);
-        if (isNaN(d)) return "";
-        return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
-      };
-
-      const card = m => `
-        <a class="ig-tile" href="${m.permalink}" target="_blank" rel="noopener">
-          <div class="ig-media">
-            <img src="${m.src}" alt="Instagram ExploRide" loading="lazy"
-                 onerror="this.closest('.ig-tile')?.remove()">
-          </div>
-          ${m.caption ? `<div class="ig-caption">${esc(m.caption)}</div>` : ""}
-          <div class="ig-date">${fmt(m.timestamp)}</div>
-        </a>
+    // 2) Jeśli oEmbed nie wstawił iframu – ustaw ręczny blockquote
+    if (!host.querySelector('blockquote.tiktok-embed')) {
+      host.innerHTML = `
+        <blockquote class="tiktok-embed" cite="${url}">
+          <a href="${url}" target="_blank" rel="noopener"></a>
+        </blockquote>
       `;
-
-      async function loadIG() {
-        const loader = document.getElementById("ig-loader");
-        const fallback = document.getElementById("ig-fallback");
-        const grid = document.getElementById("ig-grid");
-        try {
-          const u = new URL(IG_API);
-          u.searchParams.set("page_id", IG_PAGEID);
-          u.searchParams.set("limit", String(IG_LIMIT));
-          const res = await fetch(u.toString(), { credentials: "omit" });
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          const data = await res.json();
-          // 🔧 Ujednolicenie: wspiera IG (src/permalink/timestamp/caption) oraz FB (media[0].src/permalink_url/created_time/message)
-          const items = (data.items || []).map(x => {
-            const src = x.src || (Array.isArray(x.media) && x.media[0]?.src) || null;
-            const permalink = x.permalink || x.permalink_url || "#";
-            const timestamp = x.timestamp || x.created_time || "";
-            const caption = x.caption || x.message || "";
-            return { src, permalink, timestamp, caption };
-          }).filter(i => !!i.src);
-
-          items.sort((a, b) => {
-            const ta = a.timestamp ? Date.parse(a.timestamp) : 0;
-            const tb = b.timestamp ? Date.parse(b.timestamp) : 0;
-            return (tb || 0) - (ta || 0);
-          });
-
-          if (!items.length) throw new Error("Brak postów IG");
-          grid.innerHTML = items.map(card).join("");
-          loader.style.display = "none";
-        } catch (e) {
-          console.warn("IG feed error", e);
-          loader.style.display = "none";
-          fallback.style.display = "block";
-        }
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", loadIG);
-      } else {
-        loadIG();
-      }
     }
-  </script>
-  <!-- ======== /Instagram: Najnowsze ======== -->
+
+    // 3) Załaduj/odśwież embed.js i „pobudź” skanowanie dwa razy
+    await loadTiktokScriptOnce(!usedOembed);
+    await new Promise(r => setTimeout(r, 300));
+    // wymuś ponowne skanowanie, dociągając drugi raz (cache-busting)
+    await loadTiktokScriptOnce(true);
+
+    // 4) Jeśli wciąż nie ma iframu – twardy fallback na /embed/v2/{id}
+    if (!host.querySelector('iframe')) {
+      console.warn('TikTok: fallback to iframe /embed/v2');
+      host.innerHTML = iframeFallback(url);
+    }
+  } catch (e) {
+    console.error('TikTok embed fatal:', e);
+    host.innerHTML = '';
+    host.style.display = 'none';
+    if (fb) fb.style.display = 'block';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderLatestTikTok('tk-embed');
+});
+</script>
+
+<!-- ======== /TikTok ======== -->
+
+
+  <div class="social-cta">
+    <a
+      class="social-cta__link tt"
+      href="https://www.tiktok.com/@exploride.urbex"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.911-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      Odwiedź nasz profil na tikToku
+    </a>
+  </div>
+
+  <hr class="divider" />
+
+  <section class="home-links" aria-labelledby="home-links-title">
+    <h2 class="home-links__title" id="home-links-title">Linki</h2>
+    <div class="home-links__card">
+      <div class="links-buttons home-links__buttons" role="list">
+        <a class="links-button links-button--yt yt" href="https://www.youtube.com/@ExploRideURBEX" target="_blank" rel="noopener noreferrer" role="listitem">
+          <svg class="links-button__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          <span class="links-button__text">
+            <span class="links-button__title">YouTube</span>
+            <span class="links-button__handle">@ExploRideURBEX</span>
+          </span>
+        </a>
+        <a class="links-button links-button--fb fb" href="https://www.facebook.com/ExploRideURBEX" target="_blank" rel="noopener noreferrer" role="listitem">
+          <svg class="links-button__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12S0 5.373 0 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
+          <span class="links-button__text">
+            <span class="links-button__title">Facebook</span>
+            <span class="links-button__handle">ExploRideURBEX</span>
+          </span>
+        </a>
+        <a class="links-button links-button--ig ig" href="https://www.instagram.com/exploride.urbex" target="_blank" rel="noopener noreferrer" role="listitem">
+          <svg class="links-button__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.05641.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.32118.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>
+          <span class="links-button__text">
+            <span class="links-button__title">Instagram</span>
+            <span class="links-button__handle">@exploride.urbex</span>
+          </span>
+        </a>
+        <a class="links-button links-button--tt tt" href="https://www.tiktok.com/@exploride.urbex" target="_blank" rel="noopener noreferrer" role="listitem">
+          <svg class="links-button__icon" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          <span class="links-button__text">
+            <span class="links-button__title">TikTok</span>
+            <span class="links-button__handle">@exploride.urbex</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <hr class="divider" />
 
@@ -525,11 +813,7 @@
         <li>
           <a class="home-support__link" href="https://buycoffee.to/exploride" target="_blank" rel="noopener noreferrer">
             <span class="brand-icon brand-icon--sm brand-icon--buycoffee" aria-hidden="true">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                <path d="M5 7h11a2 2 0 0 1 2 2v1.5a3.5 3.5 0 0 1-3.2 3.5L13.9 19a2.2 2.2 0 0 1-2.2 1.9H9.3a2.2 2.2 0 0 1-2.2-1.9L6.1 14H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" fill="currentColor"></path>
-                <path d="M16 9h2.2a2 2 0 0 1 0 4H16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M9 4.6c.7 0 1.3.6 1.3 1.3 0 .5-.2.9-.5 1.1M12 4.3c.7 0 1.3.6 1.3 1.3 0 .5-.2.8-.5 1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
-              </svg>
+              <img src="buycoffee.jpg" alt="" loading="lazy">
             </span>
             <span>BuyCoffee</span>
           </a>
@@ -557,10 +841,7 @@
         <li>
           <a class="home-support__link" href="https://paypal.me/EXPLORIDE" target="_blank" rel="noopener noreferrer">
             <span class="brand-icon brand-icon--sm brand-icon--paypal" aria-hidden="true">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                <path d="M9.4 5.4h4.5c2.2 0 3.7 1.2 3.7 3.1 0 2.2-1.9 3.6-4.5 3.6h-2l-.9 5.5H7.6l1.8-12.2z" fill="currentColor"></path>
-                <path d="M14.9 8.2h1.8c1 0 1.6.5 1.6 1.5 0 1.1-.9 1.7-2.1 1.7h-1.7z" fill="currentColor" opacity="0.55"></path>
-              </svg>
+              <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" alt="" loading="lazy">
             </span>
             <span>PayPal</span>
           </a>
@@ -585,7 +866,7 @@
   </section>
 
   <footer>
-    © ExploRide • Urbex i podróże • <a href="https://exploride.pl/privacy-policy">Polityka prywatności</a>
+    © ExploRide • Urbex i podróże • <a href="https://exploride.pl/privacy-policy">Polityka prywatności</a> • <a href="/fb-oembed-review.html">Facebook oEmbed review page</a>
   </footer>
 
   <div id="fb-root"></div>
@@ -643,7 +924,7 @@
       async function fetchOEmbedHtml(permalink) {
         const u = new URL(FB_OEMBED_API);
         u.searchParams.set("url", permalink);
-        u.searchParams.set("maxwidth", "780");
+        u.searchParams.set("maxwidth", "750");
         u.searchParams.set("omitscript", "true");
 
         const res = await fetch(u.toString(), { credentials: "omit" });
@@ -704,7 +985,7 @@
           }
 
           const html = await fetchOEmbedHtml(permalink);
-          setHostContent(host, html);
+          setHostContent(host, `<div class="fb-embed-wrapper">${html}</div>`);
 
           const FBSDK = await waitForFacebookSDK();
           if (!FBSDK || typeof FBSDK.XFBML?.parse !== "function") {
@@ -807,6 +1088,14 @@
     }
 
     function setupPlaylistSection(config) {
+      const onLatestVideo = typeof config.onLatestVideo === "function" ? config.onLatestVideo : null;
+      const onFallback = typeof config.onFallback === "function" ? config.onFallback : null;
+      const fallbackIds = config.fallbackVideoIds || STATIC_FALLBACK_VIDEO_IDS;
+
+      if (onFallback && Array.isArray(fallbackIds) && fallbackIds.length > 0) {
+        onFallback(fallbackIds);
+      }
+
       const loader = document.getElementById(config.loaderId);
       const fallback = document.getElementById(config.fallbackId);
       const playlistWindow = document.getElementById(config.windowId);
@@ -814,6 +1103,7 @@
       const btnPrev = document.getElementById(config.prevId);
       const btnNext = document.getElementById(config.nextId);
       let videos = [];
+      let resizeObserver = null;
 
       function renderTiles(items) {
         if (!playlistEl) return;
@@ -838,14 +1128,25 @@
       }
 
       function updateNav() {
-        if (!playlistEl || !btnPrev || !btnNext) return;
-        btnPrev.style.display = playlistEl.scrollLeft > 0 ? "flex" : "none";
-        btnNext.style.display =
-          playlistEl.scrollLeft + playlistEl.clientWidth < playlistEl.scrollWidth ? "flex" : "none";
+        if (!playlistEl) return;
+
+        const maxScrollLeft = Math.max(playlistEl.scrollWidth - playlistEl.clientWidth, 0);
+        const hasPrev = playlistEl.scrollLeft > 1;
+        const hasNext = playlistEl.scrollLeft < maxScrollLeft - 1;
+
+        if (btnPrev) {
+          btnPrev.style.display = hasPrev ? "flex" : "none";
+        }
+        if (btnNext) {
+          btnNext.style.display = hasNext ? "flex" : "none";
+        }
+        if (playlistWindow) {
+          playlistWindow.classList.toggle("show-left-shadow", hasPrev);
+          playlistWindow.classList.toggle("show-right-shadow", hasNext);
+        }
       }
 
       function renderStaticFallback() {
-        const fallbackIds = config.fallbackVideoIds || STATIC_FALLBACK_VIDEO_IDS;
         videos = fallbackIds.map(id => ({
           id,
           title: "ExploRide – wideo",
@@ -854,6 +1155,9 @@
         }));
         renderTiles(videos);
         updateNav();
+        if (onFallback) {
+          onFallback(fallbackIds);
+        }
       }
 
       if (btnPrev && playlistEl) {
@@ -880,6 +1184,13 @@
       }
       if (playlistEl) {
         playlistEl.addEventListener("scroll", updateNav);
+        if (typeof ResizeObserver === "function") {
+          resizeObserver = new ResizeObserver(() => updateNav());
+          resizeObserver.observe(playlistEl);
+          if (playlistWindow) {
+            resizeObserver.observe(playlistWindow);
+          }
+        }
       }
 
       async function initSection() {
@@ -895,6 +1206,9 @@
             const tb = b.publishedAtISO ? Date.parse(b.publishedAtISO) : 0;
             return tb - ta;
           });
+          if (list.length > 0 && onLatestVideo) {
+            onLatestVideo(list[0].id);
+          }
           if (list.length > 0) list = list.slice(1);
           videos = list;
           renderTiles(videos);
@@ -911,13 +1225,45 @@
 
       initSection();
 
-      return { updateNav };
+      return {
+        updateNav,
+        destroy() {
+          if (resizeObserver) {
+            resizeObserver.disconnect();
+            resizeObserver = null;
+          }
+        }
+      };
+    }
+
+    const PLAYER_OVERLAYS = {
+      urbex: document.querySelector('.player-app-overlay[data-player-target="urbex"]'),
+      travel: document.querySelector('.player-app-overlay[data-player-target="travel"]'),
+    };
+
+    function setPlayerOverlay(target, videoId) {
+      if (!videoId || !PLAYER_OVERLAYS[target]) return;
+      const url = `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`;
+      const a = PLAYER_OVERLAYS[target];
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.dataset.videoId = videoId;
     }
 
     function initPlaylists() {
       const controllers = {};
       PLAYLIST_SECTIONS.forEach(cfg => {
-        controllers[cfg.key] = setupPlaylistSection(cfg);
+        controllers[cfg.key] = setupPlaylistSection({
+          ...cfg,
+          onLatestVideo(videoId) {
+            setPlayerOverlay(cfg.key, videoId);
+          },
+          onFallback(fallbackIds) {
+            const id = Array.isArray(fallbackIds) && fallbackIds.length > 0 ? fallbackIds[0] : null;
+            setPlayerOverlay(cfg.key, id);
+          }
+        });
       });
 
       const switcher = document.querySelector(".video-switcher");
