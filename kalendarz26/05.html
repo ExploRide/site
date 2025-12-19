@@ -12,24 +12,88 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #000;
+      background: radial-gradient(circle at top, #1a1a1a, #000);
       color: #fff;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      text-align: center;
       padding: 24px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 180px;
+      margin: 0 auto 32px;
+      display: block;
     }
 
     .msg {
       font-size: 22px;
       font-weight: 500;
+      margin-bottom: 36px;
       opacity: 0.9;
+    }
+
+    .fb-logo {
+      width: 48px;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 22px;
+      background: #1877F2;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(24,119,242,.45);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 5px 15px rgba(24,119,242,.45);
     }
   </style>
 </head>
 <body>
 
-  <div class="msg">
-    Zdjęcia pojawią się wkrótce ;)
+  <div class="wrap">
+
+    <!-- Logo ExploRide -->
+    <img
+      src="https://exploride.pl/logo.png"
+      alt="ExploRide"
+      class="logo"
+    >
+
+    <!-- Komunikat -->
+    <div class="msg">
+      Zdjęcia pojawią się wkrótce ;)
+    </div>
+
+    <!-- Facebook -->
+    <img
+      src="https://www.svgrepo.com/show/475670/pinterest-color.svg"
+      alt="Facebook"
+      class="fb-logo"
+    >
+
+    <a
+      class="btn"
+      href="https://www.facebook.com/ExploRideURBEX"
+      target="_blank"
+      rel="noopener"
+    >
+      Odwiedź naszą stronę na Facebooku
+    </a>
+
   </div>
 
 </body>
