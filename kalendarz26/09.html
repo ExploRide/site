@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Otwieranie Facebook…</title>
+
+  <style>
+    body{
+      margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:#000; color:#fff; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      padding:24px; text-align:center;
+    }
+    .msg{opacity:.8; font-size:16px; line-height:1.4; max-width:420px;}
+  </style>
+
+  <script>
+    const fbWeb = "https://www.facebook.com/ExploRideURBEX/posts/pfbid0qbrH1FZf6w7EXLU8BQAT5aUNWUU2Lx9HHBU5PSigRDGf88zckH1DqvKwS9f5KXBEl";
+    const fbApp = "fb://facewebmodal/f?href=" + encodeURIComponent(fbWeb);
+
+    // Fallback: jeśli apka się nie otworzy, przejdź do web posta
+    const fallbackTimer = setTimeout(() => {
+      window.location.replace(fbWeb);
+    }, 1200);
+
+    // Próba odpalenia apki
+    window.location.href = fbApp;
+
+    // Jeśli user jednak opuści stronę (bo apka się otworzyła), timer i tak przestanie mieć znaczenie
+    window.addEventListener("pagehide", () => clearTimeout(fallbackTimer));
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) clearTimeout(fallbackTimer);
+    });
+  </script>
+</head>
+<body>
+  <div class="msg">
+    Otwieram post w aplikacji Facebook…<br>
+    Jeśli nic się nie stanie, za chwilę otworzę wersję w przeglądarce.
+  </div>
+</body>
+</html>
