@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wkrótce</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1a1a1a, #000);
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .wrap {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 16px 24px 32px; /* 👈 mniejszy margines u góry */
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 170px;
+      margin: 0 auto 24px;
+      display: block;
+    }
+
+    .msg {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 28px;
+      opacity: 0.9;
+    }
+
+    .fb-logo {
+      width: 42px;
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 22px;
+      background: #1877F2;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(24,119,242,.45);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 5px 15px rgba(24,119,242,.45);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <!-- Logo ExploRide -->
+    <img
+      src="https://exploride.pl/logo.png"
+      alt="ExploRide"
+      class="logo"
+    >
+
+    <!-- Komunikat -->
+    <div class="msg">
+      Zdjęcia pojawią się wkrótce ;)
+    </div>
+
+    <!-- Facebook -->
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg"
+      alt="Facebook"
+      class="fb-logo"
+    >
+
+    <a
+      class="btn"
+      href="https://www.facebook.com/ExploRideURBEX"
+      target="_blank"
+      rel="noopener"
+    >
+      Odwiedź naszą stronę na Facebooku
+    </a>
+
+  </div>
+
+</body>
+</html>
