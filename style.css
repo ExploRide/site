@@ -714,15 +714,42 @@
       bottom: var(--switcher-padding-y);
       left: var(--switcher-padding-x);
       width: calc((100% - (var(--switcher-padding-x) * 2) - var(--switcher-gap)) / 2);
-      border-radius: 999px;
+      border-radius: 999px 0 0 999px;
       background: linear-gradient(135deg, #e50914, #ff3b6a);
       box-shadow: 0 12px 26px rgba(229, 9, 20, 0.45);
       pointer-events: none;
       transform: translateX(0);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .video-switcher__highlight::after,
+    .video-switcher__highlight::before {
+      --switcher-arrow-width: 30px;
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: var(--switcher-arrow-width);
+    }
+    .video-switcher__highlight::after {
+      right: calc(var(--switcher-arrow-width) * -1 + 1px);
+      background: #ff3b6a;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+    .video-switcher__highlight::before {
+      display: none;
+      left: calc(var(--switcher-arrow-width) * -1 + 1px);
+      background: #e50914;
+      clip-path: polygon(100% 0, 0 50%, 100% 100%);
+    }
     .video-switcher.is-travel .video-switcher__highlight {
+      border-radius: 0 999px 999px 0;
       transform: translateX(calc(100% + var(--switcher-gap)));
+    }
+    .video-switcher.is-travel .video-switcher__highlight::after {
+      display: none;
+    }
+    .video-switcher.is-travel .video-switcher__highlight::before {
+      display: block;
     }
     @media (prefers-reduced-motion: reduce) {
       .video-switcher__highlight {
