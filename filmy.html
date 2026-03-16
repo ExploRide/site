@@ -529,7 +529,11 @@
 
       toggleButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-          const target = btn.dataset.videoTarget === "travel" ? "travel" : "urbex";
+          const requestedTarget = btn.dataset.videoTarget === "travel" ? "travel" : "urbex";
+          const activeTarget = switcher.classList.contains("is-travel") ? "travel" : "urbex";
+          const target = requestedTarget === activeTarget
+            ? (activeTarget === "travel" ? "urbex" : "travel")
+            : requestedTarget;
           showSection(target, true);
         });
       });
