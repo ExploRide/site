@@ -240,6 +240,50 @@
       text-transform: uppercase;
       text-align: center;
     }
+
+    .site-title-socials {
+      margin: -6px auto clamp(18px, 4vw, 30px);
+      padding: 0 16px;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(8px, 1.8vw, 14px);
+      overflow-x: auto;
+    }
+
+    .site-title-socials__button {
+      --brand-color: #2d2d2d;
+      --brand-accent: #1c1c1c;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: clamp(84px, 12vw, 108px);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 45%),
+        linear-gradient(135deg, var(--brand-color), var(--brand-accent));
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
+      color: #fff;
+      font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
+      font-size: clamp(0.88rem, 2.3vw, 1rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .site-title-socials__button:hover,
+    .site-title-socials__button:focus-visible {
+      transform: translateY(-2px);
+      border-color: #e50914;
+      box-shadow: 0 10px 22px rgba(229, 9, 20, 0.24);
+      outline: none;
+    }
+
     .nav-toggle__bars {
       display: inline-flex;
       flex-direction: column;
