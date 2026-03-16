@@ -242,8 +242,8 @@
     }
 
     .site-title-socials {
-      margin: -6px auto clamp(18px, 4vw, 30px);
-      padding: 0 16px;
+      margin: 0 auto clamp(18px, 4vw, 30px);
+      padding: 6px 16px 0;
       display: flex;
       flex-wrap: nowrap;
       justify-content: center;
