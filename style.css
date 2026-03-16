@@ -255,18 +255,17 @@
     .site-title-socials__button {
       --brand-color: #2d2d2d;
       --brand-accent: #1c1c1c;
+      --brand-text: #2d2d2d;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-width: clamp(84px, 12vw, 108px);
       padding: 8px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 45%),
-        linear-gradient(135deg, var(--brand-color), var(--brand-accent));
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
-      color: #fff;
+      border: 1px solid rgba(18, 18, 18, 0.2);
+      background: linear-gradient(135deg, #eef2f6 0%, #9aa3ad 100%);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+      color: var(--brand-text);
       font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
       font-size: clamp(0.88rem, 2.3vw, 1rem);
       letter-spacing: 0.06em;
@@ -1603,22 +1602,26 @@
     .links-button--yt {
       --brand-color: #ff0000;
       --brand-accent: #cc0000;
+      --brand-text: #c00000;
     }
 
     .links-button--ig,
     .links-button--ig-channel {
       --brand-color: #f58529;
       --brand-accent: #dd2a7b;
+      --brand-text: #cc6f1d;
     }
 
     .links-button--fb {
       --brand-color: #1877f2;
       --brand-accent: #0f5ad0;
+      --brand-text: #1559be;
     }
 
     .links-button--tt {
       --brand-color: #000000;
       --brand-accent: #25f4ee;
+      --brand-text: #222;
     }
 
     .links-button--pinterest {
