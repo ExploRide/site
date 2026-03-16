@@ -708,6 +708,7 @@
       -webkit-backdrop-filter: blur(6px);
     }
     .video-switcher__highlight {
+      --switcher-triangle-width: 36px;
       position: absolute;
       z-index: 0;
       top: var(--switcher-padding-y);
@@ -727,16 +728,17 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      width: 18px;
-      background: inherit;
+      width: var(--switcher-triangle-width);
     }
     .video-switcher__highlight::after {
-      right: -18px;
+      right: calc(-1 * var(--switcher-triangle-width));
+      background: linear-gradient(135deg, #ff2f5f, #ff4d7d);
       clip-path: polygon(0 0, 100% 50%, 0 100%);
     }
     .video-switcher__highlight::before {
       display: none;
-      left: -18px;
+      left: calc(-1 * var(--switcher-triangle-width));
+      background: linear-gradient(135deg, #d80612, #f01f43);
       clip-path: polygon(100% 0, 0 50%, 100% 100%);
     }
     .video-switcher.is-travel .video-switcher__highlight {
