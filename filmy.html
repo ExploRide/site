@@ -271,6 +271,45 @@
       return `${day}.${m}.${y}`;
     }
 
+
+    async function fetchPublicVideoDetails(videoIds) {
+      const ids = Array.from(new Set((videoIds || []).filter(Boolean)));
+      const map = new Map();
+      if (ids.length === 0) return map;
+
+      const base = "https://www.googleapis.com/youtube/v3/videos";
+      for (let i = 0; i < ids.length; i += 50) {
+        const chunk = ids.slice(i, i + 50);
+        const url = new URL(base);
+        url.searchParams.set("part", "snippet,status,contentDetails");
+        url.searchParams.set("id", chunk.join(","));
+        url.searchParams.set("key", API_KEY);
+
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const items = Array.isArray(data.items) ? data.items : [];
+
+        items.forEach(item => {
+          const id = item?.id;
+          const privacyStatus = item?.status?.privacyStatus;
+          const embeddable = item?.status?.embeddable;
+          if (!id) return;
+          if (privacyStatus !== "public") return;
+          if (embeddable === false) return;
+
+          map.set(id, {
+            id,
+            title: item?.snippet?.title || "Bez tytułu",
+            publishedAtISO: toISOorNull(item?.snippet?.publishedAt),
+            thumb: item?.snippet?.thumbnails?.medium?.url || item?.snippet?.thumbnails?.high?.url || ""
+          });
+        });
+      }
+
+      return map;
+    }
+
     async function fetchAllPlaylistItems(playlistId) {
       const base = "https://www.googleapis.com/youtube/v3/playlistItems";
       let pageToken = "";
@@ -290,18 +329,16 @@
         pageToken = data.nextPageToken || "";
       } while (pageToken);
 
-      return all.map(item => {
-        const vid = item.snippet?.resourceId?.videoId || item.contentDetails?.videoId || "";
-        const iso = toISOorNull(item.contentDetails?.videoPublishedAt || item.snippet?.publishedAt);
-        return {
-          id: vid,
-          title: item.snippet?.title || "Bez tytułu",
-          publishedAtISO: iso,
-          thumb: item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.high?.url || ""
-        };
-      });
-    }
+      const playlistVideoIds = all
+        .map(item => item.snippet?.resourceId?.videoId || item.contentDetails?.videoId || "")
+        .filter(Boolean);
 
+      const publicVideos = await fetchPublicVideoDetails(playlistVideoIds);
+
+      return playlistVideoIds
+        .map(id => publicVideos.get(id))
+        .filter(Boolean);
+    }
     function setupPlaylistSection(config) {
       const loader = document.getElementById(config.loaderId);
       const fallback = document.getElementById(config.fallbackId);
