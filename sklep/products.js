@@ -41,7 +41,7 @@ window.SHOP_PRODUCTS = [
     slug: 't-shirt-damski-classic',
     name: 'T-shirt klasyczny ExploRide damski',
     price: 45,
-    summary: 'Dopasowana koszulka z logotypem – idealna na wyjazdy i eksploracje.',
+  summary: 'Wygodny krój, nadruk ExploRide i dostępne rozmiary S–XXL.',
     description: 'Dopasowany krój, lekka bawełna i logo ExploRide – wygoda w kobiecym wydaniu.',
     longDescription: [
       'Nadruk: DTF',
@@ -88,7 +88,7 @@ window.SHOP_PRODUCTS = [
     image: '',
     imageAlt: 'Okładka kalendarza ExploRide Urbex 2026',
     imagePlaceholder: 'Okładka kalendarza',
-    imageCaption: 'Mocny urbexowy klimat na każdy miesiąc nadchodzącego roku.',
+    imageCaption: 'Mocny urbexowy klimat na każdy miesiąc.',
     note: 'Wysyłka po potwierdzeniu dostępności – informacja w podsumowaniu zamówienia.',
   },
 ];
