@@ -25,9 +25,10 @@ window.SHOP_PRODUCTS = [
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     images: [
+           'https://exploride.pl/sklep/photos/thirtclassicmodel.png',
       'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
-    'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.pdf',
-     'https://exploride.pl/sklep/photos/thirtclassicmodel.png'
+    'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.png',
+
     ],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
@@ -60,9 +61,10 @@ window.SHOP_PRODUCTS = [
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     images: [
+       'https://exploride.pl/sklep/photos/thirtclassicmodelbaba.png',
        'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
-    'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.pdf',
-     'https://exploride.pl/sklep/photos/thirtclassicmodelbaba.png'
+    'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.png',
+    
     ],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
