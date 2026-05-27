@@ -27,7 +27,7 @@ window.SHOP_PRODUCTS = [
     images: [
            'https://exploride.pl/sklep/photos/thirtclassicmodel.png',
       'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
-    'https://exploride.pl/sklep/photos/thirtclassic3.jpg',
+    'https://exploride.pl/sklep/photos/thirtclassic3.jpg'
 
     ],
     image: 'https://exploride.pl/sklep/photos/thirtclassicmodel.png',
