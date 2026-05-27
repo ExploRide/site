@@ -67,6 +67,42 @@
     return { totalItems, totalPrice };
   };
 
+
+  const ORDER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz4Rm1C4vFTRam9ESDoKe2w-RbyTTXGFQq-Go8MQQ6VCPJYz4kQF-Ti6HfFEAErgabu/exec';
+
+  const buildOrderItems = () => cart.map((item) => {
+    const product = PRODUCTS[item.id];
+    if (!product) return null;
+    const quantity = Math.max(1, Number(item.quantity) || 1);
+    const price = product.price;
+    return {
+      name: product.name,
+      variant: item.size || '',
+      quantity,
+      price,
+      sum: Number((price * quantity).toFixed(2))
+    };
+  }).filter(Boolean);
+
+  const submitOrderRequest = async (payload) => {
+    try {
+      const response = await fetch(ORDER_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      return response.ok;
+    } catch (error) {
+      await fetch(ORDER_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      return true;
+    }
+  };
+
   const updateSummaryUI = () => {
     const { totalItems, totalPrice } = getCartSummary();
     document.querySelectorAll('[data-cart-count]').forEach((node) => {
@@ -310,9 +346,41 @@
 
     const continueBtn = modal.querySelector('[data-cart-to-payment]');
     if (continueBtn) {
-      continueBtn.addEventListener('click', () => {
-        modal.dataset.step = 'payment';
-        updateStepUI();
+      continueBtn.addEventListener('click', async () => {
+        const form = modal.querySelector('[data-cart-details-form]');
+        const status = modal.querySelector('[data-cart-form-status]');
+        if (!form) return;
+
+        if (!cart.length) {
+          if (status) status.textContent = 'Koszyk jest pusty.';
+          return;
+        }
+
+        if (!form.reportValidity()) return;
+
+        const formData = new FormData(form);
+        const payload = {
+          customerName: String(formData.get('customerName') || '').trim(),
+          customerEmail: String(formData.get('customerEmail') || '').trim(),
+          customerPhone: String(formData.get('customerPhone') || '').trim(),
+          message: String(formData.get('message') || '').trim(),
+          items: buildOrderItems(),
+          total: Number(calculateTotal(cart).toFixed(2))
+        };
+
+        continueBtn.disabled = true;
+        if (status) status.textContent = 'Wysyłanie zapytania…';
+
+        try {
+          const sent = await submitOrderRequest(payload);
+          if (!sent) throw new Error('Nie udało się wysłać zapytania.');
+          if (status) status.textContent = 'Zapytanie wysłane. Odezwę się mailowo w celu finalizacji.';
+          form.reset();
+        } catch (error) {
+          if (status) status.textContent = 'Nie udało się wysłać zapytania. Spróbuj ponownie za chwilę.';
+        } finally {
+          continueBtn.disabled = false;
+        }
       });
     }
 
