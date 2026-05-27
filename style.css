@@ -3140,12 +3140,40 @@
   line-height: 1.5;
 }
 
-.form-embed iframe {
+.cart-details-form {
+  display: grid;
+  gap: 12px;
+}
+
+.cart-details-form__field {
+  display: grid;
+  gap: 6px;
+}
+
+.cart-details-form__field span {
+  color: #f3f5f7;
+  font-weight: 600;
+}
+
+.cart-details-form__field input,
+.cart-details-form__field textarea {
   width: 100%;
-  border: none;
-  min-height: 520px;
-  border-radius: 14px;
-  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  color: #fff;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.cart-details-form__field textarea {
+  resize: vertical;
+}
+
+.cart-details-form__status {
+  margin: 0;
+  min-height: 1.4em;
+  color: #cdd2d6;
 }
 
 .payment-placeholder {

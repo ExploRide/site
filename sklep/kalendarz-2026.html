@@ -139,10 +139,28 @@
             <button class="button button--ghost" type="button" data-step-back="cart">← Wróć</button>
           </div>
           <div class="form-embed">
-            <iframe title="Formularz zamówienia" src="https://docs.google.com/forms/d/e/1FAIpQLSchrDf1w9wuA-92sdK02fenQZ1C4OMrmEQKWEIKcN4Rjha4Hg/viewform?embedded=true" allowfullscreen loading="lazy"></iframe>
+            <form class="cart-details-form" data-cart-details-form>
+              <label class="cart-details-form__field">
+                <span>Imię i nazwisko *</span>
+                <input type="text" name="customerName" required autocomplete="name">
+              </label>
+              <label class="cart-details-form__field">
+                <span>Email *</span>
+                <input type="email" name="customerEmail" required autocomplete="email">
+              </label>
+              <label class="cart-details-form__field">
+                <span>Telefon</span>
+                <input type="tel" name="customerPhone" autocomplete="tel">
+              </label>
+              <label class="cart-details-form__field">
+                <span>Wiadomość</span>
+                <textarea name="message" rows="4"></textarea>
+              </label>
+              <p class="cart-details-form__status" data-cart-form-status aria-live="polite"></p>
+            </form>
           </div>
           <div class="shop-modal__actions">
-            <button class="button button--primary" type="button" data-cart-to-payment disabled aria-disabled="true">Przejdź do płatności</button>
+            <button class="button button--primary" type="button" data-cart-to-payment>Wyślij zapytanie</button>
           </div>
           <p class="shop-modal__notice">Zamówienie zrealizujesz wypełniając i wysyłając powyższy formularz, a następnie przez korespondencję email. Profesjonalne metody zamówienia i płatności pojawią się w przyszłości.</p>
         </section>
