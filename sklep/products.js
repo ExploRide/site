@@ -26,10 +26,8 @@ window.SHOP_PRODUCTS = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     images: [
       'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
-      '../Photos/banner.jpg',
-      '../Photos/onas2.jpg',
-      '../backgrounds/background1.jpg',
-      '../backgrounds/background4.jpg',
+    'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.pdf',
+     'https://exploride.pl/sklep/photos/thirtclassicmodel.png'
     ],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
@@ -62,11 +60,9 @@ window.SHOP_PRODUCTS = [
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     images: [
-      'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
-      '../Photos/og-image-1200x630.jpg',
-      '../Photos/onas.jpg',
-      '../backgrounds/background2.jpg',
-      '../backgrounds/background6.jpg',
+       'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
+    'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.pdf',
+     'https://exploride.pl/sklep/photos/thirtclassicmodelbaba.png'
     ],
     image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
@@ -79,9 +75,9 @@ window.SHOP_PRODUCTS = [
     slug: 'kalendarz-2026',
     name: 'Kalendarz ExploRide Urbex 2026',
     price: 35,
-    summary: '12 kadrów z wypraw urbexowych na każdy miesiąc kolejnego sezonu.',
+    summary: '12 kadrów z wypraw urbexowych na każdy miesiąc.',
     description:
-      'Kalendarz ścienny z fotografiami z eksploracji. Każdy miesiąc to inny klimat i nowa historia.',
+      'Kalendarz ścienny A4, ze spiralą na środku z autorskimi zdjęciami z opuszczonych. Umieściliśmy tam też opisy miejsc widocznych na zdjęciach oraz nietypowe święta i wydarzenia, które nawiązują do urbexu, historii i zabytków.',
     sizes: [],
     images: [
   'https://exploride.pl/sklep/photos/kalendarz2026-1.jpg',
