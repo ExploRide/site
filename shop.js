@@ -9,7 +9,12 @@
   const storageKey = 'explorideShopCart';
   const currency = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
 
-  const formatPrice = (value) => currency.format(Number(value) || 0);
+  const formatPrice = (value) => {
+    if (typeof value === 'string' && Number.isNaN(Number(value))) {
+      return value;
+    }
+    return currency.format(Number(value) || 0);
+  };
 
   const normalizeImages = (product) => {
     const images = Array.isArray(product.images) ? product.images : [];
