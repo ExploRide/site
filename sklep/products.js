@@ -72,26 +72,7 @@ window.SHOP_PRODUCTS = [
     imageCaption: 'Przykładowa wizualizacja koszulki.',
     note: 'Dostępność i terminy wysyłki zostaną potwierdzone po złożeniu zamówienia przez formularz.',
   },
-  {
-    id: 'cap-exploride',
-    slug: 'czapka-z-daszkiem-exploride',
-    name: 'Czapka z daszkiem ExploRide',
-    price: '??',
-    summary: 'Produkt dostępny wkrótce',
-    description: 'Produkt dostępny wkrótce. Placeholder opisu czapki z daszkiem ExploRide.',
-    longDescription: [
-      'Produkt dostępny wkrótce.',
-      'Placeholder specyfikacji produktu.',
-      'Placeholder informacji o materiałach i rozmiarach.',
-    ],
-    sizes: [],
-    images: [],
-    image: '',
-    imageAlt: 'Produkt dostępny wkrótce',
-    imagePlaceholder: 'WKRÓTCE',
-    imageCaption: 'Produkt dostępny wkrótce.',
-    note: 'Produkt dostępny wkrótce.',
-  },
+ 
   {
     id: 'calendar-2026',
     slug: 'kalendarz-2026',
@@ -110,6 +91,27 @@ window.SHOP_PRODUCTS = [
     imagePlaceholder: 'Okładka kalendarza',
     imageCaption: 'Mocny urbexowy klimat na każdy miesiąc.',
     note: 'Wysyłka po potwierdzeniu dostępności – informacja w podsumowaniu zamówienia.',
+  },
+
+   {
+    id: 'cap-exploride',
+    slug: 'czapka-z-daszkiem-exploride',
+    name: 'Czapka z daszkiem ExploRide',
+    price: '??',
+    summary: 'Produkt dostępny wkrótce',
+    description: 'Produkt dostępny wkrótce. Placeholder opisu czapki z daszkiem ExploRide.',
+    longDescription: [
+      'Produkt dostępny wkrótce.',
+      'Placeholder specyfikacji produktu.',
+      'Placeholder informacji o materiałach i rozmiarach.',
+    ],
+    sizes: [],
+    images: [],
+    image: '',
+    imageAlt: 'Produkt dostępny wkrótce',
+    imagePlaceholder: 'WKRÓTCE',
+    imageCaption: 'Produkt dostępny wkrótce.',
+    note: 'Produkt dostępny wkrótce.',
   },
 ];
 
