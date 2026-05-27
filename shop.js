@@ -103,6 +103,15 @@
     }
   };
 
+  const parseDisplayedCurrencyValue = (value) => {
+    const normalized = String(value || '')
+      .replace(/\s/g, '')
+      .replace(/[^\d,.-]/g, '')
+      .replace(',', '.');
+    const parsed = Number(normalized);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
   const updateSummaryUI = () => {
     const { totalItems, totalPrice } = getCartSummary();
     document.querySelectorAll('[data-cart-count]').forEach((node) => {
@@ -358,14 +367,28 @@
 
         if (!form.reportValidity()) return;
 
+        const items = buildOrderItems();
+        if (!items.length) {
+          if (status) status.textContent = 'Koszyk jest pusty.';
+          return;
+        }
+
+        const { totalPrice } = getCartSummary();
+        const totalFromState = Number(totalPrice.toFixed(2));
+        const footerTotalNode = modal.querySelector('[data-cart-total-footer]');
+        const headerTotalNode = modal.querySelector('[data-cart-total]');
+        const totalFromUI = Number(
+          parseDisplayedCurrencyValue(footerTotalNode?.textContent || headerTotalNode?.textContent).toFixed(2)
+        );
+
         const formData = new FormData(form);
         const payload = {
           customerName: String(formData.get('customerName') || '').trim(),
           customerEmail: String(formData.get('customerEmail') || '').trim(),
           customerPhone: String(formData.get('customerPhone') || '').trim(),
           message: String(formData.get('message') || '').trim(),
-          items: buildOrderItems(),
-          total: Number(calculateTotal(cart).toFixed(2))
+          items,
+          total: totalFromState > 0 ? totalFromState : totalFromUI
         };
 
         continueBtn.disabled = true;
