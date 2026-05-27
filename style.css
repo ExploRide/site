@@ -2683,6 +2683,25 @@
   font-size: 0.9rem;
   text-align: center;
   padding: 10px;
+  overflow: hidden;
+}
+
+.shop-item__image-link {
+  display: block;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.shop-item__image-link:hover,
+.shop-item__image-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(255, 122, 122, 0.22);
+}
+
+.shop-item__image-link:hover .shop-item__image img,
+.shop-item__image-link:focus-visible .shop-item__image img {
+  transform: scale(1.045);
 }
 
 .shop-item__image img {
@@ -2691,6 +2710,7 @@
   object-fit: contain;
   border-radius: inherit;
   display: block;
+  transition: transform 0.28s ease;
 }
 
 .shop-item__body {
