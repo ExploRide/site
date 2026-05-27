@@ -3,7 +3,7 @@ window.SHOP_PRODUCTS = [
     id: 'tshirt-men',
     slug: 't-shirt-meski-classic',
     name: 'T-shirt klasyczny ExploRide męski',
-    price: 89,
+    price: 45,
     summary: 'Wygodny krój, nadruk ExploRide i dostępne rozmiary S–XXL.',
     description:
       'Wygodny krój, logo na froncie oraz z tyłu i kod QR na prawym rękawie',
@@ -41,7 +41,7 @@ window.SHOP_PRODUCTS = [
     id: 'tshirt-women',
     slug: 't-shirt-damski-classic',
     name: 'T-shirt klasyczny ExploRide damski',
-    price: 89,
+    price: 45,
     summary: 'Dopasowana koszulka z logotypem – idealna na wyjazdy i eksploracje.',
     description: 'Dopasowany krój, lekka bawełna i logo ExploRide – wygoda w kobiecym wydaniu.',
     longDescription: [
@@ -78,16 +78,14 @@ window.SHOP_PRODUCTS = [
     id: 'calendar-2026',
     slug: 'kalendarz-2026',
     name: 'Kalendarz ExploRide Urbex 2026',
-    price: 69,
+    price: 35,
     summary: '12 kadrów z wypraw urbexowych na każdy miesiąc kolejnego sezonu.',
     description:
       'Kalendarz ścienny z fotografiami z eksploracji. Każdy miesiąc to inny klimat i nowa historia.',
     sizes: [],
     images: [
-      '../Photos/og-image-1200x630.jpg',
-      '../Photos/banner.jpg',
-      '../Photos/onas.jpg',
-      '../backgrounds/background3.jpg',
+  'https://exploride.pl/sklep/photos/kalendarz2026-1.jpg',
+  'https://exploride.pl/sklep/photos/kalendarz2026-2.jpg',
     ],
     image: '',
     imageAlt: 'Okładka kalendarza ExploRide Urbex 2026',
