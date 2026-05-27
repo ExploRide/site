@@ -342,6 +342,11 @@
       const item = document.createElement('article');
       item.className = 'shop-item';
 
+      const imageLink = document.createElement('a');
+      imageLink.className = 'shop-item__image-link';
+      imageLink.href = buildProductUrl(product);
+      imageLink.setAttribute('aria-label', `Przejdź do produktu: ${product.name}`);
+
       const image = document.createElement('div');
       image.className = 'shop-item__image';
       const primaryImage = getPrimaryImage(product);
@@ -354,6 +359,7 @@
       } else {
         image.textContent = product.imagePlaceholder || 'Zdjęcie produktu';
       }
+      imageLink.appendChild(image);
 
       const body = document.createElement('div');
       body.className = 'shop-item__body';
@@ -375,7 +381,7 @@
       body.appendChild(meta);
       body.appendChild(price);
 
-      item.appendChild(image);
+      item.appendChild(imageLink);
       item.appendChild(body);
       container.appendChild(item);
     });
