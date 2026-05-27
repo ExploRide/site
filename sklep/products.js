@@ -30,7 +30,7 @@ window.SHOP_PRODUCTS = [
     'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.png',
 
     ],
-    image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
+    image: 'https://exploride.pl/sklep/photos/thirtclassicmodel.png',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
     imageCaption: '',
@@ -66,7 +66,7 @@ window.SHOP_PRODUCTS = [
     'https://exploride.pl/sklep/photos/KOSZULKA CZARNA EXPLORIDE NEW.png',
     
     ],
-    image: 'https://exploride.pl/sklep/photos/tshirt-exploride-classic.jpg',
+    image:   'https://exploride.pl/sklep/photos/thirtclassicmodelbaba.png',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
     imageCaption: 'Przykładowa wizualizacja koszulki – finalne zdjęcia pojawią się po dostawie.',
