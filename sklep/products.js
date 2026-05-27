@@ -33,7 +33,7 @@ window.SHOP_PRODUCTS = [
     image: 'https://exploride.pl/sklep/photos/thirtclassicmodel.png',
     imageAlt: 'Wizualizacja koszulki męskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
-    imageCaption: '',
+    imageCaption: 'Przykładowa wizualizacja koszulki.',
     note: 'Dostępność i terminy wysyłki zostaną potwierdzone po złożeniu zamówienia przez formularz.',
   },
   {
@@ -69,7 +69,7 @@ window.SHOP_PRODUCTS = [
     image:   'https://exploride.pl/sklep/photos/thirtclassicmodelbaba.png',
     imageAlt: 'Wizualizacja koszulki damskiej ExploRide',
     imagePlaceholder: 'Placeholder zdjęcia',
-    imageCaption: 'Przykładowa wizualizacja koszulki – finalne zdjęcia pojawią się po dostawie.',
+    imageCaption: 'Przykładowa wizualizacja koszulki.',
     note: 'Dostępność i terminy wysyłki zostaną potwierdzone po złożeniu zamówienia przez formularz.',
   },
   {
