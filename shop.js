@@ -572,6 +572,9 @@
       const body = document.createElement('div');
       body.className = 'shop-item__body';
 
+      const content = document.createElement('div');
+      content.className = 'shop-item__content';
+
       const title = document.createElement('a');
       title.className = 'shop-item__title';
       title.href = buildProductUrl(product);
@@ -585,9 +588,9 @@
       price.className = 'shop-item__price';
       price.textContent = formatPrice(product.price);
 
-      body.appendChild(title);
-      body.appendChild(meta);
-      body.appendChild(price);
+      content.appendChild(title);
+      content.appendChild(meta);
+      content.appendChild(price);
       const quickForm = document.createElement('form');
       quickForm.className = 'product-form product-form--compact';
       quickForm.dataset.addToCart = '';
@@ -634,6 +637,7 @@
       feedback.hidden = true;
       feedback.textContent = 'Dodano do koszyka';
       quickForm.appendChild(feedback);
+      body.appendChild(content);
       body.appendChild(quickForm);
 
       item.appendChild(imageLink);
