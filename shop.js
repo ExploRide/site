@@ -85,22 +85,14 @@
   }).filter(Boolean);
 
   const submitOrderRequest = async (payload) => {
-    try {
-      const response = await fetch(ORDER_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      return response.ok;
-    } catch (error) {
-      await fetch(ORDER_ENDPOINT, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
-      return true;
-    }
+    await fetch(ORDER_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+
+    return true;
   };
 
   const parseDisplayedCurrencyValue = (value) => {
