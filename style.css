@@ -481,6 +481,100 @@
     body.has-open-nav {
       overflow: hidden;
     }
+
+    .mobile-title-nav {
+      display: none;
+    }
+
+    @media (max-width: 767px) {
+      .site-title-socials {
+        justify-content: center;
+        padding: 6px 12px 0;
+        overflow: visible;
+      }
+
+      .site-title-socials__button {
+        display: none;
+      }
+
+      .mobile-title-nav {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        flex-wrap: nowrap;
+      }
+
+      .mobile-title-nav__link,
+      .mobile-title-nav__more-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(18, 18, 18, 0.2);
+        background: linear-gradient(135deg, #eef2f6 0%, #9aa3ad 100%);
+        color: #222;
+        font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
+        font-size: clamp(0.9rem, 3.4vw, 1rem);
+        letter-spacing: 0.04em;
+        line-height: 1;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .mobile-title-nav__link {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .mobile-title-nav__more {
+        position: relative;
+      }
+
+      .mobile-title-nav__more > summary {
+        list-style: none;
+      }
+
+      .mobile-title-nav__more > summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .mobile-title-nav__more-menu {
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 160px;
+        padding: 8px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(12, 12, 12, 0.95);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+        z-index: 8;
+      }
+
+      .mobile-title-nav__more-link {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 40px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        color: #f4f4f4;
+        text-decoration: none;
+        font-family: 'BebasNeue', 'Base02', Arial, Helvetica, sans-serif;
+        letter-spacing: 0.05em;
+      }
+    }
     @media (max-width: 767px) {
       :root {
         --sidebar-width: min(240px, 60vw);

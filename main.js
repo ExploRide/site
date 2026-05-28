@@ -184,8 +184,74 @@
     }
   }
 
+
+  function initMobileTitleNav() {
+    const header = document.querySelector('header');
+    const titleSocials = document.querySelector('.site-title-socials');
+    if (!header || !titleSocials) {
+      return;
+    }
+
+    const sourceNav = header.querySelector('.top-nav');
+    if (!sourceNav) {
+      return;
+    }
+
+    const existing = titleSocials.querySelector('.mobile-title-nav');
+    if (existing) {
+      return;
+    }
+
+    const navLinks = Array.from(sourceNav.querySelectorAll('.nav-link[href]:not(.nav-link--downloads)'));
+    if (!navLinks.length) {
+      return;
+    }
+
+    const primaryCount = 4;
+    const primaryLinks = navLinks.slice(0, primaryCount);
+    const overflowLinks = navLinks.slice(primaryCount);
+
+    const mobileNav = document.createElement('div');
+    mobileNav.className = 'mobile-title-nav';
+    mobileNav.setAttribute('aria-label', 'Skróty nawigacji strony');
+
+    primaryLinks.forEach((link) => {
+      const clone = link.cloneNode(true);
+      clone.classList.remove('nav-link', 'nav-link--home', 'nav-link--about', 'nav-link--gallery', 'nav-link--links', 'nav-link--support', 'nav-link--contact', 'nav-link--downloads');
+      clone.classList.add('mobile-title-nav__link');
+      clone.removeAttribute('role');
+      clone.removeAttribute('style');
+      mobileNav.appendChild(clone);
+    });
+
+    if (overflowLinks.length) {
+      const details = document.createElement('details');
+      details.className = 'mobile-title-nav__more';
+
+      const summary = document.createElement('summary');
+      summary.className = 'mobile-title-nav__more-trigger';
+      summary.textContent = 'Więcej';
+      details.appendChild(summary);
+
+      const menu = document.createElement('div');
+      menu.className = 'mobile-title-nav__more-menu';
+
+      overflowLinks.forEach((link) => {
+        const clone = link.cloneNode(true);
+        clone.classList.remove('nav-link', 'nav-link--home', 'nav-link--about', 'nav-link--gallery', 'nav-link--links', 'nav-link--support', 'nav-link--contact', 'nav-link--downloads');
+        clone.classList.add('mobile-title-nav__more-link');
+        menu.appendChild(clone);
+      });
+
+      details.appendChild(menu);
+      mobileNav.appendChild(details);
+    }
+
+    titleSocials.appendChild(mobileNav);
+  }
   function init() {
     initNavToggle();
+    initMobileTitleNav();
 
     if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
