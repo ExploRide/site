@@ -185,6 +185,28 @@
   }
 
 
+  function initMobileHeaderTitle() {
+    const header = document.querySelector('header');
+    if (!header || header.querySelector('.mobile-header-title')) {
+      return;
+    }
+
+    const brand = header.querySelector('.brand');
+    const toggle = header.querySelector('.nav-toggle');
+    if (!brand || !toggle) {
+      return;
+    }
+
+    const titleLink = document.createElement('a');
+    titleLink.className = 'mobile-header-title';
+    titleLink.href = brand.getAttribute('href') || 'index.html';
+    titleLink.textContent = 'ExploRide.pl';
+    titleLink.setAttribute('aria-label', 'Strona główna ExploRide');
+
+    header.insertBefore(titleLink, toggle);
+  }
+
+
   function initMobileTitleNav() {
     const header = document.querySelector('header');
     const titleSocials = document.querySelector('.site-title-socials');
@@ -202,7 +224,7 @@
       return;
     }
 
-    const navLinks = Array.from(sourceNav.querySelectorAll('.nav-link[href]:not(.nav-link--downloads)'));
+    const navLinks = Array.from(sourceNav.querySelectorAll('.nav-link[href]:not(.nav-link--home):not(.nav-link--downloads)'));
     if (!navLinks.length) {
       return;
     }
@@ -250,6 +272,7 @@
     titleSocials.appendChild(mobileNav);
   }
   function init() {
+    initMobileHeaderTitle();
     initNavToggle();
     initMobileTitleNav();
 
