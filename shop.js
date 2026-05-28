@@ -335,6 +335,22 @@
     document.body.classList.remove('is-modal-open');
   };
 
+  const openSuccessModal = () => {
+    const modal = document.querySelector('[data-success-modal]');
+    if (!modal) return;
+    modal.removeAttribute('hidden');
+    modal.classList.add('is-visible');
+    document.body.classList.add('is-modal-open');
+  };
+
+  const closeSuccessModal = () => {
+    const modal = document.querySelector('[data-success-modal]');
+    if (!modal) return;
+    modal.classList.remove('is-visible');
+    modal.setAttribute('hidden', '');
+    document.body.classList.remove('is-modal-open');
+  };
+
   const updateStepUI = () => {
     const modal = document.querySelector('[data-cart-modal]');
     if (!modal) return;
@@ -377,6 +393,18 @@
         }
         const size = sizeSelect ? sizeSelect.value : undefined;
         addToCart({ id: productId, quantity, size });
+        if (form.hasAttribute('data-quick-add')) {
+          const feedback = form.querySelector('[data-add-feedback]');
+          if (feedback) {
+            feedback.hidden = false;
+            feedback.classList.add('is-visible');
+            window.setTimeout(() => {
+              feedback.classList.remove('is-visible');
+              feedback.hidden = true;
+            }, 1800);
+          }
+          return;
+        }
         openCartStep('cart');
       });
     });
@@ -466,8 +494,14 @@
           ]);
 
           if (!orderSaved || !emailSent) throw new Error('Nie udało się wysłać zapytania.');
-          if (status) status.textContent = 'Zapytanie wysłane. Odezwę się mailowo w celu finalizacji.';
+          if (status) status.textContent = '';
+          cart = [];
+          saveCart(cart);
+          renderCartList();
+          updateSummaryUI();
           form.reset();
+          closeCart();
+          openSuccessModal();
         } catch (error) {
           if (status) status.textContent = 'Nie udało się wysłać zapytania. Spróbuj ponownie za chwilę.';
         } finally {
@@ -484,6 +518,15 @@
         updateStepUI();
       });
     });
+
+    document.querySelectorAll('[data-close-success-modal]').forEach((btn) => {
+      btn.addEventListener('click', closeSuccessModal);
+    });
+    const successModal = document.querySelector('[data-success-modal]');
+    const successOverlay = successModal?.querySelector('.shop-modal__overlay');
+    if (successOverlay) {
+      successOverlay.addEventListener('click', closeSuccessModal);
+    }
   };
 
   const buildProductUrl = (product) => `./${product.slug}.html`;
@@ -545,6 +588,53 @@
       body.appendChild(title);
       body.appendChild(meta);
       body.appendChild(price);
+      const quickForm = document.createElement('form');
+      quickForm.className = 'product-form product-form--compact';
+      quickForm.dataset.addToCart = '';
+      quickForm.dataset.quickAdd = '';
+      quickForm.dataset.productId = product.id;
+
+      if (product.sizes && product.sizes.length) {
+        const sizeField = document.createElement('label');
+        sizeField.className = 'product-field';
+        sizeField.innerHTML = '<span>Rozmiar</span>';
+        const sizeSelect = document.createElement('select');
+        sizeSelect.name = 'size';
+        product.sizes.forEach((size) => {
+          const option = document.createElement('option');
+          option.value = size;
+          option.textContent = size;
+          sizeSelect.appendChild(option);
+        });
+        sizeField.appendChild(sizeSelect);
+        quickForm.appendChild(sizeField);
+      }
+
+      const quantityField = document.createElement('label');
+      quantityField.className = 'product-field';
+      quantityField.innerHTML = '<span>Ilość</span>';
+      const quantityInput = document.createElement('input');
+      quantityInput.type = 'number';
+      quantityInput.name = 'quantity';
+      quantityInput.min = '1';
+      quantityInput.max = '20';
+      quantityInput.value = '1';
+      quantityField.appendChild(quantityInput);
+      quickForm.appendChild(quantityField);
+
+      const addButton = document.createElement('button');
+      addButton.type = 'submit';
+      addButton.className = 'button button--primary';
+      addButton.textContent = 'Dodaj do koszyka';
+      quickForm.appendChild(addButton);
+
+      const feedback = document.createElement('p');
+      feedback.className = 'quick-add-feedback';
+      feedback.dataset.addFeedback = '';
+      feedback.hidden = true;
+      feedback.textContent = 'Dodano do koszyka';
+      quickForm.appendChild(feedback);
+      body.appendChild(quickForm);
 
       item.appendChild(imageLink);
       item.appendChild(body);
