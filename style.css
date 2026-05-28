@@ -2665,7 +2665,7 @@
   align-items: start;
   gap: 16px;
   background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 18px;
   padding: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
