@@ -153,8 +153,16 @@
                 <input type="tel" name="customerPhone" autocomplete="tel">
               </label>
               <label class="cart-details-form__field">
+                <span>Adres dostawy / kod paczkomatu *</span>
+                <textarea name="delivery_address" rows="3" required placeholder="Wpisz adres dostawy albo kod paczkomatu / punktu odbioru"></textarea>
+              </label>
+              <label class="cart-details-form__field">
                 <span>Wiadomość (opcjonalne)</span>
                 <textarea name="message" rows="4"></textarea>
+              </label>
+              <label class="cart-details-form__checkbox">
+                <input type="checkbox" name="gdprConsent" required>
+                <span>Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi zapytania i realizacji kontaktu zwrotnego. *</span>
               </label>
               <p class="cart-details-form__required-note">* - pola wymagane</p>
               <p class="cart-details-form__status" data-cart-form-status aria-live="polite"></p>

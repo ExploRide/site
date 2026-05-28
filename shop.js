@@ -133,7 +133,7 @@
     return true;
   };
 
-  const sendOrderEmail = async ({ customerName, customerEmail, customerPhone, items, total, message }) => {
+  const sendOrderEmail = async ({ customerName, customerEmail, customerPhone, deliveryAddress, items, total, message }) => {
     const emailjs = await loadEmailJs();
     if (!emailjs || typeof emailjs.send !== 'function') {
       throw new Error('EmailJS nie jest dostępny.');
@@ -146,6 +146,7 @@
         customer_name: customerName,
         customer_email: customerEmail,
         customer_phone: customerPhone,
+        delivery_address: deliveryAddress,
         items,
         total,
         message
@@ -443,9 +444,22 @@
         const status = modal.querySelector('[data-cart-form-status]');
         if (!form) return;
 
+        const gdprConsentField = form.elements.gdprConsent;
+        if (gdprConsentField && !gdprConsentField.dataset.validationBound) {
+          gdprConsentField.addEventListener('change', () => {
+            gdprConsentField.setCustomValidity(gdprConsentField.checked ? '' : 'Musisz zaakceptować zgodę RODO.');
+          });
+          gdprConsentField.dataset.validationBound = 'true';
+        }
+
         if (!cart.length) {
           if (status) status.textContent = 'Koszyk jest pusty.';
           return;
+        }
+
+        const gdprConsentForSubmit = form.elements.gdprConsent;
+        if (gdprConsentForSubmit && 'setCustomValidity' in gdprConsentForSubmit) {
+          gdprConsentForSubmit.setCustomValidity(gdprConsentForSubmit.checked ? '' : 'Musisz zaakceptować zgodę RODO.');
         }
 
         if (!form.reportValidity()) return;
@@ -469,6 +483,7 @@
           customerName: String(formData.get('customerName') || '').trim(),
           customerEmail: String(formData.get('customerEmail') || '').trim(),
           customerPhone: String(formData.get('customerPhone') || '').trim(),
+          delivery_address: String(formData.get('delivery_address') || '').trim(),
           message: String(formData.get('message') || '').trim(),
           items,
           total: totalFromState > 0 ? totalFromState : totalFromUI
@@ -487,6 +502,7 @@
               customerName: payload.customerName,
               customerEmail: payload.customerEmail,
               customerPhone: payload.customerPhone,
+              deliveryAddress: payload.delivery_address,
               items: itemsSummary,
               total: totalSummary,
               message: payload.message
