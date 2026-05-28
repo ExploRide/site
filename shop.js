@@ -452,6 +452,14 @@
           gdprConsentField.dataset.validationBound = 'true';
         }
 
+        const customerPhoneField = form.elements.customerPhone;
+        if (customerPhoneField && !customerPhoneField.dataset.validationBound) {
+          customerPhoneField.addEventListener('input', () => {
+            customerPhoneField.setCustomValidity(customerPhoneField.value.trim() ? '' : 'Uzupełnij wymagane pole: Telefon.');
+          });
+          customerPhoneField.dataset.validationBound = 'true';
+        }
+
         if (!cart.length) {
           if (status) status.textContent = 'Koszyk jest pusty.';
           return;
@@ -460,6 +468,13 @@
         const gdprConsentForSubmit = form.elements.gdprConsent;
         if (gdprConsentForSubmit && 'setCustomValidity' in gdprConsentForSubmit) {
           gdprConsentForSubmit.setCustomValidity(gdprConsentForSubmit.checked ? '' : 'Musisz zaakceptować zgodę RODO.');
+        }
+
+        const customerPhoneForSubmit = form.elements.customerPhone;
+        if (customerPhoneForSubmit && 'setCustomValidity' in customerPhoneForSubmit) {
+          customerPhoneForSubmit.setCustomValidity(
+            customerPhoneForSubmit.value.trim() ? '' : 'Uzupełnij wymagane pole: Telefon.'
+          );
         }
 
         if (!form.reportValidity()) return;
