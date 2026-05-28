@@ -2662,7 +2662,7 @@
 .shop-item {
   display: grid;
   grid-template-columns: 124px 1fr;
-  align-items: center;
+  align-items: start;
   gap: 16px;
   background: rgba(0, 0, 0, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2688,6 +2688,7 @@
 
 .shop-item__image-link {
   display: block;
+  align-self: start;
   border-radius: 14px;
   text-decoration: none;
   transition: transform 0.22s ease, box-shadow 0.22s ease;
