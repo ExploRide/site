@@ -70,6 +70,39 @@
 
   const ORDER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz4Rm1C4vFTRam9ESDoKe2w-RbyTTXGFQq-Go8MQQ6VCPJYz4kQF-Ti6HfFEAErgabu/exec';
 
+  const EMAILJS_SERVICE_ID = 'service_6dk8z4r';
+  const EMAILJS_TEMPLATE_ID = 'template_otilnkr';
+  const EMAILJS_PUBLIC_KEY = 'Gh7cVLez3Tc3TZfZb';
+  const EMAILJS_SCRIPT_SRC = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+
+  let emailJsReadyPromise;
+
+  const loadEmailJs = () => {
+    if (window.emailjs && typeof window.emailjs.send === 'function') {
+      return Promise.resolve(window.emailjs);
+    }
+
+    if (emailJsReadyPromise) return emailJsReadyPromise;
+
+    emailJsReadyPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${EMAILJS_SCRIPT_SRC}"]`);
+      if (existing) {
+        existing.addEventListener('load', () => resolve(window.emailjs));
+        existing.addEventListener('error', () => reject(new Error('Nie udało się załadować EmailJS.')));
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = EMAILJS_SCRIPT_SRC;
+      script.async = true;
+      script.addEventListener('load', () => resolve(window.emailjs));
+      script.addEventListener('error', () => reject(new Error('Nie udało się załadować EmailJS.')));
+      document.head.appendChild(script);
+    });
+
+    return emailJsReadyPromise;
+  };
+
   const buildOrderItems = () => cart.map((item) => {
     const product = PRODUCTS[item.id];
     if (!product) return null;
@@ -84,6 +117,11 @@
     };
   }).filter(Boolean);
 
+  const formatOrderItemsForEmail = (items) => items.map((item) => {
+    const variant = item.variant ? `, ${item.variant}` : ', brak wariantu';
+    return `${item.name}${variant}, ilość: ${item.quantity}, cena: ${formatPrice(item.price)}`;
+  }).join('\n');
+
   const submitOrderRequest = async (payload) => {
     await fetch(ORDER_ENDPOINT, {
       method: 'POST',
@@ -91,6 +129,31 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
+
+    return true;
+  };
+
+  const sendOrderEmail = async ({ customerName, customerEmail, customerPhone, items, total, message }) => {
+    const emailjs = await loadEmailJs();
+    if (!emailjs || typeof emailjs.send !== 'function') {
+      throw new Error('EmailJS nie jest dostępny.');
+    }
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone,
+        items,
+        total,
+        message
+      },
+      {
+        publicKey: EMAILJS_PUBLIC_KEY
+      }
+    );
 
     return true;
   };
@@ -387,8 +450,22 @@
         if (status) status.textContent = 'Wysyłanie zapytania…';
 
         try {
-          const sent = await submitOrderRequest(payload);
-          if (!sent) throw new Error('Nie udało się wysłać zapytania.');
+          const itemsSummary = formatOrderItemsForEmail(items);
+          const totalSummary = formatPrice(payload.total);
+
+          const [orderSaved, emailSent] = await Promise.all([
+            submitOrderRequest(payload),
+            sendOrderEmail({
+              customerName: payload.customerName,
+              customerEmail: payload.customerEmail,
+              customerPhone: payload.customerPhone,
+              items: itemsSummary,
+              total: totalSummary,
+              message: payload.message
+            })
+          ]);
+
+          if (!orderSaved || !emailSent) throw new Error('Nie udało się wysłać zapytania.');
           if (status) status.textContent = 'Zapytanie wysłane. Odezwę się mailowo w celu finalizacji.';
           form.reset();
         } catch (error) {
