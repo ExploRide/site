@@ -854,8 +854,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <span>PayPal</span>
           </a>
         </li>
-        <li>
-          <div class="home-support__link home-support__link--static">
+        <li class="home-support__copy-item">
+          <button
+            class="home-support__link home-support__link--static"
+            type="button"
+            data-copy-account="76 1050 1894 1000 0097 2209 8382"
+            aria-describedby="home-support-copy-feedback"
+          >
             <span class="brand-icon brand-icon--sm brand-icon--bank" aria-hidden="true">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
                 <path d="M4 9.3 12 4l8 5.3v1.4H4z" fill="currentColor"></path>
@@ -867,7 +872,8 @@ document.addEventListener('DOMContentLoaded', () => {
               </svg>
             </span>
             <span>Przelew <span class="home-support__account">76 1050 1894 1000 0097 2209 8382</span></span>
-          </div>
+          </button>
+          <span class="home-support__copy-feedback" id="home-support-copy-feedback" role="status" aria-live="polite"></span>
         </li>
       </ul>
     </div>

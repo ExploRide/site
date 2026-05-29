@@ -271,10 +271,73 @@
 
     titleSocials.appendChild(mobileNav);
   }
+
+
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-9999px';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      const copied = document.execCommand('copy');
+      return copied ? Promise.resolve() : Promise.reject(new Error('Copy command failed'));
+    } finally {
+      textarea.remove();
+    }
+  }
+
+
+  function initHomeSupportAccountCopy() {
+    const copyButton = document.querySelector('[data-copy-account]');
+    if (!copyButton) {
+      return;
+    }
+
+    const accountNumber = copyButton.getAttribute('data-copy-account');
+    const feedback = document.getElementById('home-support-copy-feedback');
+    if (!accountNumber || !feedback) {
+      return;
+    }
+
+    let feedbackTimer = null;
+
+    const showFeedback = (message) => {
+      feedback.textContent = message;
+      feedback.classList.add('is-visible');
+
+      if (feedbackTimer) {
+        window.clearTimeout(feedbackTimer);
+      }
+
+      feedbackTimer = window.setTimeout(() => {
+        feedback.classList.remove('is-visible');
+      }, 5000);
+    };
+
+    copyButton.addEventListener('click', async () => {
+      try {
+        await copyTextToClipboard(accountNumber);
+        showFeedback('Skopiowano numer konta');
+      } catch (error) {
+        showFeedback('Nie udało się skopiować numeru');
+      }
+    });
+  }
+
   function init() {
     initMobileHeaderTitle();
     initNavToggle();
     initMobileTitleNav();
+    initHomeSupportAccountCopy();
 
     if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
