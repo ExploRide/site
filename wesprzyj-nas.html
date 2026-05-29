@@ -111,8 +111,13 @@
               </span>
             </a>
           </li>
-          <li>
-            <div class="support-option support-option--static">
+          <li class="support-copy-item">
+            <button
+              class="support-option support-option--static"
+              type="button"
+              data-copy-account="76 1050 1894 1000 0097 2209 8382"
+              aria-describedby="support-copy-feedback"
+            >
               <span class="brand-icon brand-icon--lg brand-icon--bank" aria-hidden="true">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
                   <path d="M4 9.3 12 4l8 5.3v1.4H4z" fill="currentColor"></path>
@@ -127,7 +132,8 @@
                 <span class="support-option-name">Przelew bankowy</span>
                 <span class="support-option-note">76 1050 1894 1000 0097 2209 8382</span>
               </span>
-            </div>
+            </button>
+            <span class="support-copy-feedback" id="support-copy-feedback" role="status" aria-live="polite"></span>
           </li>
         </ul>
       </section>

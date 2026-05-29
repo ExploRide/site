@@ -296,40 +296,43 @@
   }
 
 
-  function initHomeSupportAccountCopy() {
-    const copyButton = document.querySelector('[data-copy-account]');
-    if (!copyButton) {
+  function initSupportAccountCopy() {
+    const copyButtons = document.querySelectorAll('[data-copy-account]');
+    if (!copyButtons.length) {
       return;
     }
 
-    const accountNumber = copyButton.getAttribute('data-copy-account');
-    const feedback = document.getElementById('home-support-copy-feedback');
-    if (!accountNumber || !feedback) {
-      return;
-    }
-
-    let feedbackTimer = null;
-
-    const showFeedback = (message) => {
-      feedback.textContent = message;
-      feedback.classList.add('is-visible');
-
-      if (feedbackTimer) {
-        window.clearTimeout(feedbackTimer);
+    copyButtons.forEach((copyButton) => {
+      const accountNumber = copyButton.getAttribute('data-copy-account');
+      const feedbackId = copyButton.getAttribute('aria-describedby');
+      const feedback = feedbackId ? document.getElementById(feedbackId) : null;
+      if (!accountNumber || !feedback) {
+        return;
       }
 
-      feedbackTimer = window.setTimeout(() => {
-        feedback.classList.remove('is-visible');
-      }, 5000);
-    };
+      let feedbackTimer = null;
 
-    copyButton.addEventListener('click', async () => {
-      try {
-        await copyTextToClipboard(accountNumber);
-        showFeedback('Skopiowano numer konta');
-      } catch (error) {
-        showFeedback('Nie udało się skopiować numeru');
-      }
+      const showFeedback = (message) => {
+        feedback.textContent = message;
+        feedback.classList.add('is-visible');
+
+        if (feedbackTimer) {
+          window.clearTimeout(feedbackTimer);
+        }
+
+        feedbackTimer = window.setTimeout(() => {
+          feedback.classList.remove('is-visible');
+        }, 5000);
+      };
+
+      copyButton.addEventListener('click', async () => {
+        try {
+          await copyTextToClipboard(accountNumber);
+          showFeedback('Skopiowano numer konta');
+        } catch (error) {
+          showFeedback('Nie udało się skopiować numeru');
+        }
+      });
     });
   }
 
@@ -337,7 +340,7 @@
     initMobileHeaderTitle();
     initNavToggle();
     initMobileTitleNav();
-    initHomeSupportAccountCopy();
+    initSupportAccountCopy();
 
     if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
