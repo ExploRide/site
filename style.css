@@ -2810,7 +2810,7 @@
 
 .shop-item {
   display: grid;
-  grid-template-columns: 124px 1fr;
+  grid-template-columns: 186px 1fr;
   align-items: start;
   gap: 16px;
   background: rgba(0, 0, 0, 0.7);
@@ -2851,13 +2851,14 @@
 
 .shop-item__image-link:hover .shop-item__image img,
 .shop-item__image-link:focus-visible .shop-item__image img {
-  transform: scale(1.045);
+  transform: scale(1.57);
 }
 
 .shop-item__image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transform: scale(1.5);
   border-radius: inherit;
   display: block;
   transition: transform 0.28s ease;
