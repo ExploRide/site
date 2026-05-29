@@ -80,7 +80,7 @@ window.SHOP_PRODUCTS = [
     price: 35,
     summary: '12 kadrów z wypraw urbexowych na każdy miesiąc.',
     description:
-      'Kalendarz ścienny A4, ze spiralą na środku z autorskimi zdjęciami z opuszczonych. Umieściliśmy tam też opisy miejsc widocznych na zdjęciach oraz nietypowe święta i wydarzenia, które nawiązują do urbexu, historii i zabytków.',
+      'Kalendarz ścienny A4 ze spiralą pośrodku, zawierający autorskie zdjęcia opuszczonych miejsc uchwyconych podczas eksploracji urbexowych. Każdy miesiąc wzbogaciliśmy o krótkie opisy lokalizacji widocznych na fotografiach, a także o nietypowe święta i wydarzenia nawiązujące do urbexu, historii, architektury i zabytków. To wyjątkowe połączenie klimatycznych fotografii i ciekawostek dla miłośników opuszczonych miejsc oraz odkrywania zapomnianych historii.',
     sizes: [],
     images: [
   'https://exploride.pl/sklep/photos/kalendarz2026-1.jpg',
