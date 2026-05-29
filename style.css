@@ -275,6 +275,10 @@
       white-space: nowrap;
     }
 
+    .site-title-socials--mobile-only {
+      display: none;
+    }
+
     .site-title-socials__button:hover,
     .site-title-socials__button:focus-visible {
       transform: translateY(-2px);
@@ -493,6 +497,14 @@
       }
 
       .site-title-socials {
+        display: flex;
+        width: 100%;
+        margin: clamp(4px, 1.6vw, 8px) auto 0;
+        padding: 0 clamp(8px, 3vw, 14px);
+        overflow: visible;
+      }
+
+      .site-title-socials__button {
         display: none;
       }
 
@@ -639,13 +651,10 @@
         color: #e50914;
         outline: none;
       }
-      .page-home header .logo {
-        width: clamp(52px, 16vw, 82px);
-        margin-bottom: 1px;
-      }
       header .logo {
         display: block;
-        width: clamp(48px, 16vw, 76px);
+        width: clamp(52px, 16vw, 82px);
+        margin-bottom: 1px;
       }
       .nav-toggle {
         display: inline-flex;

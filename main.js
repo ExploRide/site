@@ -209,9 +209,19 @@
 
   function initMobileTitleNav() {
     const header = document.querySelector('header');
-    const titleSocials = document.querySelector('.site-title-socials');
-    if (!header || !titleSocials) {
+    if (!header) {
       return;
+    }
+
+    let titleSocials = document.querySelector('.site-title-socials');
+    if (!titleSocials) {
+      titleSocials = document.createElement('div');
+      titleSocials.className = 'site-title-socials site-title-socials--mobile-only';
+      titleSocials.setAttribute('aria-label', 'Skróty nawigacji strony');
+
+      const siteTitle = document.querySelector('.site-title');
+      const anchor = siteTitle || header;
+      anchor.insertAdjacentElement('afterend', titleSocials);
     }
 
     const sourceNav = header.querySelector('.top-nav');
