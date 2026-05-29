@@ -493,13 +493,6 @@
       }
 
       .site-title-socials {
-        justify-content: center;
-        margin: clamp(4px, 1.8vw, 8px) auto 0;
-        padding: 0 12px;
-        overflow: visible;
-      }
-
-      .site-title-socials__button {
         display: none;
       }
 
