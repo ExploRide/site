@@ -1819,6 +1819,7 @@
 
       .links-buttons .links-button {
         flex: 1 1 100%;
+        justify-content: center;
         max-width: 100%;
       }
 
