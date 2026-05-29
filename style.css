@@ -1912,6 +1912,26 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       justify-items: center;
+      gap: clamp(12px, 2.6vw, 18px);
+    }
+    .home-links__buttons .links-button {
+      flex: initial;
+      min-width: min(100%, 210px);
+      max-width: 280px;
+      gap: clamp(10px, 2vw, 14px);
+      padding: clamp(12px, 2.2vw, 16px) clamp(16px, 3vw, 22px);
+      border-radius: clamp(14px, 3vw, 20px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+    }
+    .home-links__buttons .links-button__icon {
+      width: 1.18em;
+      height: 1.18em;
+    }
+    .home-links__buttons .links-button__title {
+      font-size: clamp(0.98rem, 2.1vw, 1.14rem);
+    }
+    .home-links__buttons .links-button__handle {
+      font-size: clamp(0.74rem, 1.8vw, 0.86rem);
     }
     @media (max-width: 720px) {
       .home-links__buttons {
