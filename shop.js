@@ -477,12 +477,26 @@
           }
           sizeSelect.appendChild(option);
         });
-        sizeSelect.addEventListener('change', (event) => {
-          cart[index].size = event.target.value;
-          cart[index].quantity = clampQuantity(cart[index].quantity, getMaxQuantity(product, cart[index].size));
-          saveCart(cart);
-          renderCartList();
-          updateSummaryUI();
+        sizeSelect.addEventListener('change', async (event) => {
+          const cartItem = cart[index];
+          if (!cartItem) return;
+
+          cartItem.size = event.target.value;
+          sizeSelect.disabled = true;
+          quantityInput.disabled = true;
+
+          try {
+            await loadInventory();
+            syncCartToInventory();
+            saveCart(cart);
+          } catch (error) {
+            cartItem.quantity = clampQuantity(cartItem.quantity, getMaxQuantity(product, cartItem.size));
+            saveCart(cart);
+            updateSummaryUI();
+          } finally {
+            renderCartList();
+            updateSummaryUI();
+          }
         });
         sizeLabel.appendChild(sizeSelect);
         controls.appendChild(sizeLabel);
