@@ -9,7 +9,7 @@
   const storageKey = 'explorideShopCart';
   const currency = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
 
-  const INVENTORY_ENDPOINT = window.SHOP_INVENTORY_ENDPOINT || 'TU_WKLEJ_SWÓJ_URL_EXEC';
+  const INVENTORY_ENDPOINT = window.SHOP_INVENTORY_ENDPOINT || 'https://script.google.com/macros/s/AKfycbz4Rm1C4vFTRam9ESDoKe2w-RbyTTXGFQq-Go8MQQ6VCPJYz4kQF-Ti6HfFEAErgabu/exec';
   const DEFAULT_MAX_QUANTITY = 20;
   const inventoryKeySeparator = '::';
   const inventoryState = {
@@ -19,26 +19,16 @@
     error: null,
   };
 
-  const normalizeInventoryKeyPart = (value) => String(value || '').trim().toLocaleLowerCase('pl-PL');
+  const normalizeInventoryKeyPart = (value) => String(value || '').trim();
 
   const buildInventoryKey = (productName, size) => [
     normalizeInventoryKeyPart(productName),
     normalizeInventoryKeyPart(size),
   ].join(inventoryKeySeparator);
 
-  const isInventoryConfigured = () => {
-    const endpoint = String(INVENTORY_ENDPOINT || '').trim();
-    return endpoint && !endpoint.startsWith('TU_WKLEJ');
-  };
-
   const loadInventory = async () => {
     if (inventoryState.loaded) return inventoryState.items;
     if (inventoryState.promise) return inventoryState.promise;
-
-    if (!isInventoryConfigured()) {
-      inventoryState.loaded = true;
-      return inventoryState.items;
-    }
 
     inventoryState.promise = fetch(INVENTORY_ENDPOINT, { cache: 'no-store' })
       .then((response) => {
@@ -48,14 +38,26 @@
         return response.json();
       })
       .then((data) => {
-        const rows = Array.isArray(data) ? data : [];
+        const rows = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.items)
+            ? data.items
+            : Array.isArray(data?.rows)
+              ? data.rows
+              : Array.isArray(data?.data)
+                ? data.data
+                : [];
         inventoryState.items.clear();
         rows.forEach((row) => {
-          const productName = row?.produkt;
-          const size = row?.rozmiar;
-          const stock = Number(row?.stan);
-          if (!productName || !size || !Number.isFinite(stock)) return;
-          inventoryState.items.set(buildInventoryKey(productName, size), Math.max(0, Math.floor(stock)));
+          const productName = normalizeInventoryKeyPart(row?.produkt);
+          if (!productName) return;
+
+          const stockRaw = row?.stan;
+          const stockText = typeof stockRaw === 'string' ? stockRaw.trim() : String(stockRaw ?? '').trim();
+          const stock = stockText === '' ? Number.NaN : Number(stockText);
+          const normalizedStock = Number.isFinite(stock) ? Math.max(0, Math.floor(stock)) : null;
+
+          inventoryState.items.set(buildInventoryKey(productName, row?.rozmiar), normalizedStock);
         });
         inventoryState.loaded = true;
         inventoryState.error = null;
@@ -73,14 +75,21 @@
   };
 
   const getInventoryStock = (product, size) => {
-    if (!product || !size || !inventoryState.items.size) return null;
-    const stock = inventoryState.items.get(buildInventoryKey(product.name, size));
+    if (!product || !inventoryState.items.size) return null;
+    const key = buildInventoryKey(product.name, size);
+    if (!inventoryState.items.has(key)) return null;
+    const stock = inventoryState.items.get(key);
     return Number.isFinite(stock) ? stock : null;
   };
 
   const getMaxQuantity = (product, size) => {
     const stock = getInventoryStock(product, size);
     return stock === null ? DEFAULT_MAX_QUANTITY : stock;
+  };
+
+  const formatStockMessage = (stock) => {
+    if (stock === null) return 'Dostępna ilość: nieznana';
+    return stock > 0 ? `Dostępna ilość: ${stock}` : 'Brak w magazynie. Poproś o zamówienie';
   };
 
   const clampQuantity = (value, max = DEFAULT_MAX_QUANTITY) => {
@@ -111,13 +120,13 @@
   const updateStockUI = async (form, { showLoading = false } = {}) => {
     const product = PRODUCTS[form.dataset.productId];
     const sizeSelect = form.querySelector('[name="size"]');
-    if (!product || !sizeSelect) return;
+    if (!product) return;
 
     const quantityInput = form.querySelector('[name="quantity"]');
     const submitButton = form.querySelector('button[type="submit"]');
     const message = ensureStockMessage(form);
 
-    if (showLoading && isInventoryConfigured() && !inventoryState.loaded) {
+    if (showLoading && !inventoryState.loaded) {
       message.textContent = 'Sprawdzanie dostępności…';
       message.classList.remove('stock-message--empty', 'stock-message--warning');
       if (submitButton) submitButton.disabled = true;
@@ -126,12 +135,10 @@
     try {
       await loadInventory();
       syncCartToInventory();
-      const stock = getInventoryStock(product, sizeSelect.value);
+      const stock = getInventoryStock(product, sizeSelect?.value);
 
       if (stock === null) {
-        message.textContent = isInventoryConfigured()
-          ? 'Stan magazynowy chwilowo niedostępny.'
-          : 'Skonfiguruj URL stanów magazynowych.';
+        message.textContent = formatStockMessage(stock);
         message.classList.toggle('stock-message--warning', true);
         message.classList.remove('stock-message--empty');
         if (quantityInput) {
@@ -143,7 +150,7 @@
         return;
       }
 
-      message.textContent = stock > 0 ? `Dostępne: ${stock} szt.` : 'Brak dostępnych sztuk';
+      message.textContent = formatStockMessage(stock);
       message.classList.toggle('stock-message--empty', stock === 0);
       message.classList.remove('stock-message--warning');
 
@@ -154,7 +161,7 @@
       }
       if (submitButton) submitButton.disabled = stock === 0;
     } catch (error) {
-      message.textContent = 'Nie udało się pobrać stanu magazynowego.';
+      message.textContent = formatStockMessage(null);
       message.classList.add('stock-message--warning');
       message.classList.remove('stock-message--empty');
       if (quantityInput) {
@@ -168,12 +175,14 @@
 
   const setupInventoryForm = (form) => {
     const product = PRODUCTS[form.dataset.productId];
-    const sizeSelect = form.querySelector('[name="size"]');
-    if (!product || !sizeSelect) return;
+    if (!product) return;
 
+    const sizeSelect = form.querySelector('[name="size"]');
     ensureStockMessage(form);
     updateStockUI(form, { showLoading: true });
-    sizeSelect.addEventListener('change', () => updateStockUI(form, { showLoading: true }));
+    if (sizeSelect) {
+      sizeSelect.addEventListener('change', () => updateStockUI(form, { showLoading: true }));
+    }
   };
 
   const formatPrice = (value) => {
@@ -853,12 +862,13 @@
         sizeField.appendChild(sizeSelect);
         quickForm.appendChild(sizeField);
 
-        const stockMessage = document.createElement('p');
-        stockMessage.className = 'stock-message';
-        stockMessage.dataset.stockMessage = '';
-        stockMessage.setAttribute('aria-live', 'polite');
-        quickForm.appendChild(stockMessage);
       }
+
+      const stockMessage = document.createElement('p');
+      stockMessage.className = 'stock-message';
+      stockMessage.dataset.stockMessage = '';
+      stockMessage.setAttribute('aria-live', 'polite');
+      quickForm.appendChild(stockMessage);
 
       const quantityField = document.createElement('label');
       quantityField.className = 'product-field';
