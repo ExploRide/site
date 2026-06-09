@@ -9,6 +9,173 @@
   const storageKey = 'explorideShopCart';
   const currency = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
 
+  const INVENTORY_ENDPOINT = window.SHOP_INVENTORY_ENDPOINT || 'TU_WKLEJ_SWÓJ_URL_EXEC';
+  const DEFAULT_MAX_QUANTITY = 20;
+  const inventoryKeySeparator = '::';
+  const inventoryState = {
+    items: new Map(),
+    promise: null,
+    loaded: false,
+    error: null,
+  };
+
+  const normalizeInventoryKeyPart = (value) => String(value || '').trim().toLocaleLowerCase('pl-PL');
+
+  const buildInventoryKey = (productName, size) => [
+    normalizeInventoryKeyPart(productName),
+    normalizeInventoryKeyPart(size),
+  ].join(inventoryKeySeparator);
+
+  const isInventoryConfigured = () => {
+    const endpoint = String(INVENTORY_ENDPOINT || '').trim();
+    return endpoint && !endpoint.startsWith('TU_WKLEJ');
+  };
+
+  const loadInventory = async () => {
+    if (inventoryState.loaded) return inventoryState.items;
+    if (inventoryState.promise) return inventoryState.promise;
+
+    if (!isInventoryConfigured()) {
+      inventoryState.loaded = true;
+      return inventoryState.items;
+    }
+
+    inventoryState.promise = fetch(INVENTORY_ENDPOINT, { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Nie udało się pobrać stanów magazynowych.');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const rows = Array.isArray(data) ? data : [];
+        inventoryState.items.clear();
+        rows.forEach((row) => {
+          const productName = row?.produkt;
+          const size = row?.rozmiar;
+          const stock = Number(row?.stan);
+          if (!productName || !size || !Number.isFinite(stock)) return;
+          inventoryState.items.set(buildInventoryKey(productName, size), Math.max(0, Math.floor(stock)));
+        });
+        inventoryState.loaded = true;
+        inventoryState.error = null;
+        return inventoryState.items;
+      })
+      .catch((error) => {
+        inventoryState.error = error;
+        throw error;
+      })
+      .finally(() => {
+        inventoryState.promise = null;
+      });
+
+    return inventoryState.promise;
+  };
+
+  const getInventoryStock = (product, size) => {
+    if (!product || !size || !inventoryState.items.size) return null;
+    const stock = inventoryState.items.get(buildInventoryKey(product.name, size));
+    return Number.isFinite(stock) ? stock : null;
+  };
+
+  const getMaxQuantity = (product, size) => {
+    const stock = getInventoryStock(product, size);
+    return stock === null ? DEFAULT_MAX_QUANTITY : stock;
+  };
+
+  const clampQuantity = (value, max = DEFAULT_MAX_QUANTITY) => {
+    const parsed = Number(value) || 1;
+    if (max <= 0) return 0;
+    return Math.max(1, Math.min(max, parsed));
+  };
+
+  const ensureStockMessage = (form) => {
+    let message = form.querySelector('[data-stock-message]');
+    if (message) return message;
+
+    message = document.createElement('p');
+    message.className = 'stock-message';
+    message.dataset.stockMessage = '';
+    message.setAttribute('aria-live', 'polite');
+
+    const sizeField = form.querySelector('[data-size-field]') || form.querySelector('[name="size"]')?.closest('.product-field');
+    if (sizeField) {
+      sizeField.insertAdjacentElement('afterend', message);
+    } else {
+      form.prepend(message);
+    }
+
+    return message;
+  };
+
+  const updateStockUI = async (form, { showLoading = false } = {}) => {
+    const product = PRODUCTS[form.dataset.productId];
+    const sizeSelect = form.querySelector('[name="size"]');
+    if (!product || !sizeSelect) return;
+
+    const quantityInput = form.querySelector('[name="quantity"]');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const message = ensureStockMessage(form);
+
+    if (showLoading && isInventoryConfigured() && !inventoryState.loaded) {
+      message.textContent = 'Sprawdzanie dostępności…';
+      message.classList.remove('stock-message--empty', 'stock-message--warning');
+      if (submitButton) submitButton.disabled = true;
+    }
+
+    try {
+      await loadInventory();
+      syncCartToInventory();
+      const stock = getInventoryStock(product, sizeSelect.value);
+
+      if (stock === null) {
+        message.textContent = isInventoryConfigured()
+          ? 'Stan magazynowy chwilowo niedostępny.'
+          : 'Skonfiguruj URL stanów magazynowych.';
+        message.classList.toggle('stock-message--warning', true);
+        message.classList.remove('stock-message--empty');
+        if (quantityInput) {
+          quantityInput.max = String(DEFAULT_MAX_QUANTITY);
+          quantityInput.disabled = false;
+          quantityInput.value = clampQuantity(quantityInput.value, DEFAULT_MAX_QUANTITY);
+        }
+        if (submitButton) submitButton.disabled = false;
+        return;
+      }
+
+      message.textContent = stock > 0 ? `Dostępne: ${stock} szt.` : 'Brak dostępnych sztuk';
+      message.classList.toggle('stock-message--empty', stock === 0);
+      message.classList.remove('stock-message--warning');
+
+      if (quantityInput) {
+        quantityInput.max = String(stock);
+        quantityInput.disabled = stock === 0;
+        quantityInput.value = clampQuantity(quantityInput.value, stock);
+      }
+      if (submitButton) submitButton.disabled = stock === 0;
+    } catch (error) {
+      message.textContent = 'Nie udało się pobrać stanu magazynowego.';
+      message.classList.add('stock-message--warning');
+      message.classList.remove('stock-message--empty');
+      if (quantityInput) {
+        quantityInput.max = String(DEFAULT_MAX_QUANTITY);
+        quantityInput.disabled = false;
+        quantityInput.value = clampQuantity(quantityInput.value, DEFAULT_MAX_QUANTITY);
+      }
+      if (submitButton) submitButton.disabled = false;
+    }
+  };
+
+  const setupInventoryForm = (form) => {
+    const product = PRODUCTS[form.dataset.productId];
+    const sizeSelect = form.querySelector('[name="size"]');
+    if (!product || !sizeSelect) return;
+
+    ensureStockMessage(form);
+    updateStockUI(form, { showLoading: true });
+    sizeSelect.addEventListener('change', () => updateStockUI(form, { showLoading: true }));
+  };
+
   const formatPrice = (value) => {
     if (typeof value === 'string' && Number.isNaN(Number(value))) {
       return value;
@@ -56,6 +223,38 @@
   };
 
   let cart = loadCart();
+
+  const syncCartToInventory = () => {
+    if (!inventoryState.items.size || !cart.length) return;
+
+    let changed = false;
+    cart = cart.filter((item) => {
+      const product = PRODUCTS[item.id];
+      if (!product) {
+        changed = true;
+        return false;
+      }
+
+      const maxQuantity = getMaxQuantity(product, item.size);
+      if (maxQuantity <= 0) {
+        changed = true;
+        return false;
+      }
+
+      const quantity = clampQuantity(item.quantity, maxQuantity);
+      if (quantity !== item.quantity) {
+        item.quantity = quantity;
+        changed = true;
+      }
+
+      return true;
+    });
+
+    if (changed) {
+      saveCart(cart);
+      updateSummaryUI();
+    }
+  };
 
   const getCartSummary = () => {
     const totalItems = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
@@ -243,10 +442,10 @@
       const quantityInput = document.createElement('input');
       quantityInput.type = 'number';
       quantityInput.min = '1';
-      quantityInput.max = '20';
+      quantityInput.max = String(getMaxQuantity(product, item.size));
       quantityInput.value = item.quantity;
       quantityInput.addEventListener('change', (event) => {
-        const value = Math.max(1, Math.min(20, Number(event.target.value) || 1));
+        const value = clampQuantity(event.target.value, getMaxQuantity(product, cart[index].size));
         quantityInput.value = value;
         cart[index].quantity = value;
         saveCart(cart);
@@ -271,6 +470,7 @@
         });
         sizeSelect.addEventListener('change', (event) => {
           cart[index].size = event.target.value;
+          cart[index].quantity = clampQuantity(cart[index].quantity, getMaxQuantity(product, cart[index].size));
           saveCart(cart);
           renderCartList();
           updateSummaryUI();
@@ -368,11 +568,14 @@
     const product = PRODUCTS[id];
     if (!product) return;
 
+    const maxQuantity = getMaxQuantity(product, size);
+    if (maxQuantity <= 0) return;
+
     const existingIndex = cart.findIndex((item) => item.id === id && (item.size || '') === (size || ''));
     if (existingIndex > -1) {
-      cart[existingIndex].quantity = Math.min(20, cart[existingIndex].quantity + quantity);
+      cart[existingIndex].quantity = clampQuantity(cart[existingIndex].quantity + quantity, maxQuantity);
     } else {
-      cart.push({ id, quantity: Math.min(20, quantity), size });
+      cart.push({ id, quantity: clampQuantity(quantity, maxQuantity), size });
     }
 
     saveCart(cart);
@@ -381,6 +584,7 @@
 
   const setupForms = () => {
     document.querySelectorAll('[data-add-to-cart]').forEach((form) => {
+      setupInventoryForm(form);
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         const productId = form.dataset.productId;
@@ -388,11 +592,17 @@
         if (!product) return;
         const quantityInput = form.querySelector('[name="quantity"]');
         const sizeSelect = form.querySelector('[name="size"]');
-        const quantity = Math.max(1, Math.min(20, Number(quantityInput?.value) || 1));
+        const size = sizeSelect ? sizeSelect.value : undefined;
+        const maxQuantity = getMaxQuantity(product, size);
+        if (maxQuantity <= 0) {
+          updateStockUI(form);
+          return;
+        }
+        const quantity = clampQuantity(quantityInput?.value, maxQuantity);
         if (quantityInput) {
           quantityInput.value = quantity;
+          quantityInput.max = String(maxQuantity);
         }
-        const size = sizeSelect ? sizeSelect.value : undefined;
         addToCart({ id: productId, quantity, size });
         if (form.hasAttribute('data-quick-add')) {
           const feedback = form.querySelector('[data-add-feedback]');
@@ -642,6 +852,12 @@
         });
         sizeField.appendChild(sizeSelect);
         quickForm.appendChild(sizeField);
+
+        const stockMessage = document.createElement('p');
+        stockMessage.className = 'stock-message';
+        stockMessage.dataset.stockMessage = '';
+        stockMessage.setAttribute('aria-live', 'polite');
+        quickForm.appendChild(stockMessage);
       }
 
       const quantityField = document.createElement('label');
@@ -651,7 +867,7 @@
       quantityInput.type = 'number';
       quantityInput.name = 'quantity';
       quantityInput.min = '1';
-      quantityInput.max = '20';
+      quantityInput.max = String(DEFAULT_MAX_QUANTITY);
       quantityInput.value = '1';
       quantityField.appendChild(quantityInput);
       quickForm.appendChild(quantityField);
