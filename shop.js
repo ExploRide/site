@@ -26,8 +26,8 @@
     normalizeInventoryKeyPart(size),
   ].join(inventoryKeySeparator);
 
-  const loadInventory = async () => {
-    if (inventoryState.loaded) return inventoryState.items;
+  const loadInventory = async ({ force = false } = {}) => {
+    if (inventoryState.loaded && !force) return inventoryState.items;
     if (inventoryState.promise) return inventoryState.promise;
 
     inventoryState.promise = fetch(INVENTORY_ENDPOINT, { cache: 'no-store' })
@@ -117,7 +117,7 @@
     return message;
   };
 
-  const updateStockUI = async (form, { showLoading = false } = {}) => {
+  const updateStockUI = async (form, { showLoading = false, refreshInventory = false } = {}) => {
     const product = PRODUCTS[form.dataset.productId];
     const sizeSelect = form.querySelector('[name="size"]');
     if (!product) return;
@@ -126,14 +126,15 @@
     const submitButton = form.querySelector('button[type="submit"]');
     const message = ensureStockMessage(form);
 
-    if (showLoading && !inventoryState.loaded) {
+    if (showLoading && (!inventoryState.loaded || refreshInventory)) {
       message.textContent = 'Sprawdzanie dostępności…';
       message.classList.remove('stock-message--empty', 'stock-message--warning');
+      if (quantityInput) quantityInput.disabled = true;
       if (submitButton) submitButton.disabled = true;
     }
 
     try {
-      await loadInventory();
+      await loadInventory({ force: refreshInventory });
       syncCartToInventory();
       const stock = getInventoryStock(product, sizeSelect?.value);
 
@@ -181,7 +182,7 @@
     ensureStockMessage(form);
     updateStockUI(form, { showLoading: true });
     if (sizeSelect) {
-      sizeSelect.addEventListener('change', () => updateStockUI(form, { showLoading: true }));
+      sizeSelect.addEventListener('change', () => updateStockUI(form, { showLoading: true, refreshInventory: true }));
     }
   };
 
@@ -477,26 +478,12 @@
           }
           sizeSelect.appendChild(option);
         });
-        sizeSelect.addEventListener('change', async (event) => {
-          const cartItem = cart[index];
-          if (!cartItem) return;
-
-          cartItem.size = event.target.value;
-          sizeSelect.disabled = true;
-          quantityInput.disabled = true;
-
-          try {
-            await loadInventory();
-            syncCartToInventory();
-            saveCart(cart);
-          } catch (error) {
-            cartItem.quantity = clampQuantity(cartItem.quantity, getMaxQuantity(product, cartItem.size));
-            saveCart(cart);
-            updateSummaryUI();
-          } finally {
-            renderCartList();
-            updateSummaryUI();
-          }
+        sizeSelect.addEventListener('change', (event) => {
+          cart[index].size = event.target.value;
+          cart[index].quantity = clampQuantity(cart[index].quantity, getMaxQuantity(product, cart[index].size));
+          saveCart(cart);
+          renderCartList();
+          updateSummaryUI();
         });
         sizeLabel.appendChild(sizeSelect);
         controls.appendChild(sizeLabel);
