@@ -342,7 +342,14 @@
     return true;
   };
 
-  const sendOrderEmail = async ({ customerName, customerEmail, customerPhone, deliveryAddress, items, total, message }) => {
+  const DELIVERY_METHOD_LABELS = {
+    pickup_point: 'Paczkomat / punkt odbioru',
+    home_delivery: 'Dostawa do domu'
+  };
+
+  const getDeliveryMethodLabel = (value) => DELIVERY_METHOD_LABELS[value] || '';
+
+  const sendOrderEmail = async ({ customerName, customerEmail, customerPhone, deliveryMethod, deliveryAddress, pickupPoint, items, total, message }) => {
     const emailjs = await loadEmailJs();
     if (!emailjs || typeof emailjs.send !== 'function') {
       throw new Error('EmailJS nie jest dostępny.');
@@ -355,7 +362,9 @@
         customer_name: customerName,
         customer_email: customerEmail,
         customer_phone: customerPhone,
+        delivery_method: deliveryMethod,
         delivery_address: deliveryAddress,
+        pickup_point: pickupPoint,
         items,
         total,
         message
@@ -574,6 +583,54 @@
     });
   };
 
+  const updateDeliveryFields = (form) => {
+    if (!form) return;
+
+    const selectedMethod = form.elements.delivery_method?.value || '';
+    const addressField = form.querySelector('[data-delivery-address-field]');
+    const pickupField = form.querySelector('[data-pickup-point-field]');
+    const addressInput = form.elements.delivery_address;
+    const pickupInput = form.elements.pickup_point;
+    const showAddress = selectedMethod === 'home_delivery';
+    const showPickupPoint = selectedMethod === 'pickup_point';
+
+    if (addressField) addressField.hidden = !showAddress;
+    if (pickupField) pickupField.hidden = !showPickupPoint;
+
+    if (addressInput) {
+      addressInput.required = showAddress;
+      if (!showAddress) {
+        addressInput.value = '';
+        addressInput.setCustomValidity('');
+      }
+    }
+
+    if (pickupInput) {
+      pickupInput.required = showPickupPoint;
+      if (!showPickupPoint) {
+        pickupInput.value = '';
+        pickupInput.setCustomValidity('');
+      }
+    }
+  };
+
+  const setupDeliveryFields = (form) => {
+    if (!form || form.dataset.deliveryFieldsBound) return;
+
+    form.querySelectorAll('[name="delivery_method"]').forEach((radio) => {
+      radio.addEventListener('change', () => updateDeliveryFields(form));
+    });
+
+    [form.elements.delivery_address, form.elements.pickup_point].forEach((field) => {
+      if (field && 'setCustomValidity' in field) {
+        field.addEventListener('input', () => field.setCustomValidity(''));
+      }
+    });
+
+    form.dataset.deliveryFieldsBound = 'true';
+    updateDeliveryFields(form);
+  };
+
   const addToCart = ({ id, quantity = 1, size }) => {
     const product = PRODUCTS[id];
     if (!product) return;
@@ -639,6 +696,8 @@
     const modal = document.querySelector('[data-cart-modal]');
     if (!modal) return;
 
+    modal.querySelectorAll('[data-cart-details-form]').forEach(setupDeliveryFields);
+
     modal.querySelectorAll('[data-close-cart]').forEach((btn) => {
       btn.addEventListener('click', closeCart);
     });
@@ -663,6 +722,7 @@
         const form = modal.querySelector('[data-cart-details-form]');
         const status = modal.querySelector('[data-cart-form-status]');
         if (!form) return;
+        setupDeliveryFields(form);
 
         const gdprConsentField = form.elements.gdprConsent;
         if (gdprConsentField && !gdprConsentField.dataset.validationBound) {
@@ -697,6 +757,28 @@
           );
         }
 
+        updateDeliveryFields(form);
+
+        const deliveryMethodForSubmit = form.elements.delivery_method?.value || '';
+        const deliveryAddressForSubmit = form.elements.delivery_address;
+        const pickupPointForSubmit = form.elements.pickup_point;
+
+        if (deliveryAddressForSubmit && 'setCustomValidity' in deliveryAddressForSubmit) {
+          deliveryAddressForSubmit.setCustomValidity(
+            deliveryMethodForSubmit === 'home_delivery' && !deliveryAddressForSubmit.value.trim()
+              ? 'Uzupełnij wymagane pole: Adres dostawy.'
+              : ''
+          );
+        }
+
+        if (pickupPointForSubmit && 'setCustomValidity' in pickupPointForSubmit) {
+          pickupPointForSubmit.setCustomValidity(
+            deliveryMethodForSubmit === 'pickup_point' && !pickupPointForSubmit.value.trim()
+              ? 'Uzupełnij wymagane pole: Paczkomat / punkt odbioru.'
+              : ''
+          );
+        }
+
         if (!form.reportValidity()) return;
 
         const items = buildOrderItems();
@@ -714,11 +796,13 @@
         );
 
         const formData = new FormData(form);
+        const deliveryMethod = String(formData.get('delivery_method') || '').trim();
         const payload = {
           customerName: String(formData.get('customerName') || '').trim(),
           customerEmail: String(formData.get('customerEmail') || '').trim(),
           customerPhone: String(formData.get('customerPhone') || '').trim(),
           delivery_address: String(formData.get('delivery_address') || '').trim(),
+          pickup_point: String(formData.get('pickup_point') || '').trim(),
           message: String(formData.get('message') || '').trim(),
           items,
           total: totalFromState > 0 ? totalFromState : totalFromUI
@@ -737,7 +821,9 @@
               customerName: payload.customerName,
               customerEmail: payload.customerEmail,
               customerPhone: payload.customerPhone,
+              deliveryMethod: getDeliveryMethodLabel(deliveryMethod),
               deliveryAddress: payload.delivery_address,
+              pickupPoint: payload.pickup_point,
               items: itemsSummary,
               total: totalSummary,
               message: payload.message
@@ -751,6 +837,7 @@
           renderCartList();
           updateSummaryUI();
           form.reset();
+          updateDeliveryFields(form);
           closeCart();
           openSuccessModal();
         } catch (error) {

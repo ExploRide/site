@@ -3508,6 +3508,33 @@
   resize: vertical;
 }
 
+.cart-details-form__fieldset {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cart-details-form__fieldset legend {
+  margin: 0 0 2px;
+  padding: 0;
+  color: #f3f5f7;
+  font-weight: 600;
+}
+
+.cart-details-form__radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #f3f5f7;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.cart-details-form__radio input[type="radio"] {
+  margin-top: 2px;
+}
 
 .cart-details-form__checkbox {
   display: flex;
