@@ -166,9 +166,32 @@
                 <span>Telefon *</span>
                 <input type="tel" name="customerPhone" required autocomplete="tel">
               </label>
+              <fieldset class="cart-details-form__fieldset" data-delivery-method-fieldset>
+                <legend>Sposób dostawy *</legend>
+                <label class="cart-details-form__radio">
+                  <input type="radio" name="delivery_method" value="pickup_point" required>
+                  <span>Paczkomat / punkt odbioru</span>
+                </label>
+                <label class="cart-details-form__radio">
+                  <input type="radio" name="delivery_method" value="home_delivery" required>
+                  <span>Dostawa do domu</span>
+                </label>
+              </fieldset>
+              <label class="cart-details-form__field" data-delivery-address-field hidden>
+                <span>Adres dostawy *</span>
+                <textarea name="delivery_address" rows="3" placeholder="Ulica i numer&#10;Kod pocztowy i miasto"></textarea>
+              </label>
+              <label class="cart-details-form__field" data-pickup-point-field hidden>
+                <span>Paczkomat / punkt odbioru *</span>
+                <textarea name="pickup_point" rows="2" placeholder="np. Kod lub adres punktu odbioru"></textarea>
+              </label>
               <label class="cart-details-form__field">
                 <span>Wiadomość (opcjonalne)</span>
                 <textarea name="message" rows="4"></textarea>
+              </label>
+              <label class="cart-details-form__checkbox">
+                <input type="checkbox" name="gdprConsent" required>
+                <span>Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi zapytania i realizacji kontaktu zwrotnego. *</span>
               </label>
               <p class="cart-details-form__required-note">* - pola wymagane</p>
               <p class="cart-details-form__status" data-cart-form-status aria-live="polite"></p>
