@@ -3305,6 +3305,7 @@
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   padding: 20px;
+  overflow-y: auto;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -3324,7 +3325,7 @@
 .shop-modal__panel {
   position: relative;
   width: min(960px, 100%);
-  max-height: 90vh;
+  max-height: min(90vh, calc(100dvh - 40px));
   overflow: auto;
   background: rgba(8, 10, 12, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -3488,6 +3489,10 @@
   gap: 6px;
 }
 
+.cart-details-form__field[hidden] {
+  display: none !important;
+}
+
 .cart-details-form__field span {
   color: #f3f5f7;
   font-weight: 600;
@@ -3636,8 +3641,13 @@ body.is-modal-open {
     align-items: flex-start;
   }
 
+  .shop-modal {
+    align-items: start;
+    padding-block: 12px;
+  }
+
   .shop-modal__panel {
-    max-height: none;
+    max-height: calc(100dvh - 24px);
     height: auto;
   }
 }
@@ -3655,6 +3665,10 @@ body.is-modal-open {
   .cart-list,
   .shop-item {
     border-radius: 14px;
+  }
+
+  .shop-modal {
+    padding-inline: 10px;
   }
 
   .shop-modal__panel {
