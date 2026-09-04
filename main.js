@@ -1,4 +1,6 @@
 (function () {
+  const SITE_BUILD = Object.freeze({ number: 173, date: '2026-09-04' });
+
   function initNavToggle() {
     const header = document.querySelector('header');
     if (!header) {
@@ -346,11 +348,81 @@
     });
   }
 
+  function initPageScrollControl() {
+    const control = document.createElement('button');
+    control.className = 'page-scroll-control';
+    control.type = 'button';
+    control.setAttribute('aria-label', 'Przewiń do następnej sekcji');
+    control.setAttribute('title', 'Przewiń do następnej sekcji');
+    control.innerHTML = '<span class="page-scroll-control__arrow" aria-hidden="true"></span>';
+    document.body.appendChild(control);
+
+    const scrollRoot = document.scrollingElement || document.documentElement;
+    const bottomTolerance = 8;
+    let isAtBottom = false;
+
+    const canScroll = () => scrollRoot.scrollHeight > window.innerHeight + bottomTolerance;
+
+    const updateControl = () => {
+      const scrollable = canScroll();
+      isAtBottom = scrollable
+        && window.scrollY + window.innerHeight >= scrollRoot.scrollHeight - bottomTolerance;
+
+      control.hidden = !scrollable;
+      control.classList.toggle('is-pointing-up', isAtBottom);
+
+      const label = isAtBottom ? 'Wróć na górę strony' : 'Przewiń do następnej sekcji';
+      control.setAttribute('aria-label', label);
+      control.setAttribute('title', label);
+    };
+
+    const getNextSection = () => {
+      const candidates = Array.from(document.querySelectorAll(
+        'main > section, body > section, main > article, main > [data-scroll-section], footer'
+      )).filter((element) => element.getClientRects().length > 0);
+      const controlLine = window.scrollY + Math.min(window.innerHeight * 0.22, 180);
+
+      return candidates.find((element) => {
+        const elementTop = window.scrollY + element.getBoundingClientRect().top;
+        return elementTop > controlLine + 1;
+      });
+    };
+
+    control.addEventListener('click', () => {
+      if (isAtBottom) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const nextSection = getNextSection();
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      window.scrollBy({ top: Math.max(window.innerHeight * 0.82, 320), behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateControl, { passive: true });
+    window.addEventListener('resize', updateControl);
+    window.addEventListener('load', updateControl, { once: true });
+
+    if (typeof ResizeObserver === 'function') {
+      const resizeObserver = new ResizeObserver(updateControl);
+      resizeObserver.observe(document.body);
+    }
+
+    updateControl();
+  }
+
   function init() {
+    document.documentElement.dataset.siteBuild = String(SITE_BUILD.number);
+    document.documentElement.dataset.siteBuildDate = SITE_BUILD.date;
     initMobileHeaderTitle();
     initNavToggle();
     initMobileTitleNav();
     initSupportAccountCopy();
+    initPageScrollControl();
 
     if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
