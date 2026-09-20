@@ -3712,6 +3712,19 @@ body.is-modal-open {
   .page-shop {
     --shop-cart-banner-top: calc(var(--mobile-header-height) + 12px);
   }
+
+  .page-scroll-control {
+    right: auto;
+    left: 50%;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    opacity: 0.5;
+    transform: translateX(-50%);
+  }
+
+  .page-scroll-control:hover,
+  .page-scroll-control:focus-visible {
+    transform: translate(-50%, -2px);
+  }
 }
 
 @media (max-width: 640px) {
