@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>(Wkrótce) ExploSubs - Plugin do Adobe Premiere</title>
+  <link rel="icon" type="image/png" href="../logo.png" />
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+  <script src="./products.js" defer></script>
+  <script src="../shop.js" defer></script>
+</head>
+<body class="page-shop" data-product-slug="explosubs-plugin-do-adobe-premiere">
+  <header data-nav-layout="sidebar">
+    <a class="brand" href="/" aria-label="Strona główna ExploRide">
+      <img src="../logo.png" alt="ExploRide logo" class="logo">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="nav-toggle__bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="top-nav" id="main-navigation" aria-label="Główna nawigacja">
+      <a class="nav-link nav-link--home" href="/">Strona główna</a>
+      <a class="nav-link nav-link--about" href="/onas">O nas</a>
+      <a class="nav-link nav-link--gallery" href="/galeria">Galeria</a>
+      <a class="nav-link nav-link--links" href="/linki">Linki</a>
+      <button class="nav-link nav-link--disabled" type="button" disabled title="Wkrótce dostępne">Blog</button>
+      <a class="nav-link" href="/sklep" aria-current="page">Sklep</a>
+      <a class="nav-link nav-link--support" href="/wesprzyj-nas">Wesprzyj nas</a>
+      <a class="nav-link nav-link--contact" href="/kontakt">Kontakt</a>
+      <a class="nav-link nav-link--downloads" href="/materialy">Materiały do pobrania</a>
+      <div class="nav-divider" role="presentation"></div>
+      <div class="nav-links-section" aria-label="Linki społecznościowe">
+        <span class="nav-links-section__title">Linki</span>
+        <a class="nav-social-link" href="https://www.youtube.com/@ExploRideURBEX" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a class="nav-social-link" href="https://www.facebook.com/ExploRideURBEX" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a class="nav-social-link" href="https://www.instagram.com/exploride.urbex" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a class="nav-social-link" href="https://www.tiktok.com/@exploride.urbex" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </div>
+    </nav>
+  </header>
+
+  <h1 class="site-title">ExploRide.pl</h1>
+
+  <hr class="divider" />
+
+  <div class="shop-hero shop-hero--compact">
+    <div class="shop-cart-banner">
+      <div class="shop-cart-banner__info">
+        <p class="shop-cart-banner__label">Koszyk</p>
+        <p class="shop-cart-banner__value"><span data-cart-count>0</span> produktów · <span data-cart-total>0,00 zł</span></p>
+      </div>
+      <button class="button button--primary" type="button" data-open-cart>Otwórz koszyk</button>
+    </div>
+    <a class="product-back-link" href="./index.html">←</a>
+    <div class="shop-hero__text">
+      <p class="eyebrow">ExploRide</p>
+      <h1 data-product-title>Czapka z daszkiem ExploRide</h1>
+      <p data-product-summary>Produkt dostępny wkrótce</p>
+    </div>
+  </div>
+
+  <main class="product-main">
+    <section class="product-grid">
+      <figure class="product-media">
+        <div class="product-photo-wrapper">
+          <div class="product-photo" aria-hidden="true" data-product-image>Placeholder zdjęcia</div>
+        </div>
+        <div class="product-gallery" data-product-gallery hidden>
+          <button class="gallery-nav" type="button" data-gallery-prev aria-label="Poprzednie zdjęcie">←</button>
+          <div class="product-thumbnails" data-gallery-viewport>
+            <div class="product-thumbnails__track" data-gallery-track></div>
+          </div>
+          <button class="gallery-nav" type="button" data-gallery-next aria-label="Następne zdjęcie">→</button>
+        </div>
+        <figcaption data-product-image-caption>Produkt dostępny wkrótce.</figcaption>
+      </figure>
+      <div class="product-info">
+        <div class="product-price" data-product-price>??</div>
+        <p class="product-description" data-product-description>Produkt dostępny wkrótce.</p>
+        <form class="product-form" data-add-to-cart data-product-id>
+          <label class="product-field" data-size-field>
+            <span>Rozmiar</span>
+            <select name="size" required>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </label>
+          <label class="product-field">
+            <span>Ilość</span>
+            <input type="number" name="quantity" min="1" max="20" value="1" inputmode="numeric">
+          </label>
+          <button class="button button--primary" type="submit">Dodaj do koszyka</button>
+        </form>
+        <p class="product-note" data-product-note>Produkt dostępny wkrótce.</p>
+      </div>
+    </section>
+
+    <section class="product-details" aria-label="Szczegółowy opis produktu">
+      <h2>Opis szczegółowy</h2>
+      <div class="product-long-description" data-product-long-description>
+        <p>Dodaj dłuższy opis w pliku <code>sklep/products.js</code>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> ExploRide. Wszystkie prawa zastrzeżone. • <a href="https://exploride.pl/privacy-policy">Polityka prywatności</a>
+  </footer>
+
+  <div class="shop-modal" data-cart-modal hidden>
+    <div class="shop-modal__overlay" aria-hidden="true"></div>
+    <div class="shop-modal__panel" role="dialog" aria-modal="true" aria-labelledby="cart-modal-title">
+      <div class="shop-modal__header">
+        <div class="shop-steps">
+          <span class="shop-step" data-step-indicator="cart">Koszyk</span>
+          <span class="shop-step" data-step-indicator="details">Dane zamówienia</span>
+                  </div>
+        <button class="shop-modal__close" type="button" data-close-cart aria-label="Zamknij koszyk">×</button>
+      </div>
+      <div class="shop-modal__content">
+        <section data-cart-step-panel="cart" aria-labelledby="cart-modal-title">
+          <div class="shop-modal__intro">
+            <div>
+              <p class="eyebrow">Podsumowanie</p>
+              <h2 id="cart-modal-title">Twoje produkty</h2>
+            </div>
+            <div class="shop-modal__total">
+              <span>Suma</span>
+              <strong data-cart-total-footer>0,00 zł</strong>
+            </div>
+          </div>
+          <div class="cart-list" data-cart-items></div>
+          <div class="shop-modal__actions">
+            <button class="button button--secondary" type="button" data-close-cart>Kontynuuj zakupy</button>
+            <button class="button button--primary" type="button" data-cart-confirm>Potwierdź i przejdź dalej</button>
+          </div>
+        </section>
+
+        <section data-cart-step-panel="details" hidden>
+          <div class="shop-modal__intro">
+            <div>
+              <p class="eyebrow">Dane do zamówienia</p>
+              <h2>Uzupełnij formularz</h2>
+            </div>
+            <button class="button button--ghost" type="button" data-step-back="cart">← Wróć</button>
+          </div>
+          <div class="form-embed">
+            <form class="cart-details-form" data-cart-details-form>
+              <label class="cart-details-form__field">
+                <span>Imię i nazwisko *</span>
+                <input type="text" name="customerName" required autocomplete="name">
+              </label>
+              <label class="cart-details-form__field">
+                <span>Email *</span>
+                <input type="email" name="customerEmail" required autocomplete="email">
+              </label>
+              <label class="cart-details-form__field">
+                <span>Telefon *</span>
+                <input type="tel" name="customerPhone" required autocomplete="tel">
+              </label>
+              <fieldset class="cart-details-form__fieldset" data-delivery-method-fieldset>
+                <legend>Sposób dostawy *</legend>
+                <label class="cart-details-form__radio">
+                  <input type="radio" name="delivery_method" value="pickup_point" required>
+                  <span>Paczkomat / punkt odbioru</span>
+                </label>
+                <label class="cart-details-form__radio">
+                  <input type="radio" name="delivery_method" value="home_delivery" required>
+                  <span>Dostawa do domu</span>
+                </label>
+              </fieldset>
+              <label class="cart-details-form__field" data-delivery-address-field hidden>
+                <span>Adres dostawy *</span>
+                <textarea name="delivery_address" rows="3" placeholder="Ulica i numer&#10;Kod pocztowy i miasto"></textarea>
+              </label>
+              <label class="cart-details-form__field" data-pickup-point-field hidden>
+                <span>Paczkomat / punkt odbioru *</span>
+                <textarea name="pickup_point" rows="2" placeholder="np. Kod lub adres punktu odbioru"></textarea>
+              </label>
+              <label class="cart-details-form__field">
+                <span>Wiadomość (opcjonalne)</span>
+                <textarea name="message" rows="4"></textarea>
+              </label>
+              <label class="cart-details-form__checkbox">
+                <input type="checkbox" name="gdprConsent" required>
+                <span>Wyrażam zgodę na przetwarzanie moich danych osobowych w celu obsługi zapytania i realizacji kontaktu zwrotnego. *</span>
+              </label>
+              <p class="cart-details-form__required-note">* - pola wymagane</p>
+              <p class="cart-details-form__status" data-cart-form-status aria-live="polite"></p>
+            </form>
+          </div>
+          <div class="shop-modal__actions">
+            <button class="button button--primary" type="button" data-cart-to-payment>Wyślij zapytanie</button>
+          </div>
+          <p class="shop-modal__notice">Wysłanie formularza nie oznacza automatycznego zakupu. To zapytanie o dostępność i szczegóły zamówienia. Po jego otrzymaniu odezwiemy się mailowo, aby potwierdzić szczegóły i sposób finalizacji.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="shop-modal shop-modal--success" data-success-modal hidden>
+    <div class="shop-modal__overlay" aria-hidden="true"></div>
+    <div class="shop-modal__panel shop-modal__panel--success" role="dialog" aria-modal="true" aria-labelledby="success-modal-title">
+      <button class="shop-modal__close" type="button" data-close-success-modal aria-label="Zamknij komunikat sukcesu">×</button>
+      <div class="shop-success">
+        <p class="eyebrow">Gotowe</p>
+        <h2 id="success-modal-title">Zapytanie wysłane.</h2>
+        <p>Odezwiemy się mailowo w celu finalizacji.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

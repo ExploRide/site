@@ -126,6 +126,18 @@
     const submitButton = form.querySelector('button[type="submit"]');
     const message = ensureStockMessage(form);
 
+    if (product.available === false) {
+      message.textContent = 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.';
+      message.classList.add('stock-message--warning');
+      message.classList.remove('stock-message--empty');
+      if (quantityInput) quantityInput.disabled = true;
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Wkrótce';
+      }
+      return;
+    }
+
     if (showLoading && (!inventoryState.loaded || refreshInventory)) {
       message.textContent = 'Sprawdzanie dostępności…';
       message.classList.remove('stock-message--empty', 'stock-message--warning');
@@ -973,7 +985,8 @@
       const addButton = document.createElement('button');
       addButton.type = 'submit';
       addButton.className = 'button button--primary';
-      addButton.textContent = 'Dodaj do koszyka';
+      addButton.textContent = product.available === false ? 'Wkrótce' : 'Dodaj do koszyka';
+      addButton.disabled = product.available === false;
       quickForm.appendChild(addButton);
 
       const feedback = document.createElement('p');
@@ -1017,7 +1030,11 @@
     if (longDescription) {
       longDescription.innerHTML = '';
 
-      if (Array.isArray(product.longDescription) && product.longDescription.length) {
+      if (typeof product.longDescription === 'string' && product.longDescription) {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = product.longDescription;
+        longDescription.appendChild(paragraph);
+      } else if (Array.isArray(product.longDescription) && product.longDescription.length) {
         const list = document.createElement('ul');
         list.className = 'product-long-description__list';
 
