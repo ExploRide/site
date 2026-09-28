@@ -93,7 +93,7 @@ window.SHOP_PRODUCTS = [
     note: 'Wysyłka po potwierdzeniu dostępności – informacja w podsumowaniu zamówienia.',
   },
 
-   {
+  {
     id: 'cap-exploride',
     slug: 'czapka-z-daszkiem-exploride',
     name: 'Czapka z daszkiem ExploRide',
@@ -112,6 +112,67 @@ window.SHOP_PRODUCTS = [
     imagePlaceholder: 'WKRÓTCE',
     imageCaption: 'Produkt dostępny wkrótce.',
     note: 'Produkt dostępny wkrótce.',
+  },
+  {
+    id: 'explosync',
+    slug: 'explosync-plugin-do-adobe-premiere',
+    name: '(Wkrótce) ExploSync - Plugin do Adobe Premiere',
+    price: 45,
+    available: false,
+    summary: 'Automatyczna synchronizacja wielu nagrań wideo i audio na timeline. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Automatyczna synchronizacja wielu nagrań wideo i audio na timeline. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploSync automatycznie synchronizuje materiały z wielu kamer i rejestratorów dźwięku na podstawie ich ścieżek audio. Plugin pozwala szybko uporządkować nawet dużą liczbę klipów bez ręcznego przesuwania ich na timeline. Oferuje również precyzyjną korektę synchronizacji, gdy standardowe dopasowanie wymaga dodatkowego poprawienia. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploSync - plugin do Adobe Premiere', imagePlaceholder: 'ExploSync', imageCaption: 'Plugin do Adobe Premiere — wkrótce.',
+    note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'explosubs', slug: 'explosubs-plugin-do-adobe-premiere', name: '(Wkrótce) ExploSubs - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Automatyczna transkrypcja nagrań w praktycznie każdym języku i tworzenie napisów w Adobe Premiere. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Automatyczna transkrypcja nagrań w praktycznie każdym języku i tworzenie napisów w Adobe Premiere. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploSubs automatycznie rozpoznaje mowę i generuje napisy do montowanego filmu. W przeciwieństwie do standardowej transkrypcji Adobe Premiere, która obsługuje ograniczoną listę języków, ExploSubs wykorzystuje wielojęzyczny model rozpoznawania mowy obsługujący bardzo szeroki zakres języków z całego świata. Plugin obsługuje osobne ścieżki audio i pozwala tworzyć napisy na podstawie konkretnych tracków. Przy ponownej transkrypcji może wykorzystać wcześniej wyeksportowane audio, dzięki czemu nie trzeba wykonywać całego procesu od początku. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploSubs - plugin do Adobe Premiere', imagePlaceholder: 'ExploSubs', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'explomatch', slug: 'explomatch-plugin-do-adobe-premiere', name: '(Wkrótce) ExploMatch - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Automatyczne dopasowywanie kolorystyki ujęć z różnych kamer. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Automatyczne dopasowywanie kolorystyki ujęć z różnych kamer. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploMatch analizuje ujęcia i automatycznie dopasowuje ich wygląd za pomocą parametrów Lumetri Color. Może korygować między innymi temperaturę, tint, ekspozycję, kontrast, światła, cienie, biele, czernie oraz saturację. Ułatwia uzyskanie spójnego obrazu podczas montażu materiałów nagrywanych różnymi kamerami. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploMatch - plugin do Adobe Premiere', imagePlaceholder: 'ExploMatch', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'exploimport', slug: 'exploimport-plugin-do-adobe-premiere', name: '(Wkrótce) ExploImport - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Automatyczne rozpoznawanie kamer i rozmieszczanie materiałów na timeline. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Automatyczne rozpoznawanie kamer i rozmieszczanie materiałów na timeline. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploImport analizuje importowane materiały, rozpoznaje urządzenia na podstawie nazw plików oraz parametrów nagrania i automatycznie rozmieszcza je na odpowiednich ścieżkach timeline. Ułatwia przygotowanie projektu zawierającego materiały z wielu kamer, takich jak DJI Action, DJI Pocket, GoPro, Lumix czy dron. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploImport - plugin do Adobe Premiere', imagePlaceholder: 'ExploImport', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'exploselect', slug: 'exploselect-plugin-do-adobe-premiere', name: '(Wkrótce) ExploSelect - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Błyskawiczne odnajdywanie na timeline klipów wybranych w Project Media. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Błyskawiczne odnajdywanie na timeline klipów wybranych w Project Media. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploSelect pozwala zaznaczyć wiele materiałów w panelu Project Media, a następnie jednym kliknięciem odnaleźć i zaznaczyć odpowiadające im klipy znajdujące się na timeline. Przydatne szczególnie w dużych projektach, gdzie ręczne wyszukiwanie konkretnych materiałów zajmuje dużo czasu. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploSelect - plugin do Adobe Premiere', imagePlaceholder: 'ExploSelect', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'explozoom', slug: 'explozoom-plugin-do-adobe-premiere', name: '(Wkrótce) ExploZoom - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Automatyczne tworzenie płynnych zoomów za pomocą efektu Transform. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Automatyczne tworzenie płynnych zoomów za pomocą efektu Transform. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: "ExploZoom automatyzuje tworzenie płynnego efektu przybliżenia bez konieczności ręcznego ustawiania keyframe'ów. Plugin wykorzystuje efekt Transform i pozwala kontrolować szybkość zoomu, zachowując spójne tempo niezależnie od długości klipu. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.",
+    sizes: [], images: [], image: '', imageAlt: 'ExploZoom - plugin do Adobe Premiere', imagePlaceholder: 'ExploZoom', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'exploloud', slug: 'exploloud-plugin-do-adobe-premiere', name: '(Wkrótce) ExploLoud - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Inteligentna normalizacja głośności i automatyczne wyrównywanie mowy. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Inteligentna normalizacja głośności i automatyczne wyrównywanie mowy. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploLoud analizuje dźwięk poszczególnych klipów i automatycznie dostosowuje ich poziom głośności. Rozpoznaje mowę, uwzględnia różnice pomiędzy nagraniami i pomaga uzyskać równy poziom dialogów w całym filmie. Dzięki temu ogranicza konieczność ręcznego poprawiania głośności każdego klipu i przyspiesza przygotowanie audio do gotowego filmu. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploLoud - plugin do Adobe Premiere', imagePlaceholder: 'ExploLoud', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+  },
+  {
+    id: 'explofx', slug: 'explofx-plugin-do-adobe-premiere', name: '(Wkrótce) ExploFX - Plugin do Adobe Premiere', price: 45, available: false,
+    summary: 'Szybkie nakładanie efektów i presetów bezpośrednio z jednego panelu. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    description: 'Szybkie nakładanie efektów i presetów bezpośrednio z jednego panelu. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    longDescription: 'ExploFX usprawnia korzystanie z efektów podczas montażu w Adobe Premiere. Pozwala szybko wybierać i nakładać efekty oraz obsługiwane presety na zaznaczone klipy bez ciągłego wyszukiwania ich w standardowym panelu Effects. Interfejs został zaprojektowany tak, aby zajmował mało miejsca i pasował do środowiska Premiere. Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
+    sizes: [], images: [], image: '', imageAlt: 'ExploFX - plugin do Adobe Premiere', imagePlaceholder: 'ExploFX', imageCaption: 'Plugin do Adobe Premiere — wkrótce.', note: 'Plugin nie jest jeszcze gotowy i będzie dostępny wkrótce.',
   },
 ];
 
