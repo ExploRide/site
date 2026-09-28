@@ -1,5 +1,5 @@
 (function () {
-  const SITE_BUILD = Object.freeze({ number: 175, date: '2026-09-28' });
+  const SITE_BUILD = Object.freeze({ number: 176, date: '2026-09-28' });
 
   function initNavToggle() {
     const header = document.querySelector('header');
